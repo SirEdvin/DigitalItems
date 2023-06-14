@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "id": "template",
+  "version": "${version}",
+  "name": "Template",
+  "description": "Mod Description",
+  "authors": [
+    "SirEdvin"
+  ],
+  "accessWidener": "template.accesswidener",
+  "contact": {
+    "homepage": "https://example.com/",
+    "issues": "https://example.com/",
+    "sources": "https://example.com/"
+  },
+  "license": "MIT",
+  "icon": "pack.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "site.siredvin.template.FabricTemplate"
+      }
+    ],
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "site.siredvin.template.FabricTemplateClient"
+      }
+    ],
+    "fabric-datagen": [
+      {
+        "adapter": "kotlin",
+        "value": "site.siredvin.template.data.FabricDataGenerators"
+      }
+    ]
+  },
+  "mixins": [
+  ],
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "fabric": "*",
+    "minecraft": ">=1.20 <1.21",
+    "java": ">=17",
+    "computercraft": ">=${computercraftVersion}",
+    "peripheralium": ">=${peripheraliumVersion}"
+  }
+}

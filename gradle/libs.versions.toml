@@ -1,0 +1,99 @@
+[versions]
+# Base libraries
+kotlin = "1.8.21"
+kotlin-coroutines = "1.6.4"
+kotlin-atomicfu = "0.20.2"
+
+# Gradle plugins
+sponge = "0.2.1-SNAPSHOT"
+loom = "1.1.9"
+forgegradle = "6.+"
+spotless = "6.19.0"
+
+# Core mod dependencies
+cc-tweaked = "1.105.0"
+mixin = "0.8.5"
+peripheralium = "0.6.2"
+
+# Fabric dependencies
+fabric-api = "0.83.0+1.20"
+fabric-loader = "0.14.21"
+fabric-kotlin = "1.9.4+kotlin.1.8.21"
+forgeconfigapirt = "7.0.0"
+
+# Forge dependencies
+forge = "46.0.1"
+forge-kotlin = "4.3.0"
+parchment = "2023.03.12"
+parchmentMc = "1.19.3"
+# Extra mod dependencies
+
+# Dev mod dependenceis
+jei = "14.0.0.11"
+rei = "12.0.625"
+
+# Testing
+autoService = "1.0.1"
+byteBuddy = "1.14.2"
+hamcrest = "2.2"
+jqwik = "1.7.2"
+junit = "5.9.2"
+
+
+[libraries]
+# Base libraries
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlin-atomicfu = {module = "org.jetbrains.kotlinx:atomicfu-jvm", version.ref = "kotlin-atomicfu"}
+
+# Plugins
+kotlin-plugin = {module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+spotless-plugin = {module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref="spotless"}
+
+# Core mod dependencies
+cc-tweaked-common = {module = "cc.tweaked:cc-tweaked-1.20-common-api", version.ref = "cc-tweaked"}
+cc-tweaked-core = {module = "cc.tweaked:cc-tweaked-1.20-core", version.ref = "cc-tweaked"}
+common-config = {module = "fuzs.forgeconfigapiport:forgeconfigapiport-common", version.ref = "forgeconfigapirt"}
+mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
+peripheralium-core = {module = "site.siredvin:peripheralium-common-1.20", version.ref = "peripheralium"}
+
+# Fabric mod dependencies
+fabric-loader = {module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader"}
+fabric-api = {module = "net.fabricmc.fabric-api:fabric-api", version.ref="fabric-api"}
+fabric-kotlin = {module = "net.fabricmc:fabric-language-kotlin", version.ref = "fabric-kotlin"}
+fabric-config = {module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "forgeconfigapirt"}
+cc-tweaked-fabric-api = {module = "cc.tweaked:cc-tweaked-1.20-fabric-api", version.ref = "cc-tweaked"}
+cc-tweaked-fabric = {module = "cc.tweaked:cc-tweaked-1.20-fabric", version.ref = "cc-tweaked"}
+peripheralium-fabric = {module = "site.siredvin:peripheralium-fabric-1.20", version.ref = "peripheralium"}
+
+# Forge mod dependencies
+cc-tweaked-forge =  {module = "cc.tweaked:cc-tweaked-1.20-forge", version.ref="cc-tweaked"}
+forge-kotlin = {module = "thedarkcolour:kotlinforforge", version.ref = "forge-kotlin"}
+peripheralium-forge = {module = "site.siredvin:peripheralium-forge-1.20", version.ref = "peripheralium"}
+
+# Dev mod dependencies
+jei-forge = { module = "mezz.jei:jei-1.20-forge", version.ref = "jei" }
+rei-fabric = {module = "me.shedaniel:RoughlyEnoughItems-fabric", version.ref = "rei"}
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+vanillaGradle = { id = "org.spongepowered.gradle.vanilla", version.ref = "sponge"}
+loom = {id = "fabric-loom", version.ref = "loom"}
+spotless = {id = "com.diffplug.spotless", version.ref="spotless"}
+
+[bundles]
+kotlin = ["kotlin-stdlib", "kotlin-coroutines", "kotlin-atomicfu"]
+cccommon = ["cc-tweaked-common", "cc-tweaked-core", "peripheralium-core"]
+apicommon = ["common-config"]
+fabric-cc = ["cc-tweaked-fabric", "cc-tweaked-core", "peripheralium-fabric"]
+fabric-core = ["fabric-api", "fabric-kotlin", "fabric-config", "fabric-loader"]
+forge-raw = ["forge-kotlin"]
+forge-cc = ["cc-tweaked-forge", "peripheralium-forge"]
+
+# Minecraft
+#externalMods-common = ["jei-api", "nightConfig-core", "nightConfig-toml"]
+#externalMods-forge-compile = ["oculus", "jei-api"]
+externalMods-forge-runtime = ["jei-forge"]
+#externalMods-fabric = ["nightConfig-core", "nightConfig-toml"]
+#externalMods-fabric-compile = ["iris", "jei-api", "rei-api", "rei-builtin"]
+externalMods-fabric-runtime = ["rei-fabric"]
+#
