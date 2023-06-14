@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "id": "template",
+  "id": "digitalitems",
   "version": "${version}",
-  "name": "Template",
+  "name": "Digital Items",
   "description": "Mod Description",
   "authors": [
     "SirEdvin"
   ],
-  "accessWidener": "template.accesswidener",
+  "accessWidener": "digitalitems.accesswidener",
   "contact": {
     "homepage": "https://example.com/",
     "issues": "https://example.com/",
@@ -20,19 +20,19 @@
     "main": [
       {
         "adapter": "kotlin",
-        "value": "site.siredvin.template.FabricTemplate"
+        "value": "site.siredvin.digitalitems.FabricDigitalItems"
       }
     ],
     "client": [
       {
         "adapter": "kotlin",
-        "value": "site.siredvin.template.FabricTemplateClient"
+        "value": "site.siredvin.digitalitems.FabricDigitalItemsClient"
       }
     ],
     "fabric-datagen": [
       {
         "adapter": "kotlin",
-        "value": "site.siredvin.template.data.FabricDataGenerators"
+        "value": "site.siredvin.digitalitems.data.FabricDataGenerators"
       }
     ]
   },

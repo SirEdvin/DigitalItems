@@ -1,37 +1,37 @@
 modLoader="kotlinforforge"
 loaderVersion="[4,)"
 
-issueTrackerURL="https://github.com/SirEdvin/TemplateProject/issues"
+issueTrackerURL="https://github.com/SirEdvin/DigitalItems/issues"
 logoFile="pack.png"
 
 license="MIT"
 
 [[mods]]
-modId="template"
+modId="digitalitems"
 version="${file.jarVersion}"
-displayName="Template"
-displayURL="https://github.com/SirEdvin/TemplateProject/"
+displayName="Digital Items"
+displayURL="https://github.com/SirEdvin/DigitalItems/"
 
 credits=""
 authors=""
 description='''
 '''
 
-[[dependencies.template]]
+[[dependencies.digitalitems]]
 modId="forge"
 mandatory=true
 versionRange="[${forgeVersion},48)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.template]]
+[[dependencies.digitalitems]]
 modId="computercraft"
 mandatory=true
 versionRange="[${computercraftVersion},)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.template]]
+[[dependencies.digitalitems]]
 modId="peripheralium"
 mandatory=true
 versionRange="[${peripheraliumVersion},)"

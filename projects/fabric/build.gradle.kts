@@ -19,7 +19,7 @@ baseShaking {
 
 fabricShaking {
     commonProjectName.set("core")
-     accessWidener.set(project(":core").file("src/main/resources/template.accesswidener"))
+     accessWidener.set(project(":core").file("src/main/resources/digitalitems.accesswidener"))
     extraVersionMappings.set(
         mapOf(
             "computercraft" to "cc-tweaked",

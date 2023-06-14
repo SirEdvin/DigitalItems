@@ -14,8 +14,8 @@ baseShaking {
 }
 
 vanillaShaking {
-    accessWideners.add("src/main/resources/template-common.accesswidener")
-    accessWideners.add("src/main/resources/template.accesswidener")
+    accessWideners.add("src/main/resources/digitalitems-common.accesswidener")
+    accessWideners.add("src/main/resources/digitalitems.accesswidener")
     shake()
 }
 
