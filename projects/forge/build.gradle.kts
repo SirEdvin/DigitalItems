@@ -43,17 +43,17 @@ dependencies {
     libs.bundles.externalMods.forge.runtime.get().map { runtimeOnly(fg.deobf(it)) }
 }
 
-// modPublishing {
-//    output.set(tasks.jar)
-//    requiredDependencies.set(
-//        listOf(
-//            "cc-tweaked",
-//            "kotlin-for-forge",
-//            "peripheralium"
-//        ),
-//    )
-//    shake()
-// }
+modPublishing {
+    output.set(tasks.jar)
+    requiredDependencies.set(
+        listOf(
+            "cc-tweaked",
+            "kotlin-for-forge",
+            "peripheralium",
+        ),
+    )
+    shake()
+}
 
 publishingShaking {
     shake()
