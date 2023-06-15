@@ -1,10 +1,11 @@
 package site.siredvin.digitalitems.data
 
-import site.siredvin.peripheralium.data.language.TextRecord
 import site.siredvin.digitalitems.DigitalItemsCore
+import site.siredvin.peripheralium.data.language.TextRecord
 
 enum class ModText : TextRecord {
     CREATIVE_TAB,
+    DIGITIZER,
     ;
 
     override val textID: String by lazy {

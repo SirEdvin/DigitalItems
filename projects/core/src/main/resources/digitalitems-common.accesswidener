@@ -11,3 +11,6 @@ accessible field net/minecraft/data/models/ItemModelGenerators output Ljava/util
 accessible method net/minecraft/data/models/ItemModelGenerators generateFlatItem (Lnet/minecraft/world/item/Item;Lnet/minecraft/data/models/model/ModelTemplate;)V
 accessible method net/minecraft/data/models/ItemModelGenerators generateFlatItem (Lnet/minecraft/world/item/Item;Ljava/lang/String;Lnet/minecraft/data/models/model/ModelTemplate;)V
 accessible method net/minecraft/data/models/model/TextureSlot create (Ljava/lang/String;)Lnet/minecraft/data/models/model/TextureSlot;
+
+accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
+accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V

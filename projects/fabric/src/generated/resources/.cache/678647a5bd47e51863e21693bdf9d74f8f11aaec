@@ -1,2 +1,5 @@
-// 1.20	2023-06-14T22:56:35.292531833	Digital Items/Block State Definitions
-2ded3c799f1be7ebc6cf2f4f9bd29aa407656e8c assets/digitalitems/models/item/template_item.json
+// 1.20	2023-06-15T13:29:13.62057418	Digital Items/Block State Definitions
+85e37da31cbea49c3f3fa0d445ce53e49e6beb8a assets/digitalitems/models/block/digitizer_on.json
+85c79d6cb10060890652526e2c0f29da446ab686 assets/digitalitems/models/block/digitizer_off.json
+e4c582e295eb6b0827c75e19ce8004edb6fa7f2d assets/digitalitems/blockstates/digitizer.json
+4380e8ad8e79c43f7708dc40e7a06225b04b0a0f assets/digitalitems/models/item/digitizer.json

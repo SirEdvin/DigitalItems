@@ -19,7 +19,7 @@ baseShaking {
 
 fabricShaking {
     commonProjectName.set("core")
-     accessWidener.set(project(":core").file("src/main/resources/digitalitems.accesswidener"))
+    accessWidener.set(project(":core").file("src/main/resources/digitalitems.accesswidener"))
     extraVersionMappings.set(
         mapOf(
             "computercraft" to "cc-tweaked",
@@ -41,7 +41,6 @@ repositories {
     }
 }
 
-
 dependencies {
     implementation(libs.bundles.kotlin)
 
@@ -57,7 +56,7 @@ dependencies {
     }
 }
 
-//modPublishing {
+// modPublishing {
 //    output.set(tasks.remapJar)
 //    requiredDependencies.set(
 //        listOf(
@@ -69,7 +68,7 @@ dependencies {
 //    requiredDependenciesCurseforge.add("forge-config-api-port-fabric")
 //    requiredDependenciesModrinth.add("forge-config-api-port")
 //    shake()
-//}
+// }
 
 publishingShaking {
     shake()

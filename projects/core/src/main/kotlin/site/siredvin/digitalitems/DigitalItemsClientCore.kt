@@ -1,6 +1,9 @@
 package site.siredvin.digitalitems
 
+import net.minecraft.client.gui.screens.MenuScreens
 import net.minecraft.resources.ResourceLocation
+import site.siredvin.digitalitems.client.DigitizerScreen
+import site.siredvin.digitalitems.common.setup.Menus
 import java.util.function.Consumer
 
 object DigitalItemsClientCore {
@@ -11,5 +14,6 @@ object DigitalItemsClientCore {
     }
 
     fun onInit() {
+        MenuScreens.register(Menus.DIGITIZER.get(), ::DigitizerScreen)
     }
 }

@@ -1,5 +1,7 @@
 package site.siredvin.digitalitems.xplat
 
+import net.minecraft.world.item.crafting.Ingredient
+
 interface ModRecipeIngredients {
 
     companion object {
@@ -16,4 +18,7 @@ interface ModRecipeIngredients {
             return _IMPL!!
         }
     }
+
+    val ironBlock: Ingredient
+    val diamondBlock: Ingredient
 }

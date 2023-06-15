@@ -43,8 +43,7 @@ dependencies {
     libs.bundles.externalMods.forge.runtime.get().map { runtimeOnly(fg.deobf(it)) }
 }
 
-
-//modPublishing {
+// modPublishing {
 //    output.set(tasks.jar)
 //    requiredDependencies.set(
 //        listOf(
@@ -54,7 +53,7 @@ dependencies {
 //        ),
 //    )
 //    shake()
-//}
+// }
 
 publishingShaking {
     shake()

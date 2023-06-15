@@ -7,6 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraftforge.common.util.LazyOptional
 import net.minecraftforge.fml.ModLoadingContext
 import net.minecraftforge.fml.common.Mod
@@ -14,12 +15,12 @@ import net.minecraftforge.fml.config.ModConfig
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent
 import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.ForgeRegistries
-import site.siredvin.peripheralium.ForgePeripheralium
-import site.siredvin.peripheralium.api.peripheral.IPeripheralProvider
 import site.siredvin.digitalitems.common.configuration.ConfigHolder
 import site.siredvin.digitalitems.forge.ForgeModPlatform
 import site.siredvin.digitalitems.forge.ForgeModRecipeIngredients
 import site.siredvin.digitalitems.xplat.ModCommonHooks
+import site.siredvin.peripheralium.ForgePeripheralium
+import site.siredvin.peripheralium.api.peripheral.IPeripheralProvider
 import thedarkcolour.kotlinforforge.forge.MOD_CONTEXT
 
 @Mod(DigitalItemsCore.MOD_ID)
@@ -30,6 +31,8 @@ object ForgeDigitalItems {
         DeferredRegister.create(ForgeRegistries.BLOCKS, DigitalItemsCore.MOD_ID)
     val itemsRegistry: DeferredRegister<Item> =
         DeferredRegister.create(ForgeRegistries.ITEMS, DigitalItemsCore.MOD_ID)
+    val blockEntityTypesRegistry: DeferredRegister<BlockEntityType<*>> =
+        DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, DigitalItemsCore.MOD_ID)
     val creativeTabRegistry: DeferredRegister<CreativeModeTab> =
         DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), DigitalItemsCore.MOD_ID)
     val turtleSerializers = DeferredRegister.create(
@@ -40,6 +43,7 @@ object ForgeDigitalItems {
         PocketUpgradeSerialiser.registryId(),
         DigitalItemsCore.MOD_ID,
     )
+    val menuTypes = DeferredRegister.create(ForgeRegistries.MENU_TYPES, DigitalItemsCore.MOD_ID)
 
     init {
         ForgePeripheralium.sayHi()
@@ -53,9 +57,11 @@ object ForgeDigitalItems {
         ModCommonHooks.onRegister()
         blocksRegistry.register(eventBus)
         itemsRegistry.register(eventBus)
+        blockEntityTypesRegistry.register(eventBus)
         creativeTabRegistry.register(eventBus)
         turtleSerializers.register(eventBus)
         pocketSerializers.register(eventBus)
+        menuTypes.register(eventBus)
     }
 
     fun commonSetup(event: FMLCommonSetupEvent) {
