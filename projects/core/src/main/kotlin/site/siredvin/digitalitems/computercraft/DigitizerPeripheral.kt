@@ -7,10 +7,10 @@ import site.siredvin.digitalitems.common.DigitalItemsSavedData
 import site.siredvin.digitalitems.common.DigitizedItem
 import site.siredvin.digitalitems.common.blockentity.DigitizerBlockEntity
 import site.siredvin.digitalitems.common.configuration.ModConfig
-import site.siredvin.peripheralium.api.storage.StorageUtils
 import site.siredvin.peripheralium.computercraft.peripheral.OwnedPeripheral
 import site.siredvin.peripheralium.computercraft.peripheral.owner.BlockEntityPeripheralOwner
 import site.siredvin.peripheralium.extra.plugins.InventoryPlugin
+import site.siredvin.peripheralium.storages.item.ItemStorageUtils
 import site.siredvin.peripheralium.util.representation.LuaRepresentation
 import java.nio.ByteBuffer
 import java.security.SecureRandom
@@ -70,7 +70,7 @@ class DigitizerPeripheral(private val blockEntity: DigitizerBlockEntity) : Owned
         val data: DigitalItemsSavedData = DigitalItemsSavedData.getFrom(blockEntity.level!!)
         val digitizedItem = DigitizedItem(
             id,
-            blockEntity.storage.takeItems(amount, 0, 0, StorageUtils.ALWAYS).copy(),
+            blockEntity.storage.takeItems(amount, 0, 0, ItemStorageUtils.ALWAYS).copy(),
             blockEntity.level!!.gameTime,
         )
         data.add(digitizedItem)

@@ -18,8 +18,8 @@ import site.siredvin.digitalitems.client.DigitizerMenu
 import site.siredvin.digitalitems.common.setup.BlockEntityTypes
 import site.siredvin.digitalitems.computercraft.DigitizerPeripheral
 import site.siredvin.digitalitems.data.ModText
-import site.siredvin.peripheralium.api.storage.TargetableContainer
 import site.siredvin.peripheralium.common.blockentities.MutableNBTBlockEntity
+import site.siredvin.peripheralium.storages.ContainerWrapper
 
 class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
     MutableNBTBlockEntity<DigitizerPeripheral>(BlockEntityTypes.DIGITIZER.get(), pos, state), Container, MenuProvider {
@@ -39,7 +39,7 @@ class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
     }
 
     private val inventory = ExtraSimpleStorage(this)
-    val storage = TargetableContainer(inventory)
+    val storage = ContainerWrapper(inventory)
     var data = SimpleContainerData(8)
 
     fun setCurrentEnergy(energy: Int) {
