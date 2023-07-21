@@ -39,6 +39,13 @@ repositories {
             includeGroup("mezz.jei")
         }
     }
+    maven {
+        name = "ModMenu maven"
+        url = uri("https://maven.terraformersmc.com/releases")
+        content {
+            includeGroup("com.terraformersmc")
+        }
+    }
 }
 
 dependencies {
