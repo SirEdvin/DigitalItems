@@ -12,7 +12,7 @@ spotless = "6.19.0"
 
 # Core mod dependencies
 cc-tweaked = "1.106.1"
-peripheralium = "0.6.6-pre.3"
+peripheralium = "0.6.6"
 mixin = "0.8.5"
 
 # Fabric dependencies
