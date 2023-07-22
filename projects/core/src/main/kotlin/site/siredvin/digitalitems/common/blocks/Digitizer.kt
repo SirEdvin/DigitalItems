@@ -21,10 +21,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.phys.BlockHitResult
 import site.siredvin.digitalitems.common.blockentity.DigitizerBlockEntity
-import site.siredvin.digitalitems.common.setup.BlockEntityTypes
-import site.siredvin.digitalitems.xplat.ModPlatform
+import site.siredvin.digitalitems.common.setup.ModBlockEntityTypes
 import site.siredvin.peripheralium.common.blocks.BaseTileEntityBlock
 import site.siredvin.peripheralium.util.BlockUtil
+import site.siredvin.peripheralium.xplat.PeripheraliumPlatform
 import java.util.*
 
 class Digitizer :
@@ -36,7 +36,7 @@ class Digitizer :
     }
 
     override fun newBlockEntity(p0: BlockPos, p1: BlockState): BlockEntity? {
-        return BlockEntityTypes.DIGITIZER.get().create(p0, p1)
+        return ModBlockEntityTypes.DIGITIZER.get().create(p0, p1)
     }
 
     override fun hasAnalogOutputSignal(state: BlockState): Boolean {
@@ -102,7 +102,7 @@ class Digitizer :
             return InteractionResult.SUCCESS
         }
         val blockEntity = level.getBlockEntity(pos) as? DigitizerBlockEntity ?: return InteractionResult.CONSUME
-        ModPlatform.openMenu(player, blockEntity) { buf: FriendlyByteBuf ->
+        PeripheraliumPlatform.openMenu(player, blockEntity) { buf: FriendlyByteBuf ->
             buf.writeBlockPos(
                 pos,
             )

@@ -4,7 +4,7 @@ import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry
 import net.fabricmc.api.ModInitializer
 import net.minecraftforge.fml.config.ModConfig
 import site.siredvin.digitalitems.common.configuration.ConfigHolder
-import site.siredvin.digitalitems.common.setup.BlockEntityTypes
+import site.siredvin.digitalitems.common.setup.ModBlockEntityTypes
 import site.siredvin.digitalitems.fabric.FabricModPlatform
 import site.siredvin.digitalitems.fabric.FabricModRecipeIngredients
 import site.siredvin.digitalitems.xplat.ModCommonHooks
@@ -28,6 +28,6 @@ object FabricDigitalItems : ModInitializer {
                 return@registerForBlockEntities entity.getPeripheral(direction)
             }
             return@registerForBlockEntities null
-        }, BlockEntityTypes.DIGITIZER.get())
+        }, ModBlockEntityTypes.DIGITIZER.get())
     }
 }

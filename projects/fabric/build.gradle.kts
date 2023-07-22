@@ -27,7 +27,16 @@ fabricShaking {
             "peripheralium" to "peripheralium",
         ),
     )
+    stablePlayer.convention(true)
     shake()
+}
+
+loom {
+    runs {
+        named("client") {
+            this.programArgs("--username=Player")
+        }
+    }
 }
 
 repositories {

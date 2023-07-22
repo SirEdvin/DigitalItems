@@ -4,10 +4,10 @@ import site.siredvin.digitalitems.common.blockentity.DigitizerBlockEntity
 import site.siredvin.digitalitems.xplat.ModPlatform
 import site.siredvin.peripheralium.xplat.PeripheraliumPlatform
 
-object BlockEntityTypes {
+object ModBlockEntityTypes {
     val DIGITIZER = ModPlatform.registerBlockEntity(
         "digitizer",
-    ) { PeripheraliumPlatform.createBlockEntityType(::DigitizerBlockEntity, Blocks.DIGITIZER.get()) }
+    ) { PeripheraliumPlatform.createBlockEntityType(::DigitizerBlockEntity, ModBlocks.DIGITIZER.get()) }
 
     fun doSomething() {}
 }

@@ -12,6 +12,7 @@ abstract class ModLanguageProvider(output: PackOutput, locale: String) : Languag
     locale,
     ModPlatform.holder,
     *ModText.values(),
+    *AdvancementTexts.values(),
 ) {
 
     companion object {

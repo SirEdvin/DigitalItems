@@ -15,14 +15,14 @@ import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.state.BlockState
 import site.siredvin.digitalitems.client.DigitizerMenu
-import site.siredvin.digitalitems.common.setup.BlockEntityTypes
+import site.siredvin.digitalitems.common.setup.ModBlockEntityTypes
 import site.siredvin.digitalitems.computercraft.DigitizerPeripheral
 import site.siredvin.digitalitems.data.ModText
 import site.siredvin.peripheralium.common.blockentities.MutableNBTBlockEntity
 import site.siredvin.peripheralium.storages.ContainerWrapper
 
 class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
-    MutableNBTBlockEntity<DigitizerPeripheral>(BlockEntityTypes.DIGITIZER.get(), pos, state), Container, MenuProvider {
+    MutableNBTBlockEntity<DigitizerPeripheral>(ModBlockEntityTypes.DIGITIZER.get(), pos, state), Container, MenuProvider {
 
     companion object {
         private const val STORED_ITEM_STACK_TAG = "storedItemStack"

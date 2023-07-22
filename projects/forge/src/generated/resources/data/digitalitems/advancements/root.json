@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "have_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "digitalitems:digitizer"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.digitizer_description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "digitalitems:digitizer"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advencement.digitalitems.digitizer"
+    }
+  },
+  "requirements": [
+    [
+      "have_item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

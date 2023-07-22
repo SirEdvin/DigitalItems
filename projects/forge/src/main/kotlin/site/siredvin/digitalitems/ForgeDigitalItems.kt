@@ -44,6 +44,7 @@ object ForgeDigitalItems {
         DigitalItemsCore.MOD_ID,
     )
     val menuTypes = DeferredRegister.create(ForgeRegistries.MENU_TYPES, DigitalItemsCore.MOD_ID)
+    val customStats = DeferredRegister.create(BuiltInRegistries.CUSTOM_STAT.key(), DigitalItemsCore.MOD_ID)
 
     init {
         ForgePeripheralium.sayHi()
@@ -62,6 +63,7 @@ object ForgeDigitalItems {
         turtleSerializers.register(eventBus)
         pocketSerializers.register(eventBus)
         menuTypes.register(eventBus)
+        customStats.register(eventBus)
     }
 
     fun commonSetup(event: FMLCommonSetupEvent) {

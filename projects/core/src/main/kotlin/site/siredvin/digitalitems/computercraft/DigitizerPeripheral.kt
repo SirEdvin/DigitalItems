@@ -2,7 +2,9 @@ package site.siredvin.digitalitems.computercraft
 
 import dan200.computercraft.api.lua.LuaException
 import dan200.computercraft.api.lua.LuaFunction
+import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
+import site.siredvin.digitalitems.awardDigitalization
 import site.siredvin.digitalitems.common.DigitalItemsSavedData
 import site.siredvin.digitalitems.common.DigitizedItem
 import site.siredvin.digitalitems.common.blockentity.DigitizerBlockEntity
@@ -75,6 +77,7 @@ class DigitizerPeripheral(private val blockEntity: DigitizerBlockEntity) : Owned
         )
         data.add(digitizedItem)
         data.setDirty()
+        (peripheralOwner.owner as? ServerPlayer)?.awardDigitalization(digitizedItem.item)
         return id
     }
 

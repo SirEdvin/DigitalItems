@@ -8,11 +8,11 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.entity.BlockEntity
 import site.siredvin.digitalitems.common.blockentity.DigitizerBlockEntity
-import site.siredvin.digitalitems.common.setup.Blocks
-import site.siredvin.digitalitems.common.setup.Menus
+import site.siredvin.digitalitems.common.setup.ModBlocks
+import site.siredvin.digitalitems.common.setup.ModMenus
 
 class DigitizerMenu(id: Int, inv: Inventory, entity: BlockEntity, data: ContainerData) :
-    AbstractContainerMenu(Menus.DIGITIZER.get(), id) {
+    AbstractContainerMenu(ModMenus.DIGITIZER.get(), id) {
     val blockEntity: DigitizerBlockEntity
     private val level: Level
 
@@ -88,7 +88,7 @@ class DigitizerMenu(id: Int, inv: Inventory, entity: BlockEntity, data: Containe
         return stillValid(
             ContainerLevelAccess.create(level, blockEntity.blockPos),
             player,
-            Blocks.DIGITIZER.get(),
+            ModBlocks.DIGITIZER.get(),
         )
     }
 
