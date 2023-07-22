@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Advancements (but why?)
+
 ### Fixed
 
-- Digitalizer don't drop anything
+- Digitalizer don't drop anything #2
 
 ## [0.2.0] - 2023-07-10
 
