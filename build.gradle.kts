@@ -1,7 +1,7 @@
 plugins {
     java
-    id("site.siredvin.root") version "0.4.9"
-    id("site.siredvin.release") version "0.4.9"
+    id("site.siredvin.root") version "0.6.2"
+    id("site.siredvin.release") version "0.6.2"
 }
 
 subprojectShaking {
