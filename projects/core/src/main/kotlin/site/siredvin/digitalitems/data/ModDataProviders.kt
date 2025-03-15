@@ -2,7 +2,7 @@ package site.siredvin.digitalitems.data
 
 import net.minecraft.Util
 import net.minecraft.data.registries.VanillaRegistries
-import site.siredvin.peripheralium.data.blocks.GeneratorSink
+import site.siredvin.broccolium.modules.data.api.GeneratorSink
 import java.util.concurrent.CompletableFuture
 
 object ModDataProviders {
@@ -14,7 +14,6 @@ object ModDataProviders {
         generator.models(ModBlockModelProvider::addModels, ModItemModelProvider::addModels)
         generator.add(::ModEnLanguageProvider)
         generator.add(::ModUaLanguageProvider)
-        // TODO: meh?
         val completablefuture = CompletableFuture.supplyAsync(
             { VanillaRegistries.createLookup() },
             Util.backgroundExecutor(),

@@ -11,20 +11,22 @@ forgegradle = "6.+"
 spotless = "6.19.0"
 
 # Core mod dependencies
-cc-tweaked = "1.106.1"
-peripheralium = "0.6.6"
+cc-tweaked = "1.113.0"
+broccolium = "1.0.0-rc.8"
+tweakium = "1.0.0-rc.8"
+peripheralium = "1.0.0-rc.8"
 mixin = "0.8.5"
 
 # Fabric dependencies
-fabric-api = "0.85.0+1.20.1"
-fabric-loader = "0.14.21"
-fabric-kotlin = "1.10.0+kotlin.1.9.0"
+fabric-api = "0.92.0+1.20.1"
+fabric-loader = "0.15.11"
+fabric-kotlin = "1.11.0+kotlin.2.0.0"
 forgeconfigapirt = "8.0.0"
 modmenu = "7.2.1"
 
 # Forge dependencies
-forge = "47.1.0"
-forge-kotlin = "4.4.0"
+forge = "47.2.0"
+forge-kotlin = "4.11.0"
 parchment = "2023.07.16"
 parchmentMc = "1.20.1"
 # Extra mod dependencies
@@ -56,6 +58,8 @@ cc-tweaked-common = {module = "cc.tweaked:cc-tweaked-1.20.1-common-api", version
 cc-tweaked-core = {module = "cc.tweaked:cc-tweaked-1.20.1-core", version.ref = "cc-tweaked"}
 common-config = {module = "fuzs.forgeconfigapiport:forgeconfigapiport-common", version.ref = "forgeconfigapirt"}
 mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
+broccolium-core = {module = "site.siredvin:broccolium-common-1.20.1", version.ref = "broccolium"}
+tweakium-core = {module = "site.siredvin:tweakium-common-1.20.1", version.ref = "tweakium"}
 peripheralium-core = {module = "site.siredvin:peripheralium-common-1.20.1", version.ref = "peripheralium"}
 
 # Fabric mod dependencies
@@ -65,11 +69,15 @@ fabric-kotlin = {module = "net.fabricmc:fabric-language-kotlin", version.ref = "
 fabric-config = {module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "forgeconfigapirt"}
 cc-tweaked-fabric-api = {module = "cc.tweaked:cc-tweaked-1.20.1-fabric-api", version.ref = "cc-tweaked"}
 cc-tweaked-fabric = {module = "cc.tweaked:cc-tweaked-1.20.1-fabric", version.ref = "cc-tweaked"}
+broccolium-fabric = {module = "site.siredvin:broccolium-fabric-1.20.1", version.ref = "broccolium"}
+tweakium-fabric = {module = "site.siredvin:tweakium-fabric-1.20.1", version.ref = "tweakium"}
 peripheralium-fabric = {module = "site.siredvin:peripheralium-fabric-1.20.1", version.ref = "peripheralium"}
 
 # Forge mod dependencies
 cc-tweaked-forge =  {module = "cc.tweaked:cc-tweaked-1.20.1-forge", version.ref="cc-tweaked"}
 forge-kotlin = {module = "thedarkcolour:kotlinforforge", version.ref = "forge-kotlin"}
+broccolium-forge = {module = "site.siredvin:broccolium-forge-1.20.1", version.ref = "broccolium"}
+tweakium-forge = {module = "site.siredvin:tweakium-forge-1.20.1", version.ref = "tweakium"}
 peripheralium-forge = {module = "site.siredvin:peripheralium-forge-1.20.1", version.ref = "peripheralium"}
 
 # Dev mod dependencies
@@ -83,12 +91,14 @@ spotless = {id = "com.diffplug.spotless", version.ref="spotless"}
 
 [bundles]
 kotlin = ["kotlin-stdlib", "kotlin-coroutines", "kotlin-atomicfu"]
-cccommon = ["cc-tweaked-common", "cc-tweaked-core", "peripheralium-core"]
+cccommon = ["cc-tweaked-common", "cc-tweaked-core", "tweakium-core", "broccolium-core"]
 apicommon = ["common-config"]
-fabric-cc = ["cc-tweaked-fabric", "cc-tweaked-core", "peripheralium-fabric"]
+fabric-include = ["broccolium-fabric", "tweakium-fabric"]
+fabric-cc = ["cc-tweaked-fabric"]
 fabric-core = ["fabric-api", "fabric-kotlin", "fabric-config", "fabric-loader"]
 forge-raw = ["forge-kotlin"]
-forge-cc = ["cc-tweaked-forge", "peripheralium-forge"]
+forge-cc = ["cc-tweaked-forge"]
+forge-include = ["broccolium-forge", "tweakium-forge"]
 
 # Minecraft
 #externalMods-common = ["jei-api", "nightConfig-core", "nightConfig-toml"]

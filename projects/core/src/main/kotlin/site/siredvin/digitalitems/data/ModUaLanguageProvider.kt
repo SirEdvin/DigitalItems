@@ -1,9 +1,9 @@
 package site.siredvin.digitalitems.data
 
 import net.minecraft.data.PackOutput
+import site.siredvin.broccolium.modules.data.lang.toStatTranslationKey
 import site.siredvin.digitalitems.common.setup.ModBlocks
 import site.siredvin.digitalitems.common.setup.ModStats
-import site.siredvin.peripheralium.data.language.toStatTranslationKey
 
 class ModUaLanguageProvider(
     output: PackOutput,

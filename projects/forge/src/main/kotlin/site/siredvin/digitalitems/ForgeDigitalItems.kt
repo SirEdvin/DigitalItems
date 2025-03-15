@@ -19,8 +19,8 @@ import site.siredvin.digitalitems.common.configuration.ConfigHolder
 import site.siredvin.digitalitems.forge.ForgeModPlatform
 import site.siredvin.digitalitems.forge.ForgeModRecipeIngredients
 import site.siredvin.digitalitems.xplat.ModCommonHooks
-import site.siredvin.peripheralium.ForgePeripheralium
-import site.siredvin.peripheralium.api.peripheral.IPeripheralProvider
+import site.siredvin.tweakium.ForgeTweakium
+import site.siredvin.tweakium.modules.peripheral.api.IPeripheralProvider
 import thedarkcolour.kotlinforforge.forge.MOD_CONTEXT
 
 @Mod(DigitalItemsCore.MOD_ID)
@@ -47,10 +47,10 @@ object ForgeDigitalItems {
     val customStats = DeferredRegister.create(BuiltInRegistries.CUSTOM_STAT.key(), DigitalItemsCore.MOD_ID)
 
     init {
-        ForgePeripheralium.sayHi()
+        ForgeTweakium.sayHi()
         // Configure configuration
         val context = ModLoadingContext.get()
-        context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "${DigitalItemsCore.MOD_ID}.toml")
+        context.registerConfig(ModConfig.Type.COMMON, ConfigHolder.commonSpec, "${DigitalItemsCore.MOD_ID}.toml")
         DigitalItemsCore.configure(ForgeModPlatform, ForgeModRecipeIngredients)
         val eventBus = MOD_CONTEXT.getKEventBus()
         eventBus.addListener(this::commonSetup)

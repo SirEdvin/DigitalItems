@@ -24,7 +24,8 @@ fabricShaking {
         mapOf(
             "computercraft" to "cc-tweaked",
             "forgeconfigapiport" to "forgeconfigapirt",
-            "peripheralium" to "peripheralium",
+            "tweakium" to "tweakium",
+            "broccolium" to "broccolium",
         ),
     )
     stablePlayer.convention(true)
@@ -65,6 +66,11 @@ dependencies {
         exclude("net.fabricmc.fabric-api")
         exclude("net.fabricmc", "fabric-loader")
     }
+    modImplementation(libs.bundles.fabric.include) {
+        exclude("net.fabricmc.fabric-api")
+        exclude("net.fabricmc", "fabric-loader")
+    }
+    include(libs.bundles.fabric.include)
 
     modRuntimeOnly(libs.bundles.externalMods.fabric.runtime) {
         exclude("net.fabricmc.fabric-api")

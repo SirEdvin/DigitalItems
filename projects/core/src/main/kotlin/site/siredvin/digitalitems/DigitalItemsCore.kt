@@ -8,24 +8,22 @@ import site.siredvin.digitalitems.data.ModText
 import site.siredvin.digitalitems.xplat.ModCommonHooks
 import site.siredvin.digitalitems.xplat.ModPlatform
 import site.siredvin.digitalitems.xplat.ModRecipeIngredients
-import site.siredvin.peripheralium.xplat.BaseInnerPlatform
+import site.siredvin.tweakium.modules.platform.api.InnerComputerBasePlatform
 
 object DigitalItemsCore {
     const val MOD_ID = "digitalitems"
 
-    var LOGGER: Logger = LogManager.getLogger(MOD_ID)
+    var logger: Logger = LogManager.getLogger(MOD_ID)
 
-    fun configureCreativeTab(builder: CreativeModeTab.Builder): CreativeModeTab.Builder {
-        return builder.icon { ModBlocks.DIGITIZER.get().asItem().defaultInstance }
-            .title(ModText.CREATIVE_TAB.text)
-            .displayItems { _, output ->
-                ModPlatform.holder.blocks.forEach { output.accept(it.get()) }
-                ModPlatform.holder.items.forEach { output.accept(it.get()) }
-                ModCommonHooks.registerUpgradesInCreativeTab(output)
-            }
-    }
+    fun configureCreativeTab(builder: CreativeModeTab.Builder): CreativeModeTab.Builder = builder.icon { ModBlocks.DIGITIZER.get().asItem().defaultInstance }
+        .title(ModText.CREATIVE_TAB.text)
+        .displayItems { _, output ->
+            ModPlatform.holder.blocks.forEach { output.accept(it.get()) }
+            ModPlatform.holder.items.forEach { output.accept(it.get()) }
+            ModCommonHooks.registerUpgradesInCreativeTab(output)
+        }
 
-    fun configure(platform: BaseInnerPlatform, ingredients: ModRecipeIngredients) {
+    fun configure(platform: InnerComputerBasePlatform, ingredients: ModRecipeIngredients) {
         ModPlatform.configure(platform)
         ModRecipeIngredients.configure(ingredients)
     }

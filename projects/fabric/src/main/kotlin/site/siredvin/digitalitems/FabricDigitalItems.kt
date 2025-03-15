@@ -8,20 +8,20 @@ import site.siredvin.digitalitems.common.setup.ModBlockEntityTypes
 import site.siredvin.digitalitems.fabric.FabricModPlatform
 import site.siredvin.digitalitems.fabric.FabricModRecipeIngredients
 import site.siredvin.digitalitems.xplat.ModCommonHooks
-import site.siredvin.peripheralium.FabricPeripheralium
-import site.siredvin.peripheralium.api.peripheral.IPeripheralProvider
+import site.siredvin.tweakium.modules.FabricTweakium
+import site.siredvin.tweakium.modules.peripheral.api.IPeripheralProvider
 
 @Suppress("UNUSED")
 object FabricDigitalItems : ModInitializer {
 
     override fun onInitialize() {
         // Register configuration
-        FabricPeripheralium.sayHi()
+        FabricTweakium.sayHi()
         DigitalItemsCore.configure(FabricModPlatform, FabricModRecipeIngredients)
         // Register items and blocks
         ModCommonHooks.onRegister()
         // Pretty important to setup configuration after integration loading!
-        ForgeConfigRegistry.INSTANCE.register(DigitalItemsCore.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC)
+        ForgeConfigRegistry.INSTANCE.register(DigitalItemsCore.MOD_ID, ModConfig.Type.COMMON, ConfigHolder.commonSpec)
 
         PeripheralLookup.get().registerForBlockEntities({ entity, direction ->
             if (entity is IPeripheralProvider<*>) {

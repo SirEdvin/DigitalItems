@@ -1,7 +1,7 @@
 package site.siredvin.digitalitems.data
 
+import site.siredvin.broccolium.modules.data.api.TextRecord
 import site.siredvin.digitalitems.DigitalItemsCore
-import site.siredvin.peripheralium.data.language.TextRecord
 
 enum class ModText : TextRecord {
     CREATIVE_TAB,

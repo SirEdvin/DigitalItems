@@ -12,8 +12,7 @@ import net.minecraft.world.inventory.ContainerData
 import site.siredvin.digitalitems.DigitalItemsCore
 import java.util.*
 
-class DigitizerScreen(menu: DigitizerMenu, inv: Inventory, component: Component) :
-    AbstractContainerScreen<DigitizerMenu>(menu, inv, component) {
+class DigitizerScreen(menu: DigitizerMenu, inv: Inventory, component: Component) : AbstractContainerScreen<DigitizerMenu>(menu, inv, component) {
     private val data: ContainerData
 
     init {
@@ -25,9 +24,7 @@ class DigitizerScreen(menu: DigitizerMenu, inv: Inventory, component: Component)
     val maxEnergy: Int
         get() = (data[4] shl 16) + (data[5] shl 12) + (data[6] shl 8) + data[7]
 
-    private fun getEnergyArea(x: Int, y: Int): Rect2i {
-        return Rect2i(x + 152, y + 9, 16, 69)
-    }
+    private fun getEnergyArea(x: Int, y: Int): Rect2i = Rect2i(x + 152, y + 9, 16, 69)
 
     override fun renderBg(graphics: GuiGraphics, partialTick: Float, mouseX: Int, mouseY: Int) {
         RenderSystem.setShader { GameRenderer.getPositionShader() }

@@ -10,9 +10,9 @@ import net.minecraft.data.models.model.TextureMapping
 import net.minecraft.data.models.model.TextureSlot
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Block
+import site.siredvin.broccolium.modules.data.model.createHorizontalFacingDispatch
 import site.siredvin.digitalitems.common.blocks.Digitizer
 import site.siredvin.digitalitems.common.setup.ModBlocks
-import site.siredvin.peripheralium.data.blocks.createHorizontalFacingDispatch
 
 object ModBlockModelProvider {
 
@@ -47,14 +47,14 @@ object ModBlockModelProvider {
     }
 
     fun addModels(generators: BlockModelGenerators) {
-        val off_model = horizontalOrientedModelWithSuffix(
+        val offModel = horizontalOrientedModelWithSuffix(
             generators,
             ModBlocks.DIGITIZER.get(),
             "_off",
             overwriteFront = TextureMapping.getBlockTexture(ModBlocks.DIGITIZER.get(), "_front_off"),
         )
 
-        val on_model = horizontalOrientedModelWithSuffix(
+        val onModel = horizontalOrientedModelWithSuffix(
             generators,
             ModBlocks.DIGITIZER.get(),
             "_on",
@@ -66,7 +66,7 @@ object ModBlockModelProvider {
             false,
             Variant.variant().with(
                 VariantProperties.MODEL,
-                off_model,
+                offModel,
             ),
         )
 
@@ -74,7 +74,7 @@ object ModBlockModelProvider {
             true,
             Variant.variant().with(
                 VariantProperties.MODEL,
-                on_model,
+                onModel,
             ),
         )
 
@@ -88,6 +88,6 @@ object ModBlockModelProvider {
                 modelDispatch,
             ),
         )
-        generators.delegateItemModel(ModBlocks.DIGITIZER.get(), on_model)
+        generators.delegateItemModel(ModBlocks.DIGITIZER.get(), onModel)
     }
 }

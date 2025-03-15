@@ -3,9 +3,9 @@ package site.siredvin.digitalitems.data
 import net.minecraft.data.PackOutput
 import net.minecraft.data.recipes.FinishedRecipe
 import net.minecraft.data.recipes.RecipeProvider
+import site.siredvin.broccolium.modules.data.recipe.TweakedShapedRecipeBuilder
 import site.siredvin.digitalitems.common.setup.ModBlocks
 import site.siredvin.digitalitems.xplat.ModRecipeIngredients
-import site.siredvin.peripheralium.data.blocks.TweakedShapedRecipeBuilder
 import java.util.function.Consumer
 
 class ModRecipeProvider(output: PackOutput) : RecipeProvider(output) {

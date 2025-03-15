@@ -11,9 +11,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraftforge.registries.DeferredRegister
 import site.siredvin.digitalitems.DigitalItemsCore
 import site.siredvin.digitalitems.ForgeDigitalItems
-import site.siredvin.peripheralium.forge.ForgeBaseInnerPlatform
+import site.siredvin.tweakium.modules.platform.ForgeInnerComputerBasePlatform
 
-object ForgeModPlatform : ForgeBaseInnerPlatform() {
+object ForgeModPlatform : ForgeInnerComputerBasePlatform() {
     override val modID: String
         get() = DigitalItemsCore.MOD_ID
 

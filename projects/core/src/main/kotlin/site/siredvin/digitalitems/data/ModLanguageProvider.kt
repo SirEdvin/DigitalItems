@@ -1,19 +1,20 @@
 package site.siredvin.digitalitems.data
 
 import net.minecraft.data.PackOutput
+import site.siredvin.broccolium.modules.data.lang.LanguageProvider
 import site.siredvin.digitalitems.DigitalItemsCore
 import site.siredvin.digitalitems.xplat.ModPlatform
-import site.siredvin.peripheralium.data.language.LanguageProvider
 import java.util.stream.Stream
 
-abstract class ModLanguageProvider(output: PackOutput, locale: String) : LanguageProvider(
-    output,
-    DigitalItemsCore.MOD_ID,
-    locale,
-    ModPlatform.holder,
-    *ModText.values(),
-    *AdvancementTexts.values(),
-) {
+abstract class ModLanguageProvider(output: PackOutput, locale: String) :
+    LanguageProvider(
+        output,
+        DigitalItemsCore.MOD_ID,
+        locale,
+        ModPlatform.holder,
+        *ModText.entries.toTypedArray(),
+        *AdvancementTexts.entries.toTypedArray(),
+    ) {
 
     companion object {
         private val extraExpectedKeys: MutableList<String> = mutableListOf()
@@ -23,7 +24,5 @@ abstract class ModLanguageProvider(output: PackOutput, locale: String) : Languag
         }
     }
 
-    override fun getExpectedKeys(): Stream<String> {
-        return Stream.concat(super.getExpectedKeys(), extraExpectedKeys.stream())
-    }
+    override fun getExpectedKeys(): Stream<String> = Stream.concat(super.getExpectedKeys(), extraExpectedKeys.stream())
 }

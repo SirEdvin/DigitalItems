@@ -4,23 +4,24 @@ import dan200.computercraft.api.lua.LuaException
 import dan200.computercraft.api.lua.LuaFunction
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
+import site.siredvin.broccolium.modules.storage.item.ItemStorageUtils
 import site.siredvin.digitalitems.awardDigitalization
 import site.siredvin.digitalitems.common.DigitalItemsSavedData
 import site.siredvin.digitalitems.common.DigitizedItem
 import site.siredvin.digitalitems.common.blockentity.DigitizerBlockEntity
 import site.siredvin.digitalitems.common.configuration.ModConfig
-import site.siredvin.peripheralium.computercraft.peripheral.OwnedPeripheral
-import site.siredvin.peripheralium.computercraft.peripheral.owner.BlockEntityPeripheralOwner
-import site.siredvin.peripheralium.extra.plugins.InventoryPlugin
-import site.siredvin.peripheralium.storages.item.ItemStorageUtils
-import site.siredvin.peripheralium.util.representation.LuaRepresentation
+import site.siredvin.tweakium.modules.peripheral.OwnedPeripheral
+import site.siredvin.tweakium.modules.peripheral.owner.BlockEntityPeripheralOwner
+import site.siredvin.tweakium.modules.peripheral.representation.LuaRepresentation
+import site.siredvin.tweakium.modules.plugins.InventoryPlugin
 import java.nio.ByteBuffer
 import java.security.SecureRandom
 
-class DigitizerPeripheral(private val blockEntity: DigitizerBlockEntity) : OwnedPeripheral<BlockEntityPeripheralOwner<DigitizerBlockEntity>>(
-    TYPE,
-    BlockEntityPeripheralOwner(blockEntity),
-) {
+class DigitizerPeripheral(private val blockEntity: DigitizerBlockEntity) :
+    OwnedPeripheral<BlockEntityPeripheralOwner<DigitizerBlockEntity>>(
+        TYPE,
+        BlockEntityPeripheralOwner(blockEntity),
+    ) {
 
     init {
         addPlugin(InventoryPlugin(peripheralOwner.level!!, blockEntity.storage))
@@ -39,9 +40,7 @@ class DigitizerPeripheral(private val blockEntity: DigitizerBlockEntity) : Owned
     override val isEnabled: Boolean
         get() = true // This is only peripheral in mod, of course it enabled!
 
-    override fun getType(): String {
-        return "digitizer"
-    }
+    override fun getType(): String = "digitizer"
 
     @get:LuaFunction(mainThread = true)
     val decayEnabled: Boolean
@@ -53,9 +52,7 @@ class DigitizerPeripheral(private val blockEntity: DigitizerBlockEntity) : Owned
 
     @LuaFunction(mainThread = true)
     @Throws(LuaException::class)
-    fun digitize(): ByteArray {
-        return digitizeAmount(blockEntity.storage.getItem(0).count)
-    }
+    fun digitize(): ByteArray = digitizeAmount(blockEntity.storage.getItem(0).count)
 
     @LuaFunction(mainThread = true)
     @Throws(LuaException::class)

@@ -1,4 +1,4 @@
-package site.siredvin.digitalitems.common.critereon
+package site.siredvin.digitalitems.common.criteria
 
 import com.google.gson.JsonObject
 import net.minecraft.advancements.critereon.ContextAwarePredicate
@@ -9,22 +9,18 @@ import net.minecraft.server.level.ServerPlayer
 import site.siredvin.digitalitems.common.setup.ModStats
 import site.siredvin.digitalitems.modId
 
-class DigitalizeOreCriteria : SimpleCriterionTrigger<CustomStatCountCondition>() {
+class DigitalizeItemCriteria : SimpleCriterionTrigger<CustomStatCountCondition>() {
 
     companion object {
-        val ID = modId("digitilized_ores")
+        val ID = modId("digitilized_items")
 
-        fun digitilizeSome(count: Int): CustomStatCountCondition {
-            return CustomStatCountCondition(
-                ID,
-                ModStats.DIGITALIZED_ORES,
-                count,
-            )
-        }
+        fun digitilizeSome(count: Int): CustomStatCountCondition = CustomStatCountCondition(
+            ID,
+            ModStats.DIGITALIZED_ITEMS,
+            count,
+        )
     }
-    override fun getId(): ResourceLocation {
-        return ID
-    }
+    override fun getId(): ResourceLocation = ID
 
     fun trigger(player: ServerPlayer) {
         trigger(player) {
@@ -36,11 +32,9 @@ class DigitalizeOreCriteria : SimpleCriterionTrigger<CustomStatCountCondition>()
         p0: JsonObject,
         p1: ContextAwarePredicate,
         p2: DeserializationContext,
-    ): CustomStatCountCondition {
-        return CustomStatCountCondition(
-            ID,
-            ModStats.DIGITALIZED_ORES,
-            p0.get("count").asInt,
-        )
-    }
+    ): CustomStatCountCondition = CustomStatCountCondition(
+        ID,
+        ModStats.DIGITALIZED_ITEMS,
+        p0.get("count").asInt,
+    )
 }

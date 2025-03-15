@@ -1,9 +1,9 @@
 package site.siredvin.digitalitems.common.setup
 
 import net.minecraft.advancements.CriteriaTriggers
-import site.siredvin.digitalitems.common.critereon.DigitalizeItemCriteria
-import site.siredvin.digitalitems.common.critereon.DigitalizeOreCriteria
-import site.siredvin.digitalitems.common.critereon.DigitalizeStarCriteria
+import site.siredvin.digitalitems.common.criteria.DigitalizeItemCriteria
+import site.siredvin.digitalitems.common.criteria.DigitalizeOreCriteria
+import site.siredvin.digitalitems.common.criteria.DigitalizeStarCriteria
 
 object ModCriterias {
     val DIGITALIZE_ITEMS = CriteriaTriggers.register(

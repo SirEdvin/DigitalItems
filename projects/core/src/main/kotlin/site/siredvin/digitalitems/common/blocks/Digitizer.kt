@@ -20,29 +20,26 @@ import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.phys.BlockHitResult
+import site.siredvin.broccolium.modules.base.block.BaseBlockEntityBlock
+import site.siredvin.broccolium.modules.base.util.BlockUtil
+import site.siredvin.broccolium.modules.platform.PlatformToolkit
 import site.siredvin.digitalitems.common.blockentity.DigitizerBlockEntity
 import site.siredvin.digitalitems.common.setup.ModBlockEntityTypes
-import site.siredvin.peripheralium.common.blocks.BaseTileEntityBlock
-import site.siredvin.peripheralium.util.BlockUtil
-import site.siredvin.peripheralium.xplat.PeripheraliumPlatform
 import java.util.*
 
-class Digitizer :
-    BaseTileEntityBlock<DigitizerBlockEntity>(false, BlockUtil.defaultProperties()) {
+class Digitizer : BaseBlockEntityBlock<DigitizerBlockEntity>(false, BlockUtil.defaultProperties()) {
 
     companion object {
         val FACING = BlockStateProperties.HORIZONTAL_FACING
         val POWERED = BooleanProperty.create("powered")
     }
 
-    override fun newBlockEntity(p0: BlockPos, p1: BlockState): BlockEntity? {
-        return ModBlockEntityTypes.DIGITIZER.get().create(p0, p1)
-    }
+    override fun newBlockEntity(p0: BlockPos, p1: BlockState): BlockEntity? = ModBlockEntityTypes.DIGITIZER.get().create(p0, p1)
 
-    override fun hasAnalogOutputSignal(state: BlockState): Boolean {
-        return true
-    }
+    @Deprecated("Deprecated in Java")
+    override fun hasAnalogOutputSignal(state: BlockState): Boolean = true
 
+    @Deprecated("Deprecated in Java")
     override fun getAnalogOutputSignal(state: BlockState, l: Level, pos: BlockPos): Int {
         val i: ItemStack =
             (Objects.requireNonNull(l.getBlockEntity(pos)) as DigitizerBlockEntity).storage.getItem(0)
@@ -53,26 +50,23 @@ class Digitizer :
         }
     }
 
-    override fun getStateForPlacement(context: BlockPlaceContext): BlockState? {
-        return defaultBlockState().setValue(FACING, context.horizontalDirection.opposite)
-    }
+    override fun getStateForPlacement(context: BlockPlaceContext): BlockState? = defaultBlockState().setValue(FACING, context.horizontalDirection.opposite)
 
-    override fun rotate(pState: BlockState, pRotation: Rotation): BlockState {
-        return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)))
-    }
+    @Deprecated("Deprecated in Java")
+    override fun rotate(pState: BlockState, pRotation: Rotation): BlockState = pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)))
 
-    override fun mirror(pState: BlockState, pMirror: Mirror): BlockState {
-        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)))
-    }
+    @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION", "KotlinRedundantDiagnosticSuppress")
+    override fun mirror(pState: BlockState, pMirror: Mirror): BlockState = pState.rotate(pMirror.getRotation(pState.getValue(FACING)))
 
-    override fun getRenderShape(state: BlockState): RenderShape {
-        return RenderShape.MODEL
-    }
+    @Deprecated("Deprecated in Java")
+    override fun getRenderShape(state: BlockState): RenderShape = RenderShape.MODEL
 
     override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block?, BlockState?>) {
         builder.add(FACING, POWERED)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRemove(blockState: BlockState, level: Level, blockPos: BlockPos, replace: BlockState, bl: Boolean) {
         if (!blockState.`is`(replace.block)) {
             val blockEntity = level.getBlockEntity(blockPos)
@@ -86,10 +80,12 @@ class Digitizer :
                 )
                 level.updateNeighbourForOutputSignal(blockPos, this)
             }
+            @Suppress("DEPRECATION")
             super.onRemove(blockState, level, blockPos, replace, bl)
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun use(
         state: BlockState,
         level: Level,
@@ -102,7 +98,7 @@ class Digitizer :
             return InteractionResult.SUCCESS
         }
         val blockEntity = level.getBlockEntity(pos) as? DigitizerBlockEntity ?: return InteractionResult.CONSUME
-        PeripheraliumPlatform.openMenu(player, blockEntity) { buf: FriendlyByteBuf ->
+        PlatformToolkit.get().openMenu(player, blockEntity) { buf: FriendlyByteBuf ->
             buf.writeBlockPos(
                 pos,
             )

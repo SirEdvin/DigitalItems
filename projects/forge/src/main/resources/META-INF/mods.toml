@@ -32,8 +32,16 @@ ordering="NONE"
 side="BOTH"
 
 [[dependencies.digitalitems]]
-modId="peripheralium"
+modId="tweakium"
 mandatory=true
-versionRange="[${peripheraliumVersion},)"
+versionRange="[${tweakiumVersion},)"
+ordering="NONE"
+side="BOTH"
+
+
+[[dependencies.digitalitems]]
+modId="broccolium"
+mandatory=true
+versionRange="[${broccoliumVersion},)"
 ordering="NONE"
 side="BOTH"

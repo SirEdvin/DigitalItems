@@ -14,15 +14,17 @@ import net.minecraft.world.inventory.SimpleContainerData
 import net.minecraft.world.inventory.Slot
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.state.BlockState
+import site.siredvin.broccolium.modules.storage.item.ContainerWrapper
 import site.siredvin.digitalitems.client.DigitizerMenu
 import site.siredvin.digitalitems.common.setup.ModBlockEntityTypes
 import site.siredvin.digitalitems.computercraft.DigitizerPeripheral
 import site.siredvin.digitalitems.data.ModText
-import site.siredvin.peripheralium.common.blockentities.MutableNBTBlockEntity
-import site.siredvin.peripheralium.storages.ContainerWrapper
+import site.siredvin.tweakium.modules.peripheral.blockentity.MutablePeripheralBlockEntity
 
 class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
-    MutableNBTBlockEntity<DigitizerPeripheral>(ModBlockEntityTypes.DIGITIZER.get(), pos, state), Container, MenuProvider {
+    MutablePeripheralBlockEntity<DigitizerPeripheral>(ModBlockEntityTypes.DIGITIZER.get(), pos, state),
+    Container,
+    MenuProvider {
 
     companion object {
         private const val STORED_ITEM_STACK_TAG = "storedItemStack"
@@ -33,9 +35,7 @@ class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
             blockEntity.pushInternalDataChangeToClient()
         }
 
-        override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean {
-            return true
-        }
+        override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean = true
     }
 
     private val inventory = ExtraSimpleStorage(this)
@@ -61,9 +61,7 @@ class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
         setMaxEnergy(480000)
     }
 
-    override fun createPeripheral(side: Direction): DigitizerPeripheral {
-        return DigitizerPeripheral(this)
-    }
+    override fun createPeripheral(side: Direction): DigitizerPeripheral = DigitizerPeripheral(this)
 
     override fun loadInternalData(data: CompoundTag, state: BlockState?): BlockState {
         if (data.contains(STORED_ITEM_STACK_TAG)) {
@@ -86,43 +84,25 @@ class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
         inventory.clearContent()
     }
 
-    override fun getContainerSize(): Int {
-        return inventory.containerSize
-    }
+    override fun getContainerSize(): Int = inventory.containerSize
 
-    override fun isEmpty(): Boolean {
-        return inventory.isEmpty
-    }
+    override fun isEmpty(): Boolean = inventory.isEmpty
 
-    override fun getItem(p0: Int): ItemStack {
-        return inventory.getItem(p0)
-    }
+    override fun getItem(p0: Int): ItemStack = inventory.getItem(p0)
 
-    override fun removeItem(p0: Int, p1: Int): ItemStack {
-        return inventory.removeItem(p0, p1)
-    }
+    override fun removeItem(p0: Int, p1: Int): ItemStack = inventory.removeItem(p0, p1)
 
-    override fun removeItemNoUpdate(p0: Int): ItemStack {
-        return inventory.removeItemNoUpdate(p0)
-    }
+    override fun removeItemNoUpdate(p0: Int): ItemStack = inventory.removeItemNoUpdate(p0)
 
     override fun setItem(p0: Int, p1: ItemStack) {
         inventory.setItem(p0, p1)
     }
 
-    override fun stillValid(p0: Player): Boolean {
-        return inventory.stillValid(p0)
-    }
+    override fun stillValid(p0: Player): Boolean = inventory.stillValid(p0)
 
-    override fun createMenu(p0: Int, p1: Inventory, p2: Player): AbstractContainerMenu {
-        return DigitizerMenu(p0, p1, this, data)
-    }
+    override fun createMenu(p0: Int, p1: Inventory, p2: Player): AbstractContainerMenu = DigitizerMenu(p0, p1, this, data)
 
-    override fun getDisplayName(): Component {
-        return ModText.DIGITIZER.text
-    }
+    override fun getDisplayName(): Component = ModText.DIGITIZER.text
 
-    fun buildSlot(x: Int, y: Int): Slot {
-        return Slot(inventory, 0, x, y)
-    }
+    fun buildSlot(x: Int, y: Int): Slot = Slot(inventory, 0, x, y)
 }

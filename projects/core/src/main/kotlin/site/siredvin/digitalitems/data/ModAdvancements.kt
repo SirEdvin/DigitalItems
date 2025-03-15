@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION", "KotlinRedundantDiagnosticSuppress")
+
 package site.siredvin.digitalitems.data
 
 import net.minecraft.advancements.Advancement
@@ -10,14 +12,14 @@ import net.minecraft.data.advancements.AdvancementSubProvider
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
+import site.siredvin.broccolium.modules.data.api.TextRecord
 import site.siredvin.digitalitems.DigitalItemsCore
-import site.siredvin.digitalitems.common.critereon.DigitalizeItemCriteria
-import site.siredvin.digitalitems.common.critereon.DigitalizeOreCriteria
-import site.siredvin.digitalitems.common.critereon.DigitalizeStarCriteria
+import site.siredvin.digitalitems.common.criteria.DigitalizeItemCriteria
+import site.siredvin.digitalitems.common.criteria.DigitalizeOreCriteria
+import site.siredvin.digitalitems.common.criteria.DigitalizeStarCriteria
 import site.siredvin.digitalitems.common.setup.ModBlocks
 import site.siredvin.digitalitems.modId
 import site.siredvin.digitalitems.saveWithID
-import site.siredvin.peripheralium.data.language.TextRecord
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 

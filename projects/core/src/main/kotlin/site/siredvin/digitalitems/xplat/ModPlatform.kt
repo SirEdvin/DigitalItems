@@ -1,24 +1,24 @@
 package site.siredvin.digitalitems.xplat
 
-import site.siredvin.peripheralium.xplat.BaseInnerPlatform
-import site.siredvin.peripheralium.xplat.BasePlatform
-import site.siredvin.peripheralium.xplat.ModInformationTracker
+import site.siredvin.tweakium.modules.platform.ComputerBasePlatform
+import site.siredvin.tweakium.modules.platform.ComputerModInformationTracker
+import site.siredvin.tweakium.modules.platform.api.InnerComputerBasePlatform
 
-object ModPlatform : BasePlatform {
-    private var _IMPL: BaseInnerPlatform? = null
-    private val _tracker = ModInformationTracker()
-    fun configure(impl: BaseInnerPlatform) {
-        _IMPL = impl
+object ModPlatform : ComputerBasePlatform() {
+    private var impl: InnerComputerBasePlatform? = null
+    private val tracker = ComputerModInformationTracker()
+    fun configure(impl: InnerComputerBasePlatform) {
+        this.impl = impl
     }
 
-    override val baseInnerPlatform: BaseInnerPlatform
+    override val baseInnerPlatform: InnerComputerBasePlatform
         get() {
-            if (_IMPL == null) {
+            if (impl == null) {
                 throw IllegalStateException("You should init PeripheralWorks Platform first")
             }
-            return _IMPL!!
+            return impl!!
         }
 
-    override val modInformationTracker: ModInformationTracker
-        get() = _tracker
+    override val modInformationTracker: ComputerModInformationTracker
+        get() = tracker
 }

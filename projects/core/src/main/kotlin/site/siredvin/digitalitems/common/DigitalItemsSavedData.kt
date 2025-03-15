@@ -35,9 +35,7 @@ class DigitalItemsSavedData : SavedData() {
         setDirty()
     }
 
-    fun get(id: ByteBuffer): DigitizedItem? {
-        return digitizedItems[id]
-    }
+    fun get(id: ByteBuffer): DigitizedItem? = digitizedItems[id]
 
     fun pop(id: ByteBuffer): DigitizedItem? {
         val result = digitizedItems.remove(id)
@@ -74,9 +72,7 @@ class DigitalItemsSavedData : SavedData() {
             return instance!!
         }
 
-        fun create(): DigitalItemsSavedData {
-            return DigitalItemsSavedData()
-        }
+        fun create(): DigitalItemsSavedData = DigitalItemsSavedData()
 
         fun load(tag: CompoundTag): DigitalItemsSavedData {
             val data = create()

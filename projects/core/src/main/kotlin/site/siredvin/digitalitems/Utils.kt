@@ -5,9 +5,9 @@ import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
+import site.siredvin.broccolium.modules.platform.PlatformTags
 import site.siredvin.digitalitems.common.setup.ModCriterias
 import site.siredvin.digitalitems.common.setup.ModStats
-import site.siredvin.peripheralium.xplat.XplatTags
 import java.util.function.Consumer
 
 fun modId(something: String): ResourceLocation = ResourceLocation(DigitalItemsCore.MOD_ID, something)
@@ -21,7 +21,7 @@ fun Advancement.Builder.saveWithID(consumer: Consumer<Advancement>, id: Resource
 fun ServerPlayer.awardDigitalization(stack: ItemStack) {
     this.awardStat(ModStats.DIGITALIZED_ITEMS.get(), stack.count)
     ModCriterias.DIGITALIZE_ITEMS.trigger(this)
-    if (XplatTags.isOre(stack)) {
+    if (PlatformTags.get().isOre(stack)) {
         this.awardStat(ModStats.DIGITALIZED_ORES.get(), stack.count)
         ModCriterias.DIGITALIZE_ORES.trigger(this)
     }
