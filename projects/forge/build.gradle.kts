@@ -16,6 +16,7 @@ forgeShaking {
     commonProjectName.set("core")
     useAT.set(true)
     useMixins.set(true)
+    useJarJar.set(true)
     extraVersionMappings.set(
         mapOf(
             "computercraft" to "cc-tweaked",
@@ -42,7 +43,7 @@ dependencies {
     implementation(libs.bundles.forge.raw)
     libs.bundles.forge.cc.get().map { implementation(fg.deobf(it)) }
     libs.bundles.forge.include.get().map { implementation(fg.deobf(it)) }
-    libs.bundles.forge.include.get().map { jarJar(fg.deobf(it)) }
+    libs.bundles.forge.jjar.get().map { jarJar(it) }
 
     libs.bundles.externalMods.forge.runtime.get().map { runtimeOnly(fg.deobf(it)) }
 }

@@ -12,9 +12,11 @@ spotless = "6.19.0"
 
 # Core mod dependencies
 cc-tweaked = "1.113.0"
-broccolium = "1.0.0-rc.8"
-tweakium = "1.0.0-rc.8"
-peripheralium = "1.0.0-rc.8"
+broccolium = "1.0.0"
+tweakium = "1.0.0"
+peripheralium = "1.0.0"
+broccolium-jjar = "[1.0.0, 2.0.0)"
+tweakium-jjar = "[1.0.0, 2.0.0)"
 mixin = "0.8.5"
 
 # Fabric dependencies
@@ -78,7 +80,8 @@ cc-tweaked-forge =  {module = "cc.tweaked:cc-tweaked-1.20.1-forge", version.ref=
 forge-kotlin = {module = "thedarkcolour:kotlinforforge", version.ref = "forge-kotlin"}
 broccolium-forge = {module = "site.siredvin:broccolium-forge-1.20.1", version.ref = "broccolium"}
 tweakium-forge = {module = "site.siredvin:tweakium-forge-1.20.1", version.ref = "tweakium"}
-peripheralium-forge = {module = "site.siredvin:peripheralium-forge-1.20.1", version.ref = "peripheralium"}
+broccolium-jjar-forge = {module = "site.siredvin:broccolium-forge-1.20.1", version.ref = "broccolium-jjar"}
+tweakium-jjar-forge = {module = "site.siredvin:tweakium-forge-1.20.1", version.ref = "tweakium-jjar"}
 
 # Dev mod dependencies
 jei-forge = { module = "mezz.jei:jei-1.20.1-forge", version.ref = "jei" }
@@ -99,6 +102,7 @@ fabric-core = ["fabric-api", "fabric-kotlin", "fabric-config", "fabric-loader"]
 forge-raw = ["forge-kotlin"]
 forge-cc = ["cc-tweaked-forge"]
 forge-include = ["broccolium-forge", "tweakium-forge"]
+forge-jjar = ["broccolium-jjar-forge", "tweakium-jjar-forge"]
 
 # Minecraft
 #externalMods-common = ["jei-api", "nightConfig-core", "nightConfig-toml"]
