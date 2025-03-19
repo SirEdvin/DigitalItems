@@ -49,12 +49,11 @@ dependencies {
 }
 
 modPublishing {
-    output.set(tasks.jar)
+    output.set(tasks.jarJar)
     requiredDependencies.set(
         listOf(
             "cc-tweaked",
             "kotlin-for-forge",
-            "peripheralium",
         ),
     )
     shake()
