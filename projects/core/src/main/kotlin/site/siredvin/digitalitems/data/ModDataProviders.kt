@@ -14,6 +14,8 @@ object ModDataProviders {
         generator.models(ModBlockModelProvider::addModels, ModItemModelProvider::addModels)
         generator.add(::ModEnLanguageProvider)
         generator.add(::ModUaLanguageProvider)
+        generator.add(::ModPocketUpgradeDataProvider)
+        generator.add(::ModTurtleUpgradeDataProvider)
         val completablefuture = CompletableFuture.supplyAsync(
             { VanillaRegistries.createLookup() },
             Util.backgroundExecutor(),

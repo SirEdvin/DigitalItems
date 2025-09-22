@@ -6,6 +6,7 @@ import site.siredvin.digitalitems.DigitalItemsCore
 enum class ModText : TextRecord {
     CREATIVE_TAB,
     DIGITIZER,
+    ADVANCED_DIGITIZER,
     ;
 
     override val textID: String by lazy {

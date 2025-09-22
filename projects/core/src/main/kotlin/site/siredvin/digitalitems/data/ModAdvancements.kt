@@ -14,7 +14,10 @@ import net.minecraft.world.item.Items
 import net.minecraft.world.level.block.Blocks
 import site.siredvin.broccolium.modules.data.api.TextRecord
 import site.siredvin.digitalitems.DigitalItemsCore
+import site.siredvin.digitalitems.common.criteria.DigitalizeEnergyCriteria
+import site.siredvin.digitalitems.common.criteria.DigitalizeFluidCriteria
 import site.siredvin.digitalitems.common.criteria.DigitalizeItemCriteria
+import site.siredvin.digitalitems.common.criteria.DigitalizeLavaCriteria
 import site.siredvin.digitalitems.common.criteria.DigitalizeOreCriteria
 import site.siredvin.digitalitems.common.criteria.DigitalizeStarCriteria
 import site.siredvin.digitalitems.common.setup.ModBlocks
@@ -108,6 +111,68 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             true,
             false,
         ).parent(miningBusiness).addCriterion("digitilize_something", DigitalizeOreCriteria.digitilizeSome(2_000)).saveWithID(p1, modId("mining_industry"))
+
+        val advancedGame = Advancement.Builder.advancement().display(
+            ModBlocks.ADVANCED_DIGITIZER.get().asItem(),
+            AdvancementTexts.ADVANCED_DIGITIZER.text,
+            AdvancementTexts.ADVANCED_DIGITIZER_DESCRIPTION.text,
+            stoneTexture,
+            FrameType.TASK,
+            true,
+            true,
+            false,
+        ).parent(inTheGame).addCriterion("have_item", InventoryChangeTrigger.TriggerInstance.hasItems(ModBlocks.ADVANCED_DIGITIZER.get().asItem())).saveWithID(p1, modId("advanced_digitizer"))
+        val waterDigitize = Advancement.Builder.advancement().display(
+            Items.WATER_BUCKET,
+            AdvancementTexts.DIGITIZE_FLUID.text,
+            AdvancementTexts.DIGITIZE_FLUID_DESCRIPTION.text,
+            stoneTexture,
+            FrameType.TASK,
+            true,
+            true,
+            false,
+        ).parent(advancedGame).addCriterion("digitize_something", DigitalizeFluidCriteria.digitilizeSome(4000)).saveWithID(p1, modId("digitize_fluid"))
+        val lavaDigitize = Advancement.Builder.advancement().display(
+            Items.LAVA_BUCKET,
+            AdvancementTexts.DIGITIZE_LAVA.text,
+            AdvancementTexts.DIGITIZE_LAVA_DESCRIPTION.text,
+            stoneTexture,
+            FrameType.TASK,
+            true,
+            true,
+            false,
+        ).parent(waterDigitize).addCriterion("digitize_something", DigitalizeLavaCriteria.digitilizeSome(4000)).saveWithID(p1, modId("digitize_lava"))
+        Advancement.Builder.advancement().display(
+            Blocks.NETHER_PORTAL,
+            AdvancementTexts.FLUID_OVERDIGITALIZATION.text,
+            AdvancementTexts.FLUID_OVERDIGITALIZATION_DESCRIPTION.text,
+            stoneTexture,
+            FrameType.TASK,
+            true,
+            true,
+            false,
+        ).parent(lavaDigitize).addCriterion("digitize_something", DigitalizeFluidCriteria.digitilizeSome(9001 * 1000)).saveWithID(p1, modId("fluid_overdigitize"))
+
+        val energyDigitize = Advancement.Builder.advancement().display(
+            Items.LIGHTNING_ROD,
+            AdvancementTexts.DIGITIZE_ENERGY.text,
+            AdvancementTexts.DIGITIZE_ENERGY_DESCRIPTION.text,
+            stoneTexture,
+            FrameType.TASK,
+            true,
+            true,
+            false,
+        ).parent(advancedGame).addCriterion("digitize_something", DigitalizeEnergyCriteria.digitilizeSome(4000)).saveWithID(p1, modId("digitize_energy"))
+        Advancement.Builder.advancement().display(
+            Blocks.CONDUIT,
+            AdvancementTexts.ENERGY_OVERDIGITALIZATION.text,
+            AdvancementTexts.ENERGY_OVERDIGITALIZATION_DESCRIPTION.text,
+            stoneTexture,
+            FrameType.TASK,
+            true,
+            true,
+            false,
+        ).parent(energyDigitize).addCriterion("digitize_something", DigitalizeEnergyCriteria.digitilizeSome(Int.MAX_VALUE / 2)).saveWithID(p1, modId("energy_overdigitize"))
     }
 }
 
@@ -133,6 +198,18 @@ enum class AdvancementTexts : TextRecord {
     MINING_BUSINESS_DESCRIPTION,
     MINING_INDUSTRY,
     MINING_INDUSTRY_DESCRIPTION,
+    ADVANCED_DIGITIZER,
+    ADVANCED_DIGITIZER_DESCRIPTION,
+    DIGITIZE_FLUID,
+    DIGITIZE_FLUID_DESCRIPTION,
+    DIGITIZE_LAVA,
+    DIGITIZE_LAVA_DESCRIPTION,
+    FLUID_OVERDIGITALIZATION,
+    FLUID_OVERDIGITALIZATION_DESCRIPTION,
+    DIGITIZE_ENERGY,
+    DIGITIZE_ENERGY_DESCRIPTION,
+    ENERGY_OVERDIGITALIZATION,
+    ENERGY_OVERDIGITALIZATION_DESCRIPTION,
     ;
 
     override val textID: String by lazy {

@@ -10,8 +10,8 @@ import net.minecraft.data.models.model.TextureMapping
 import net.minecraft.data.models.model.TextureSlot
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import site.siredvin.broccolium.modules.data.model.createHorizontalFacingDispatch
-import site.siredvin.digitalitems.common.blocks.Digitizer
 import site.siredvin.digitalitems.common.setup.ModBlocks
 
 object ModBlockModelProvider {
@@ -46,22 +46,22 @@ object ModBlockModelProvider {
         )
     }
 
-    fun addModels(generators: BlockModelGenerators) {
+    fun digitizer(generators: BlockModelGenerators, block: Block) {
         val offModel = horizontalOrientedModelWithSuffix(
             generators,
-            ModBlocks.DIGITIZER.get(),
+            block,
             "_off",
-            overwriteFront = TextureMapping.getBlockTexture(ModBlocks.DIGITIZER.get(), "_front_off"),
+            overwriteFront = TextureMapping.getBlockTexture(block, "_front_off"),
         )
 
         val onModel = horizontalOrientedModelWithSuffix(
             generators,
-            ModBlocks.DIGITIZER.get(),
+            block,
             "_on",
-            overwriteFront = TextureMapping.getBlockTexture(ModBlocks.DIGITIZER.get(), "_front_on"),
+            overwriteFront = TextureMapping.getBlockTexture(block, "_front_on"),
         )
 
-        val modelDispatch = PropertyDispatch.property(Digitizer.POWERED)
+        val modelDispatch = PropertyDispatch.property(BlockStateProperties.POWERED)
         modelDispatch.select(
             false,
             Variant.variant().with(
@@ -80,7 +80,7 @@ object ModBlockModelProvider {
 
         generators.blockStateOutput.accept(
             MultiVariantGenerator.multiVariant(
-                ModBlocks.DIGITIZER.get(),
+                block,
                 Variant.variant(),
             ).with(
                 createHorizontalFacingDispatch(),
@@ -88,6 +88,11 @@ object ModBlockModelProvider {
                 modelDispatch,
             ),
         )
-        generators.delegateItemModel(ModBlocks.DIGITIZER.get(), onModel)
+        generators.delegateItemModel(block, onModel)
+    }
+
+    fun addModels(generators: BlockModelGenerators) {
+        digitizer(generators, ModBlocks.DIGITIZER.get())
+        digitizer(generators, ModBlocks.ADVANCED_DIGITIZER.get())
     }
 }

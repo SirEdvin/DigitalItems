@@ -12,11 +12,10 @@ spotless = "6.19.0"
 
 # Core mod dependencies
 cc-tweaked = "1.113.0"
-broccolium = "1.0.0"
-tweakium = "1.0.0"
-peripheralium = "1.0.0"
-broccolium-jjar = "[1.0.0, 2.0.0)"
-tweakium-jjar = "[1.0.0, 2.0.0)"
+broccolium = "1.1.5"
+tweakium = "1.1.5"
+broccolium-jjar = "[1.1.5, 1.2.0)"
+tweakium-jjar = "[1.1.5, 1.2.0)"
 mixin = "0.8.5"
 
 # Fabric dependencies
@@ -62,7 +61,6 @@ common-config = {module = "fuzs.forgeconfigapiport:forgeconfigapiport-common", v
 mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
 broccolium-core = {module = "site.siredvin:broccolium-common-1.20.1", version.ref = "broccolium"}
 tweakium-core = {module = "site.siredvin:tweakium-common-1.20.1", version.ref = "tweakium"}
-peripheralium-core = {module = "site.siredvin:peripheralium-common-1.20.1", version.ref = "peripheralium"}
 
 # Fabric mod dependencies
 fabric-loader = {module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader"}
@@ -73,7 +71,6 @@ cc-tweaked-fabric-api = {module = "cc.tweaked:cc-tweaked-1.20.1-fabric-api", ver
 cc-tweaked-fabric = {module = "cc.tweaked:cc-tweaked-1.20.1-fabric", version.ref = "cc-tweaked"}
 broccolium-fabric = {module = "site.siredvin:broccolium-fabric-1.20.1", version.ref = "broccolium"}
 tweakium-fabric = {module = "site.siredvin:tweakium-fabric-1.20.1", version.ref = "tweakium"}
-peripheralium-fabric = {module = "site.siredvin:peripheralium-fabric-1.20.1", version.ref = "peripheralium"}
 
 # Forge mod dependencies
 cc-tweaked-forge =  {module = "cc.tweaked:cc-tweaked-1.20.1-forge", version.ref="cc-tweaked"}
@@ -86,6 +83,16 @@ tweakium-jjar-forge = {module = "site.siredvin:tweakium-forge-1.20.1", version.r
 # Dev mod dependencies
 jei-forge = { module = "mezz.jei:jei-1.20.1-forge", version.ref = "jei" }
 rei-fabric = {module = "me.shedaniel:RoughlyEnoughItems-fabric", version.ref = "rei"}
+# Testing
+autoService = { module = "com.google.auto.service:auto-service", version.ref = "autoService" }
+byteBuddyAgent = { module = "net.bytebuddy:byte-buddy-agent", version.ref = "byteBuddy" }
+byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
+hamcrest = { module = "org.hamcrest:hamcrest", version.ref = "hamcrest"}
+jqwik-api = { module = "net.jqwik:jqwik-api", version.ref = "jqwik" }
+jqwik-engine = { module = "net.jqwik:jqwik-engine", version.ref = "jqwik" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 vanillaGradle = { id = "org.spongepowered.gradle.vanilla", version.ref = "sponge"}
@@ -103,6 +110,9 @@ forge-raw = ["forge-kotlin"]
 forge-cc = ["cc-tweaked-forge"]
 forge-include = ["broccolium-forge", "tweakium-forge"]
 forge-jjar = ["broccolium-jjar-forge", "tweakium-jjar-forge"]
+
+# Testing
+test = ["junit-jupiter-api", "junit-jupiter-params", "hamcrest", "jqwik-api"]
 
 # Minecraft
 #externalMods-common = ["jei-api", "nightConfig-core", "nightConfig-toml"]

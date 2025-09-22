@@ -1,0 +1,39 @@
+{
+  "parent": "digitalitems:root",
+  "criteria": {
+    "have_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "digitalitems:advanced_digitizer"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.advanced_digitizer_description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "digitalitems:advanced_digitizer"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advencement.digitalitems.advanced_digitizer"
+    }
+  },
+  "requirements": [
+    [
+      "have_item"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.StateDefinition
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.world.level.block.state.properties.BooleanProperty
 import net.minecraft.world.phys.BlockHitResult
 import site.siredvin.broccolium.modules.base.block.BaseBlockEntityBlock
 import site.siredvin.broccolium.modules.base.util.BlockUtil
@@ -31,7 +30,7 @@ class Digitizer : BaseBlockEntityBlock<DigitizerBlockEntity>(false, BlockUtil.de
 
     companion object {
         val FACING = BlockStateProperties.HORIZONTAL_FACING
-        val POWERED = BooleanProperty.create("powered")
+        val POWERED = BlockStateProperties.POWERED
     }
 
     override fun newBlockEntity(p0: BlockPos, p1: BlockState): BlockEntity? = ModBlockEntityTypes.DIGITIZER.get().create(p0, p1)

@@ -8,11 +8,12 @@ import net.minecraft.client.renderer.Rect2i
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.entity.player.Inventory
+import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.inventory.ContainerData
 import site.siredvin.digitalitems.DigitalItemsCore
 import java.util.*
 
-class DigitizerScreen(menu: DigitizerMenu, inv: Inventory, component: Component) : AbstractContainerScreen<DigitizerMenu>(menu, inv, component) {
+class DigitizerScreen<T : AbstractContainerMenu>(menu: BasicMenu<T>, inv: Inventory, component: Component) : AbstractContainerScreen<BasicMenu<T>>(menu, inv, component) {
     private val data: ContainerData
 
     init {
@@ -24,15 +25,23 @@ class DigitizerScreen(menu: DigitizerMenu, inv: Inventory, component: Component)
     val maxEnergy: Int
         get() = (data[4] shl 16) + (data[5] shl 12) + (data[6] shl 8) + data[7]
 
+    val texture: ResourceLocation by lazy {
+        if (menu is DigitizerMenu) {
+            TEXTURE
+        } else {
+            ADVANCED_TEXTURE
+        }
+    }
+
     private fun getEnergyArea(x: Int, y: Int): Rect2i = Rect2i(x + 152, y + 9, 16, 69)
 
     override fun renderBg(graphics: GuiGraphics, partialTick: Float, mouseX: Int, mouseY: Int) {
         RenderSystem.setShader { GameRenderer.getPositionShader() }
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f)
-        RenderSystem.setShaderTexture(0, TEXTURE)
+        RenderSystem.setShaderTexture(0, texture)
         val x = (width - imageWidth) / 2
         val y = (height - imageHeight) / 2
-        graphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight)
+        graphics.blit(texture, x, y, 0, 0, imageWidth, imageHeight)
         val energyArea = getEnergyArea(x, y)
         val entireHeight = energyArea.height.toFloat()
         val filled = currentEnergy.toFloat() / maxEnergy.toFloat()
@@ -76,5 +85,6 @@ class DigitizerScreen(menu: DigitizerMenu, inv: Inventory, component: Component)
 
     companion object {
         private val TEXTURE = ResourceLocation(DigitalItemsCore.MOD_ID, "textures/gui/digitizer_container.png")
+        private val ADVANCED_TEXTURE = ResourceLocation(DigitalItemsCore.MOD_ID, "textures/gui/advanced_digitizer_container.png")
     }
 }

@@ -28,6 +28,6 @@ object FabricDigitalItems : ModInitializer {
                 return@registerForBlockEntities entity.getPeripheral(direction)
             }
             return@registerForBlockEntities null
-        }, ModBlockEntityTypes.DIGITIZER.get())
+        }, ModBlockEntityTypes.DIGITIZER.get(), ModBlockEntityTypes.ADVANCED_DIGITIZER.get())
     }
 }

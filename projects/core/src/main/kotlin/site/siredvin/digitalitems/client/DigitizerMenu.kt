@@ -11,7 +11,7 @@ import site.siredvin.digitalitems.common.blockentity.DigitizerBlockEntity
 import site.siredvin.digitalitems.common.setup.ModBlocks
 import site.siredvin.digitalitems.common.setup.ModMenus
 
-class DigitizerMenu(id: Int, inv: Inventory, entity: BlockEntity, data: ContainerData) : AbstractContainerMenu(ModMenus.DIGITIZER.get(), id) {
+class DigitizerMenu(id: Int, inv: Inventory, entity: BlockEntity, data: ContainerData) : BasicMenu<DigitizerMenu>(id, data, ModMenus.DIGITIZER.get()) {
     val blockEntity: DigitizerBlockEntity
     private val level: Level
 
@@ -22,15 +22,11 @@ class DigitizerMenu(id: Int, inv: Inventory, entity: BlockEntity, data: Containe
         SimpleContainerData(8),
     )
 
-    @JvmField
-    val data: ContainerData
-
     init {
         checkContainerSize(inv, 3)
         checkContainerDataCount(data, 8)
         blockEntity = entity as DigitizerBlockEntity
         level = inv.player.level()
-        this.data = data
         addPlayerInventory(inv)
         addPlayerHotbar(inv)
         addSlot(blockEntity.buildSlot(80, 35))

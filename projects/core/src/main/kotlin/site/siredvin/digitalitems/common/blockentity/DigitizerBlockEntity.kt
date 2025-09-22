@@ -20,9 +20,10 @@ import site.siredvin.digitalitems.common.setup.ModBlockEntityTypes
 import site.siredvin.digitalitems.computercraft.DigitizerPeripheral
 import site.siredvin.digitalitems.data.ModText
 import site.siredvin.tweakium.modules.peripheral.blockentity.MutablePeripheralBlockEntity
+import site.siredvin.tweakium.modules.peripheral.owner.BlockEntityPeripheralOwner
 
 class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
-    MutablePeripheralBlockEntity<DigitizerPeripheral>(ModBlockEntityTypes.DIGITIZER.get(), pos, state),
+    MutablePeripheralBlockEntity<DigitizerPeripheral<BlockEntityPeripheralOwner<DigitizerBlockEntity>>>(ModBlockEntityTypes.DIGITIZER.get(), pos, state),
     Container,
     MenuProvider {
 
@@ -61,7 +62,7 @@ class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
         setMaxEnergy(480000)
     }
 
-    override fun createPeripheral(side: Direction): DigitizerPeripheral = DigitizerPeripheral(this)
+    override fun createPeripheral(side: Direction): DigitizerPeripheral<BlockEntityPeripheralOwner<DigitizerBlockEntity>> = DigitizerPeripheral(BlockEntityPeripheralOwner(this))
 
     override fun loadInternalData(data: CompoundTag, state: BlockState?): BlockState {
         if (data.contains(STORED_ITEM_STACK_TAG)) {

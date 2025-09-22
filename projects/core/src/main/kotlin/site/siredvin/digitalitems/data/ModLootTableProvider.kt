@@ -22,6 +22,7 @@ object ModLootTableProvider {
     fun registerBlocks(consumer: BiConsumer<ResourceLocation, LootTable.Builder>) {
         val helper = LootTableHelper(ModPlatform.holder)
         helper.dropSelf(consumer, ModBlocks.DIGITIZER)
+        helper.dropSelf(consumer, ModBlocks.ADVANCED_DIGITIZER)
         helper.validate()
     }
 }

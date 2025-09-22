@@ -6,8 +6,10 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import site.siredvin.broccolium.modules.platform.PlatformTags
+import site.siredvin.digitalitems.common.data.ByteArrayWrapper
 import site.siredvin.digitalitems.common.setup.ModCriterias
 import site.siredvin.digitalitems.common.setup.ModStats
+import java.nio.ByteBuffer
 import java.util.function.Consumer
 
 fun modId(something: String): ResourceLocation = ResourceLocation(DigitalItemsCore.MOD_ID, something)
@@ -30,3 +32,14 @@ fun ServerPlayer.awardDigitalization(stack: ItemStack) {
         ModCriterias.DIGITALIZE_STARS.trigger(this)
     }
 }
+
+fun ByteBuffer.toSafeArray(): ByteArray {
+    if (this.hasArray()) {
+        return this.array()
+    }
+    val bytes = ByteArray(this.remaining())
+    this[bytes]
+    return bytes
+}
+
+fun ByteArray.wrap(): ByteArrayWrapper = ByteArrayWrapper(this)

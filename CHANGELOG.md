@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2025-03-19
+
+### Added
+
+- Digitizer upgrade for pocket computers and turtles!
+- Digitizer api now supports slots, so you can `digitize(2)` or `digitizeAmount(32, 2)` now.
+
 ## [0.4.1] - 2025-03-19
 
 ### Fixed
