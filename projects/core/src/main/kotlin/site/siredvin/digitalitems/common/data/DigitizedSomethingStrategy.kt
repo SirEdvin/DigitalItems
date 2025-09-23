@@ -19,14 +19,16 @@ abstract class DigitizedSomethingStrategy<T, V : DigitizedSomething<T>> {
     protected abstract fun isEmpty(something: T): Boolean
     protected abstract fun amount(something: T): Long
 
-    protected abstract fun extractFromSelf(owner: IPeripheralOwner, filter: Any?, limit: Int?, simulate: Boolean = false): T
-    protected abstract fun extract(access: IComputerAccess, level: Level, source: String, filter: Any?, limit: Int?, simulate: Boolean = false): T
-    protected abstract fun storeInSelf(owner: IPeripheralOwner, something: T, limit: Int): Int
-    protected abstract fun store(access: IComputerAccess, level: Level, destination: String, something: T, limit: Int): Int
+    protected abstract fun extractFromSelf(owner: IPeripheralOwner, filter: Any?, limit: Long?, simulate: Boolean = false): T
+    protected abstract fun extract(access: IComputerAccess, level: Level, source: String, filter: Any?, limit: Long?, simulate: Boolean = false): T
+    protected abstract fun storeInSelf(owner: IPeripheralOwner, something: T, limit: Long): Long
+    protected abstract fun store(access: IComputerAccess, level: Level, destination: String, something: T, limit: Long): Long
     protected abstract fun put(id: ByteArrayWrapper, something: T, peripheralOwner: IPeripheralOwner, sd: DigitalItemsSavedData)
     protected abstract fun awardDigitization(something: T, player: ServerPlayer?)
 
-    fun digitize(access: IComputerAccess, source: String, filter: Any?, limit: Int?, destination: ByteArrayWrapper?, peripheralOwner: IPeripheralOwner): MethodResult {
+    abstract val limitLimit: Long
+
+    fun digitize(access: IComputerAccess, source: String, filter: Any?, limit: Long?, destination: ByteArrayWrapper?, peripheralOwner: IPeripheralOwner): MethodResult {
         val level = peripheralOwner.level!!
         val data: DigitalItemsSavedData = DigitalItemsSavedData.getFrom(level)
 
@@ -58,7 +60,7 @@ abstract class DigitizedSomethingStrategy<T, V : DigitizedSomething<T>> {
                 return MethodResult.of(null, "Target stack is full")
             }
             // Magically limit everything to 64, because we don't want to digitize more than one stack of item
-            val realLimit = (limit ?: 64).coerceAtMost((stackLimit - target.amount).toInt())
+            val realLimit = (limit ?: limitLimit).coerceAtMost((stackLimit - target.amount))
             val realSomething = if (source == "self") {
                 extractFromSelf(peripheralOwner, filter, realLimit)
             } else {
@@ -85,14 +87,14 @@ abstract class DigitizedSomethingStrategy<T, V : DigitizedSomething<T>> {
         return MethodResult.of(id)
     }
 
-    fun rematerialize(access: IComputerAccess, id: ByteArrayWrapper, limit: Int?, destination: String, peripheralOwner: IPeripheralOwner): MethodResult {
+    fun rematerialize(access: IComputerAccess, id: ByteArrayWrapper, limit: Long?, destination: String, peripheralOwner: IPeripheralOwner): MethodResult {
         val level = peripheralOwner.level!!
         val sd: DigitalItemsSavedData = DigitalItemsSavedData.getFrom(level)
         val something = getById(id, sd, level)
         if (something == null || something.isEmpty) {
             return MethodResult.of(null, "Nothing to rematerialize")
         }
-        val realLimit = limit ?: something.amount.toInt()
+        val realLimit = limit ?: something.amount
         val leftAmount = if (destination == "self") {
             storeInSelf(peripheralOwner, something.something, realLimit)
         } else {

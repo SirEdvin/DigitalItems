@@ -7,6 +7,7 @@ import dan200.computercraft.api.lua.MethodResult
 import dan200.computercraft.api.peripheral.IComputerAccess
 import net.minecraft.resources.ResourceLocation
 import site.siredvin.digitalitems.DigitalItemsCore
+import site.siredvin.digitalitems.assertBetween
 import site.siredvin.digitalitems.common.configuration.ModConfig
 import site.siredvin.digitalitems.common.data.DigitalItemsSavedData
 import site.siredvin.digitalitems.common.data.DigitizedEnergyStrategy
@@ -19,7 +20,6 @@ import site.siredvin.digitalitems.wrap
 import site.siredvin.tweakium.modules.peripheral.OwnedPeripheral
 import site.siredvin.tweakium.modules.peripheral.api.IPeripheralOwner
 import site.siredvin.tweakium.modules.peripheral.owner.BlockEntityPeripheralOwner
-import site.siredvin.tweakium.modules.peripheral.util.assertBetween
 import site.siredvin.tweakium.modules.plugins.InventoryPlugin
 import site.siredvin.tweakium.modules.plugins.SuppliedRudimentInventoryPlugin
 import java.nio.ByteBuffer
@@ -75,14 +75,14 @@ class AdvancedDigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
         val mode = arguments.getString(0)
         val source = arguments.optString(1).getOrDefault("self")
         val filter = arguments.get(2)
-        val limit = arguments.optInt(3).getOrNull()
+        val limit = arguments.optLong(3).getOrNull()
         val destination = arguments.optBytes(4).getOrNull()
 
-        if (limit != null) {
-            assertBetween(limit, 1, 64, "limit")
-        }
-
         val strategy = STRATEGIES[mode] ?: throw LuaException("There is no such mode")
+
+        if (limit != null) {
+            assertBetween(limit, 1, strategy.limitLimit, "limit")
+        }
         return strategy.digitize(access, source, filter, limit, destination?.toSafeArray()?.wrap(), peripheralOwner)
     }
 
@@ -92,7 +92,7 @@ class AdvancedDigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
         // Signature rematerialize(mode, id, limit?, destination?)
         val mode = arguments.getString(0)
         val id = arguments.getBytes(1)
-        val limit = arguments.optInt(2).getOrNull()
+        val limit = arguments.optLong(2).getOrNull()
         val destination = arguments.optString(3).getOrDefault("self")
 
         if (limit != null) {
@@ -112,7 +112,7 @@ class AdvancedDigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
     @Suppress("UNCHECKED_CAST")
     @LuaFunction(mainThread = true)
     @Throws(LuaException::class)
-    fun getIDInfo(mode: String, id: ByteBuffer): Map<String, Any>? {
+    fun get(mode: String, id: ByteBuffer): Map<String, Any>? {
         val strategy = STRATEGIES[mode] as? DigitizedSomethingStrategy<Any, DigitizedSomething<Any>> ?: throw LuaException("There is no such mode")
         val level = peripheralOwner.level!!
         val sd: DigitalItemsSavedData = DigitalItemsSavedData.getFrom(level)

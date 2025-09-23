@@ -1,5 +1,6 @@
 package site.siredvin.digitalitems
 
+import dan200.computercraft.api.lua.LuaException
 import net.minecraft.advancements.Advancement
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
@@ -18,6 +19,12 @@ fun Advancement.Builder.saveWithID(consumer: Consumer<Advancement>, id: Resource
     val advancement = this.build(id)
     consumer.accept(advancement)
     return advancement
+}
+
+fun assertBetween(arg: Long, min: Long, max: Long, name: String) {
+    if (arg !in min..max) {
+        throw LuaException("$name should be between $min and $max")
+    }
 }
 
 fun ServerPlayer.awardDigitalization(stack: ItemStack) {

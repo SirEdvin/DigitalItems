@@ -20,6 +20,8 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
         get() = "item"
     override val stackLimit: Long
         get() = ModConfig.itemStackLimit.toLong()
+    override val limitLimit: Long
+        get() = 64
 
     override fun getByIdRaw(id: ByteArrayWrapper, sd: DigitalItemsSavedData): DigitizedItem? = sd.get(id)
 
@@ -38,7 +40,7 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
 
     override fun amount(something: ItemStack): Long = something.count.toLong()
 
-    private fun extractFromStorage(target: AgnosticItemStorage, filter: Any?, limit: Int?, simulate: Boolean): ItemStack {
+    private fun extractFromStorage(target: AgnosticItemStorage, filter: Any?, limit: Long?, simulate: Boolean): ItemStack {
         if (simulate) {
             val stack = when (filter) {
                 null -> {
@@ -55,23 +57,23 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
                     target.getItems().asSequence().filter { predicate.test(it) }.first()
                 }
             }
-            return stack.copyWithCount(limit ?: stack.count.coerceAtMost(stack.maxStackSize))
+            return stack.copyWithCount(limit?.toInt() ?: stack.count.coerceAtMost(stack.maxStackSize))
         }
         if (filter == null) {
-            return target.takeItems({ true }, limit ?: Int.MAX_VALUE)
+            return target.takeItems({ true }, limit?.toInt() ?: Int.MAX_VALUE)
         } else if (filter is Number) {
             if (target !is SlottedAgnosticItemStorage) {
                 throw LuaException("Cannot use slot filter with not-slotted storage")
             }
-            return target.takeItems(limit ?: Int.MAX_VALUE, filter.toInt() - 1, filter.toInt() - 1, { true })
+            return target.takeItems(limit?.toInt() ?: Int.MAX_VALUE, filter.toInt() - 1, filter.toInt() - 1, { true })
         }
-        return target.takeItems(PeripheralPluginUtils.itemQueryToPredicate(filter), limit ?: Int.MAX_VALUE)
+        return target.takeItems(PeripheralPluginUtils.itemQueryToPredicate(filter), limit?.toInt() ?: Int.MAX_VALUE)
     }
 
     override fun extractFromSelf(
         owner: IPeripheralOwner,
         filter: Any?,
-        limit: Int?,
+        limit: Long?,
         simulate: Boolean,
     ): ItemStack {
         val inventory = owner.storage ?: return ItemStack.EMPTY
@@ -83,7 +85,7 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
         level: Level,
         source: String,
         filter: Any?,
-        limit: Int?,
+        limit: Long?,
         simulate: Boolean,
     ): ItemStack {
         val peripheral = access.getAvailablePeripheral(source) ?: throw LuaException("Cannot find $source")
@@ -91,8 +93,8 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
         return extractFromStorage(storage, filter, limit, simulate)
     }
 
-    private fun storeInStorage(target: AgnosticItemStorage, something: ItemStack, limit: Int): Int {
-        val realLimit = limit.coerceAtMost(something.count)
+    private fun storeInStorage(target: AgnosticItemStorage, something: ItemStack, limit: Long): Long {
+        val realLimit = limit.toInt().coerceAtMost(something.count)
         val stackToStore = if (something.count != realLimit) {
             something.copyWithCount(realLimit)
         } else {
@@ -100,15 +102,15 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
         }
         val amountToStore = stackToStore.count
         val reminder = target.storeItem(stackToStore)
-        return reminder.count + (something.count - amountToStore)
+        return (reminder.count + (something.count - amountToStore)).toLong()
     }
 
     override fun storeInSelf(
         owner: IPeripheralOwner,
         something: ItemStack,
-        limit: Int,
-    ): Int {
-        val inventory = owner.storage ?: return something.count
+        limit: Long,
+    ): Long {
+        val inventory = owner.storage ?: return something.count.toLong()
         return storeInStorage(inventory, something, limit)
     }
 
@@ -117,8 +119,8 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
         level: Level,
         destination: String,
         something: ItemStack,
-        limit: Int,
-    ): Int {
+        limit: Long,
+    ): Long {
         val peripheral = access.getAvailablePeripheral(destination) ?: throw LuaException("Cannot find $destination")
         val storage = AgnosticItemStorageLookup.extractStorageFromUnknown(level, peripheral.target) ?: throw LuaException("$destination is not inventory or item storage")
         return storeInStorage(storage, something, limit)

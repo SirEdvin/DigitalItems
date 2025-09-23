@@ -19,6 +19,8 @@ class DigitizedEnergyStrategy : DigitizedSomethingStrategy<AgnosticEnergyStack, 
         get() = "item"
     override val stackLimit: Long
         get() = ModConfig.itemStackLimit.toLong()
+    override val limitLimit: Long
+        get() = Long.MAX_VALUE
 
     override fun getByIdRaw(id: ByteArrayWrapper, sd: DigitalItemsSavedData): DigitizedEnergy? = sd.getEnergy(id)
 
@@ -37,24 +39,24 @@ class DigitizedEnergyStrategy : DigitizedSomethingStrategy<AgnosticEnergyStack, 
 
     override fun amount(something: AgnosticEnergyStack): Long = something.amount
 
-    private fun extractFromStorage(target: AgnosticEnergyStorage, filter: Any?, limit: Int?, simulate: Boolean): AgnosticEnergyStack {
+    private fun extractFromStorage(target: AgnosticEnergyStorage, filter: Any?, limit: Long?, simulate: Boolean): AgnosticEnergyStack {
         if (simulate) {
             val stack = target.energy
             if (stack.unit.name != filter) {
                 return stack.copyWithCount(0)
             }
-            return stack.copyWithCount(limit?.toLong() ?: stack.amount)
+            return stack.copyWithCount(limit ?: stack.amount)
         }
         if (filter == null) {
-            return target.takeEnergy({ true }, limit?.toLong() ?: Long.MAX_VALUE)
+            return target.takeEnergy({ true }, limit ?: Long.MAX_VALUE)
         }
-        return target.takeEnergy({ it.unit.name == filter }, limit?.toLong() ?: Long.MAX_VALUE)
+        return target.takeEnergy({ it.unit.name == filter }, limit ?: Long.MAX_VALUE)
     }
 
     override fun extractFromSelf(
         owner: IPeripheralOwner,
         filter: Any?,
-        limit: Int?,
+        limit: Long?,
         simulate: Boolean,
     ): AgnosticEnergyStack = throw LuaException("Digitizer itself is invalid target for energy extraction")
 
@@ -63,7 +65,7 @@ class DigitizedEnergyStrategy : DigitizedSomethingStrategy<AgnosticEnergyStack, 
         level: Level,
         source: String,
         filter: Any?,
-        limit: Int?,
+        limit: Long?,
         simulate: Boolean,
     ): AgnosticEnergyStack {
         val peripheral = access.getAvailablePeripheral(source) ?: throw LuaException("Cannot find $source")
@@ -71,7 +73,7 @@ class DigitizedEnergyStrategy : DigitizedSomethingStrategy<AgnosticEnergyStack, 
         return extractFromStorage(storage, filter, limit, simulate)
     }
 
-    private fun storeInStorage(target: AgnosticEnergyStorage, something: AgnosticEnergyStack, limit: Int): Int {
+    private fun storeInStorage(target: AgnosticEnergyStorage, something: AgnosticEnergyStack, limit: Long): Long {
         val realLimit = limit.toLong().coerceAtMost(something.amount)
         val stackToStore = if (something.amount != realLimit) {
             something.copyWithCount(realLimit)
@@ -80,22 +82,22 @@ class DigitizedEnergyStrategy : DigitizedSomethingStrategy<AgnosticEnergyStack, 
         }
         val amountToStore = stackToStore.amount
         val reminder = target.storeEnergy(stackToStore)
-        return (reminder.amount + (something.amount - amountToStore)).toInt()
+        return (reminder.amount + (something.amount - amountToStore))
     }
 
     override fun storeInSelf(
         owner: IPeripheralOwner,
         something: AgnosticEnergyStack,
-        limit: Int,
-    ): Int = throw LuaException("Digitizer itself is invalid target for energy storage")
+        limit: Long,
+    ): Long = throw LuaException("Digitizer itself is invalid target for energy storage")
 
     override fun store(
         access: IComputerAccess,
         level: Level,
         destination: String,
         something: AgnosticEnergyStack,
-        limit: Int,
-    ): Int {
+        limit: Long,
+    ): Long {
         val peripheral = access.getAvailablePeripheral(destination) ?: throw LuaException("Cannot find $destination")
         val storage = AgnosticEnergyStorageLookup.extractEnergyStorageFromUnknown(level, peripheral.target) ?: throw LuaException("$destination is not energy storage")
         return storeInStorage(storage, something, limit)

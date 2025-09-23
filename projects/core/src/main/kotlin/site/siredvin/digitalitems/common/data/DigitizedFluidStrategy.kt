@@ -21,6 +21,8 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
         get() = "item"
     override val stackLimit: Long
         get() = ModConfig.itemStackLimit.toLong()
+    override val limitLimit: Long
+        get() = 64000
 
     override fun getByIdRaw(id: ByteArrayWrapper, sd: DigitalItemsSavedData): DigitizedFluid? = sd.getFluid(id)
 
@@ -39,7 +41,7 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
 
     override fun amount(something: AgnosticFluidStack): Long = something.amount
 
-    private fun extractFromStorage(target: AgnosticFluidStorage, filter: Any?, limit: Int?, simulate: Boolean): AgnosticFluidStack {
+    private fun extractFromStorage(target: AgnosticFluidStorage, filter: Any?, limit: Long?, simulate: Boolean): AgnosticFluidStack {
         if (simulate) {
             val stack = when (filter) {
                 null -> {
@@ -49,18 +51,18 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
                     target.getFluids().asSequence().filter { PlatformRegistries.FLUIDS.getKey(it.fluid).toString() == filter }.first()
                 }
             }
-            return stack.copyWithCount(limit?.toLong() ?: stack.amount)
+            return stack.copyWithCount(limit ?: stack.amount)
         }
         if (filter == null) {
-            return target.takeFluid({ true }, limit?.toLong() ?: Long.MAX_VALUE)
+            return target.takeFluid({ true }, limit ?: Long.MAX_VALUE)
         }
-        return target.takeFluid({ PlatformRegistries.FLUIDS.getKey(it.fluid).toString() == filter }, limit?.toLong() ?: Long.MAX_VALUE)
+        return target.takeFluid({ PlatformRegistries.FLUIDS.getKey(it.fluid).toString() == filter }, limit ?: Long.MAX_VALUE)
     }
 
     override fun extractFromSelf(
         owner: IPeripheralOwner,
         filter: Any?,
-        limit: Int?,
+        limit: Long?,
         simulate: Boolean,
     ): AgnosticFluidStack = throw LuaException("Digitizer itself is invalid target for fluid extraction")
 
@@ -69,7 +71,7 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
         level: Level,
         source: String,
         filter: Any?,
-        limit: Int?,
+        limit: Long?,
         simulate: Boolean,
     ): AgnosticFluidStack {
         val peripheral = access.getAvailablePeripheral(source) ?: throw LuaException("Cannot find $source")
@@ -77,7 +79,7 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
         return extractFromStorage(storage, filter, limit, simulate)
     }
 
-    private fun storeInStorage(target: AgnosticFluidStorage, something: AgnosticFluidStack, limit: Int): Int {
+    private fun storeInStorage(target: AgnosticFluidStorage, something: AgnosticFluidStack, limit: Long): Long {
         val realLimit = limit.toLong().coerceAtMost(something.amount)
         val stackToStore = if (something.amount != realLimit) {
             something.copyWithCount(realLimit)
@@ -86,22 +88,22 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
         }
         val amountToStore = stackToStore.amount
         val reminder = target.storeFluid(stackToStore)
-        return (reminder.amount + (something.amount - amountToStore)).toInt()
+        return (reminder.amount + (something.amount - amountToStore))
     }
 
     override fun storeInSelf(
         owner: IPeripheralOwner,
         something: AgnosticFluidStack,
-        limit: Int,
-    ): Int = throw LuaException("Digitizer itself is invalid target for fluid storage")
+        limit: Long,
+    ): Long = throw LuaException("Digitizer itself is invalid target for fluid storage")
 
     override fun store(
         access: IComputerAccess,
         level: Level,
         destination: String,
         something: AgnosticFluidStack,
-        limit: Int,
-    ): Int {
+        limit: Long,
+    ): Long {
         val peripheral = access.getAvailablePeripheral(destination) ?: throw LuaException("Cannot find $destination")
         val storage = AgnosticFluidStorageLookup.extractFluidStorageFromUnknown(level, peripheral.target) ?: throw LuaException("$destination is not fluid storage")
         return storeInStorage(storage, something, limit)
