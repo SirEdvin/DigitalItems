@@ -6,19 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.5.1] - 2025-09-23
-
-### Changed
-
-- Limit now works differently for fluids and energies
-- Method for validating items now just `get` for advanced digitizer
-
-## [0.5.0] - 2025-09-22
+## [0.5.2] - 2025-09-23
 
 ### Added
 
 - Digitizer upgrade for pocket computers and turtles!
 - Digitizer api now supports slots, so you can `digitize(2)` or `digitizeAmount(32, 2)` now.
+- Advanced digitizer! Digitize remote chests, digitize fluids, digitize energies! Possibilities are limitless
+
+### Changed
+
+- Limit now works differently for fluids and energies
+- Method for validating items now just `get` for advanced digitizer
 
 ## [0.4.1] - 2025-03-19
 
