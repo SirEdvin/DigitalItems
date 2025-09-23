@@ -16,9 +16,9 @@ import site.siredvin.tweakium.modules.peripheral.representation.LuaRepresentatio
 
 class DigitizedEnergyStrategy : DigitizedSomethingStrategy<AgnosticEnergyStack, DigitizedEnergy>() {
     override val mode: String
-        get() = "item"
+        get() = "energy"
     override val stackLimit: Long
-        get() = ModConfig.itemStackLimit.toLong()
+        get() = ModConfig.energyStackLimit
     override val limitLimit: Long
         get() = Long.MAX_VALUE
 
@@ -42,15 +42,15 @@ class DigitizedEnergyStrategy : DigitizedSomethingStrategy<AgnosticEnergyStack, 
     private fun extractFromStorage(target: AgnosticEnergyStorage, filter: Any?, limit: Long?, simulate: Boolean): AgnosticEnergyStack {
         if (simulate) {
             val stack = target.energy
-            if (stack.unit.name != filter) {
+            if (filter != null && stack.unit.name != filter) {
                 return stack.copyWithCount(0)
             }
             return stack.copyWithCount(limit ?: stack.amount)
         }
         if (filter == null) {
-            return target.takeEnergy({ true }, limit ?: Long.MAX_VALUE)
+            return target.takeEnergy({ true }, limit ?: (Long.MAX_VALUE / 2))
         }
-        return target.takeEnergy({ it.unit.name == filter }, limit ?: Long.MAX_VALUE)
+        return target.takeEnergy({ it.unit.name == filter }, limit ?: (Long.MAX_VALUE / 2))
     }
 
     override fun extractFromSelf(

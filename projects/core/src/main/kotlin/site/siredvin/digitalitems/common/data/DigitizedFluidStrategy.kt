@@ -18,9 +18,9 @@ import site.siredvin.tweakium.modules.peripheral.representation.LuaRepresentatio
 
 class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, DigitizedFluid>() {
     override val mode: String
-        get() = "item"
+        get() = "fluid"
     override val stackLimit: Long
-        get() = ModConfig.itemStackLimit.toLong()
+        get() = ModConfig.fluidStackLimit.toLong()
     override val limitLimit: Long
         get() = 64000
 
