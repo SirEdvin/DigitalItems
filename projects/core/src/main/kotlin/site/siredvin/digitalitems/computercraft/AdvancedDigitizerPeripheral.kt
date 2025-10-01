@@ -63,8 +63,8 @@ class AdvancedDigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
             base["decayEnabled"] = ModConfig.enableDecay
             base["decayTicks"] = ModConfig.decayTicks
             base["itemStackLimit"] = ModConfig.itemStackLimit
-            base["fluidStackLimit"] = ModConfig.itemStackLimit
-            base["energyStackLimit"] = ModConfig.itemStackLimit
+            base["fluidStackLimit"] = ModConfig.fluidStackLimit
+            base["energyStackLimit"] = ModConfig.energyStackLimit
             return base
         }
 

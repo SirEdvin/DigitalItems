@@ -100,20 +100,9 @@ class DigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
         return id
     }
 
-    @LuaFunction(mainThread = true)
-    @Throws(LuaException::class)
-    fun rematerialize(id: ByteBuffer): Int {
+    fun innerRematerializeAmount(id: ByteArrayWrapper, amount: Int, sd: DigitalItemsSavedData): Int {
         val sd: DigitalItemsSavedData = DigitalItemsSavedData.getFrom(peripheralOwner.level!!)
-        val item: DigitizedItem = checkID(sd, id.toSafeArray().wrap())
-        return rematerializeAmount(id, item.something.count)
-    }
-
-    @LuaFunction(mainThread = true)
-    @Throws(LuaException::class)
-    fun rematerializeAmount(id: ByteBuffer, amount: Int): Int {
-        val trueID = id.toSafeArray().wrap()
-        val sd: DigitalItemsSavedData = DigitalItemsSavedData.getFrom(peripheralOwner.level!!)
-        val item: DigitizedItem = checkID(sd, trueID)
+        val item: DigitizedItem = checkID(sd, id)
         if (amount <= 0) {
             throw LuaException("Invalid amount")
         }
@@ -125,12 +114,29 @@ class DigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
         val remaining: ItemStack = peripheralOwner.storage!!.storeItem(limitedAmount)
         item.something.count -= (limitedAmount.count - remaining.count)
         if (item.something.count == 0) {
-            sd.pop(trueID)
+            sd.pop(id)
         } else {
             item.refresh(peripheralOwner.level!!.gameTime)
         }
         sd.setDirty()
         return limitedAmount.count - remaining.count
+    }
+
+    @LuaFunction(mainThread = true)
+    @Throws(LuaException::class)
+    fun rematerialize(id: ByteBuffer): Int {
+        val sd: DigitalItemsSavedData = DigitalItemsSavedData.getFrom(peripheralOwner.level!!)
+        val trueID = id.toSafeArray().wrap()
+        val item: DigitizedItem = checkID(sd, trueID)
+        return innerRematerializeAmount(trueID, item.something.count, sd)
+    }
+
+    @LuaFunction(mainThread = true)
+    @Throws(LuaException::class)
+    fun rematerializeAmount(id: ByteBuffer, amount: Int): Int {
+        val trueID = id.toSafeArray().wrap()
+        val sd: DigitalItemsSavedData = DigitalItemsSavedData.getFrom(peripheralOwner.level!!)
+        return innerRematerializeAmount(trueID, amount, sd)
     }
 
     @LuaFunction(mainThread = true)
