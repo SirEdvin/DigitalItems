@@ -15,11 +15,11 @@ class DigitizedFluid : DigitizedSomething<AgnosticFluidStack> {
     override fun toCompound(): CompoundTag = something.save(CompoundTag())
 
     override fun shrink(amount: Int) {
-        something.shrink(amount)
+        something.shrink(amount.toDouble())
     }
 
     override fun grow(amount: Int) {
-        something.grow(amount)
+        something.grow(amount.toDouble())
     }
 
     override val somethingTagName: String
@@ -27,5 +27,5 @@ class DigitizedFluid : DigitizedSomething<AgnosticFluidStack> {
     override val isEmpty: Boolean
         get() = something.isEmpty
     override val amount: Long
-        get() = something.amount
+        get() = something.amount.toLong()
 }

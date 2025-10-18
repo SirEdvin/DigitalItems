@@ -39,7 +39,7 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
 
     override fun isEmpty(something: AgnosticFluidStack): Boolean = something.isEmpty
 
-    override fun amount(something: AgnosticFluidStack): Long = something.amount
+    override fun amount(something: AgnosticFluidStack): Long = something.amount.toLong()
 
     private fun extractFromStorage(target: AgnosticFluidStorage, filter: Any?, limit: Long?, simulate: Boolean): AgnosticFluidStack {
         if (simulate) {
@@ -51,12 +51,12 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
                     target.getFluids().asSequence().filter { PlatformRegistries.FLUIDS.getKey(it.fluid).toString() == filter }.first()
                 }
             }
-            return stack.copyWithCount(limit ?: stack.amount)
+            return stack.copyWithCount(limit?.toDouble() ?: stack.amount)
         }
         if (filter == null) {
-            return target.takeFluid({ true }, limit ?: Long.MAX_VALUE)
+            return target.takeFluid({ true }, limit?.toDouble() ?: Double.MAX_VALUE)
         }
-        return target.takeFluid({ PlatformRegistries.FLUIDS.getKey(it.fluid).toString() == filter }, limit ?: Long.MAX_VALUE)
+        return target.takeFluid({ PlatformRegistries.FLUIDS.getKey(it.fluid).toString() == filter }, limit?.toDouble() ?: Double.MAX_VALUE)
     }
 
     override fun extractFromSelf(
@@ -80,15 +80,15 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
     }
 
     private fun storeInStorage(target: AgnosticFluidStorage, something: AgnosticFluidStack, limit: Long): Long {
-        val realLimit = limit.toLong().coerceAtMost(something.amount)
-        val stackToStore = if (something.amount != realLimit) {
-            something.copyWithCount(realLimit)
+        val realLimit: Long = limit.coerceAtMost(something.amount.toLong())
+        val stackToStore = if (something.amount.toLong() != realLimit) {
+            something.copyWithCount(realLimit.toDouble())
         } else {
             something.copy()
         }
         val amountToStore = stackToStore.amount
         val reminder = target.storeFluid(stackToStore)
-        return (reminder.amount + (something.amount - amountToStore))
+        return (reminder.amount + (something.amount - amountToStore)).toLong()
     }
 
     override fun storeInSelf(
