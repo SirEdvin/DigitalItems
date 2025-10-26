@@ -94,11 +94,11 @@ class AdvancedDigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
         val id = arguments.getBytes(1)
         val limit = arguments.optLong(2).getOrNull()
         val destination = arguments.optString(3).getOrDefault("self")
+        val strategy = STRATEGIES[mode] ?: throw LuaException("There is no such mode")
 
         if (limit != null) {
-            assertBetween(limit, 1, 64, "limit")
+            assertBetween(limit, 1, strategy.limitLimit, "limit")
         }
-        val strategy = STRATEGIES[mode] ?: throw LuaException("There is no such mode")
         return strategy.rematerialize(access, id.toSafeArray().wrap(), limit, destination, peripheralOwner)
     }
 

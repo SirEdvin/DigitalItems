@@ -26,7 +26,8 @@ abstract class DigitizedSomethingStrategy<T, V : DigitizedSomething<T>> {
     protected abstract fun put(id: ByteArrayWrapper, something: T, peripheralOwner: IPeripheralOwner, sd: DigitalItemsSavedData)
     protected abstract fun awardDigitization(something: T, player: ServerPlayer?)
 
-    abstract val limitLimit: Long
+    open val limitLimit: Long
+        get() = stackLimit / 2
 
     fun digitize(access: IComputerAccess, source: String, filter: Any?, limit: Long?, destination: ByteArrayWrapper?, peripheralOwner: IPeripheralOwner): MethodResult {
         val level = peripheralOwner.level!!

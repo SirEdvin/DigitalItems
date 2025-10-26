@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.6] - 2025-10-26
+
+### Fixed
+
+- Correct limits for interation with items, fluids, etc.
+
 ## [0.5.5] - 2025-10-19
 
 ### Changed

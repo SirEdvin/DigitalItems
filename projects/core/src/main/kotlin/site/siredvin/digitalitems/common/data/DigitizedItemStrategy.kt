@@ -20,8 +20,6 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
         get() = "item"
     override val stackLimit: Long
         get() = ModConfig.itemStackLimit.toLong()
-    override val limitLimit: Long
-        get() = 64
 
     override fun getByIdRaw(id: ByteArrayWrapper, sd: DigitalItemsSavedData): DigitizedItem? = sd.get(id)
 

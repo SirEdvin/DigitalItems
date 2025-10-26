@@ -19,8 +19,6 @@ class DigitizedEnergyStrategy : DigitizedSomethingStrategy<AgnosticEnergyStack, 
         get() = "energy"
     override val stackLimit: Long
         get() = ModConfig.energyStackLimit
-    override val limitLimit: Long
-        get() = Long.MAX_VALUE
 
     override fun getByIdRaw(id: ByteArrayWrapper, sd: DigitalItemsSavedData): DigitizedEnergy? = sd.getEnergy(id)
 

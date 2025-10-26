@@ -20,9 +20,7 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
     override val mode: String
         get() = "fluid"
     override val stackLimit: Long
-        get() = ModConfig.fluidStackLimit.toLong()
-    override val limitLimit: Long
-        get() = 64000
+        get() = ModConfig.fluidStackLimit
 
     override fun getByIdRaw(id: ByteArrayWrapper, sd: DigitalItemsSavedData): DigitizedFluid? = sd.getFluid(id)
 
