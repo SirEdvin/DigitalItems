@@ -14,6 +14,7 @@ import site.siredvin.digitalitems.common.configuration.ModConfig
 import site.siredvin.digitalitems.common.setup.ModCriterias
 import site.siredvin.digitalitems.common.setup.ModStats
 import site.siredvin.tweakium.modules.peripheral.api.IPeripheralOwner
+import site.siredvin.tweakium.modules.peripheral.api.ISidedPeripheral
 import site.siredvin.tweakium.modules.peripheral.representation.LuaRepresentation
 
 class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, DigitizedFluid>() {
@@ -73,7 +74,8 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
         simulate: Boolean,
     ): AgnosticFluidStack {
         val peripheral = access.getAvailablePeripheral(source) ?: throw LuaException("Cannot find $source")
-        val storage = AgnosticFluidStorageLookup.extractFluidStorageFromUnknown(level, peripheral.target) ?: throw LuaException("$source is not fluid storage")
+        val direction = if (peripheral is ISidedPeripheral) peripheral.side else null
+        val storage = AgnosticFluidStorageLookup.extractFromUnknown(level, peripheral.target, direction) ?: throw LuaException("$source is not fluid storage")
         return extractFromStorage(storage, filter, limit, simulate)
     }
 
@@ -103,7 +105,8 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
         limit: Long,
     ): Long {
         val peripheral = access.getAvailablePeripheral(destination) ?: throw LuaException("Cannot find $destination")
-        val storage = AgnosticFluidStorageLookup.extractFluidStorageFromUnknown(level, peripheral.target) ?: throw LuaException("$destination is not fluid storage")
+        val direction = if (peripheral is ISidedPeripheral) peripheral.side else null
+        val storage = AgnosticFluidStorageLookup.extractFromUnknown(level, peripheral.target, direction) ?: throw LuaException("$destination is not fluid storage")
         return storeInStorage(storage, something, limit)
     }
 
