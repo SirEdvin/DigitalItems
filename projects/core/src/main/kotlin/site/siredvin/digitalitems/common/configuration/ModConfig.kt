@@ -19,6 +19,9 @@ object ModConfig {
     val energyStackLimit: Long
         get() = ConfigHolder.commonConfig.energyStackLimit.get()
 
+    val inventoryTransferLimit: Int
+        get() = ConfigHolder.commonConfig.inventoryTransferLimit.get()
+
     class CommonConfig internal constructor(builder: ForgeConfigSpec.Builder) {
 
         // Generic plugins
@@ -27,6 +30,7 @@ object ModConfig {
         val itemStackLimit: ForgeConfigSpec.IntValue
         val fluidStackLimit: ForgeConfigSpec.LongValue
         val energyStackLimit: ForgeConfigSpec.LongValue
+        val inventoryTransferLimit: ForgeConfigSpec.IntValue
 
         init {
             builder.comment("Item decay options")
@@ -38,6 +42,7 @@ object ModConfig {
             itemStackLimit = builder.defineInRange("itemStackLimit", 16384, 64, Int.MAX_VALUE)
             fluidStackLimit = builder.defineInRange("fluidStackLimit", Long.MAX_VALUE / 2, 1024, Long.MAX_VALUE)
             energyStackLimit = builder.defineInRange("energyStackLimit", Long.MAX_VALUE / 2, 1024, Long.MAX_VALUE)
+            inventoryTransferLimit = builder.defineInRange("inventoryTransferLimit", 1024, 1, Int.MAX_VALUE)
             builder.pop()
         }
     }

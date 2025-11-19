@@ -34,7 +34,7 @@ class DigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
 
     init {
         if (peripheralOwner is BlockEntityPeripheralOwner<*>) {
-            addPlugin(InventoryPlugin(peripheralOwner.level!!, peripheralOwner.storage!!))
+            addPlugin(InventoryPlugin(peripheralOwner.level!!, peripheralOwner.storage!!, ModConfig.inventoryTransferLimit))
         } else {
             addPlugin(SuppliedRudimentInventoryPlugin({ peripheralOwner.level!! }, { peripheralOwner.storage!! }))
         }
@@ -65,13 +65,13 @@ class DigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
 
     @LuaFunction(mainThread = true)
     @Throws(LuaException::class)
-    fun digitize(slotOp: Optional<Int>): ByteArray = digitizeAmount(peripheralOwner.storage!!.getItem(slotOp.map { it - 1 }.getOrDefault(0)).count, slotOp)
+    fun digitize(slotOp: Optional<Int>): ByteArray = digitizeAmount(peripheralOwner.storage!!.get(slotOp.map { it - 1 }.getOrDefault(0)).count, slotOp)
 
     @LuaFunction(mainThread = true)
     @Throws(LuaException::class)
     fun digitizeAmount(amount: Int, slotOp: Optional<Int>): ByteArray {
         val slot = slotOp.map { it - 1 }.getOrDefault(0)
-        val item: ItemStack = peripheralOwner.storage!!.getItem(slot)
+        val item: ItemStack = peripheralOwner.storage!!.get(slot)
         if (item.`is`(Items.AIR)) {
             throw LuaException("There is nothing to digitize")
         }
@@ -86,7 +86,7 @@ class DigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
         val data: DigitalItemsSavedData = DigitalItemsSavedData.getFrom(peripheralOwner.level!!)
         val digitizedItem = DigitizedItem(
             id.wrap(),
-            peripheralOwner.storage!!.takeItems(amount, slot, slot, ItemStorageUtils.ALWAYS).copy(),
+            peripheralOwner.storage!!.take(amount, slot, slot, ItemStorageUtils.ALWAYS, false).copy(),
             peripheralOwner.level!!.gameTime,
             (peripheralOwner.owner as? ServerPlayer),
         )
@@ -111,7 +111,7 @@ class DigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
         }
         val limitedAmount: ItemStack = item.something.copy()
         limitedAmount.count = amount
-        val remaining: ItemStack = peripheralOwner.storage!!.storeItem(limitedAmount)
+        val remaining: ItemStack = peripheralOwner.storage!!.store(limitedAmount, false)
         item.something.count -= (limitedAmount.count - remaining.count)
         if (item.something.count == 0) {
             sd.pop(id)

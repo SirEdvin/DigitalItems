@@ -39,17 +39,10 @@ class DigitizedEnergyStrategy : DigitizedSomethingStrategy<AgnosticEnergyStack, 
     override fun amount(something: AgnosticEnergyStack): Long = something.amount
 
     private fun extractFromStorage(target: AgnosticEnergyStorage, filter: Any?, limit: Long?, simulate: Boolean): AgnosticEnergyStack {
-        if (simulate) {
-            val stack = target.energy
-            if (filter != null && stack.unit.name != filter) {
-                return stack.copyWithCount(0)
-            }
-            return stack.copyWithCount(limit ?: stack.amount)
-        }
         if (filter == null) {
-            return target.takeEnergy({ true }, limit ?: (Long.MAX_VALUE / 2))
+            return target.take({ true }, limit ?: (Long.MAX_VALUE / 2), simulate)
         }
-        return target.takeEnergy({ it.unit.name == filter }, limit ?: (Long.MAX_VALUE / 2))
+        return target.take({ it.unit.name == filter }, limit ?: (Long.MAX_VALUE / 2), simulate)
     }
 
     override fun extractFromSelf(
@@ -74,14 +67,14 @@ class DigitizedEnergyStrategy : DigitizedSomethingStrategy<AgnosticEnergyStack, 
     }
 
     private fun storeInStorage(target: AgnosticEnergyStorage, something: AgnosticEnergyStack, limit: Long): Long {
-        val realLimit = limit.toLong().coerceAtMost(something.amount)
+        val realLimit = limit.coerceAtMost(something.amount)
         val stackToStore = if (something.amount != realLimit) {
             something.copyWithCount(realLimit)
         } else {
             something.copy()
         }
         val amountToStore = stackToStore.amount
-        val reminder = target.storeEnergy(stackToStore)
+        val reminder = target.store(stackToStore, false)
         return (reminder.amount + (something.amount - amountToStore))
     }
 

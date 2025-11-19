@@ -5,10 +5,10 @@ import dan200.computercraft.api.peripheral.IComputerAccess
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
+import site.siredvin.broccolium.modules.storage.base.api.AgnosticStorage
+import site.siredvin.broccolium.modules.storage.base.api.SlottedAgnosticStorage
 import site.siredvin.broccolium.modules.storage.item.AgnosticItemStorageLookup
 import site.siredvin.broccolium.modules.storage.item.ItemStorageUtils
-import site.siredvin.broccolium.modules.storage.item.api.AgnosticItemStorage
-import site.siredvin.broccolium.modules.storage.item.api.SlottedAgnosticItemStorage
 import site.siredvin.digitalitems.awardDigitalization
 import site.siredvin.digitalitems.common.configuration.ModConfig
 import site.siredvin.tweakium.modules.peripheral.api.IPeripheralOwner
@@ -39,34 +39,16 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
 
     override fun amount(something: ItemStack): Long = something.count.toLong()
 
-    private fun extractFromStorage(target: AgnosticItemStorage, filter: Any?, limit: Long?, simulate: Boolean): ItemStack {
-        if (simulate) {
-            val stack = when (filter) {
-                null -> {
-                    target.getItems().asSequence().filter { !it.isEmpty }.first()
-                }
-                is Number -> {
-                    if (target !is SlottedAgnosticItemStorage) {
-                        throw LuaException("Cannot use slot filter with not-slotted storage")
-                    }
-                    target.getItem(filter.toInt() - 1)
-                }
-                else -> {
-                    val predicate = PeripheralPluginUtils.itemQueryToPredicate(filter)
-                    target.getItems().asSequence().filter { predicate.test(it) }.first()
-                }
-            }
-            return stack.copyWithCount(limit?.toInt() ?: stack.count.coerceAtMost(stack.maxStackSize))
-        }
+    private fun extractFromStorage(target: AgnosticStorage<ItemStack, Int>, filter: Any?, limit: Long?, simulate: Boolean): ItemStack {
         if (filter == null) {
-            return target.takeItems({ true }, limit?.toInt() ?: Int.MAX_VALUE)
+            return target.take({ true }, limit?.toInt() ?: Int.MAX_VALUE, simulate)
         } else if (filter is Number) {
-            if (target !is SlottedAgnosticItemStorage) {
+            if (target !is SlottedAgnosticStorage<ItemStack, Int>) {
                 throw LuaException("Cannot use slot filter with not-slotted storage")
             }
-            return target.takeItems(limit?.toInt() ?: Int.MAX_VALUE, filter.toInt() - 1, filter.toInt() - 1, { true })
+            return target.take(limit?.toInt() ?: Int.MAX_VALUE, filter.toInt() - 1, filter.toInt() - 1, { true }, simulate)
         }
-        return target.takeItems(PeripheralPluginUtils.itemQueryToPredicate(filter), limit?.toInt() ?: Int.MAX_VALUE)
+        return target.take(PeripheralPluginUtils.itemQueryToPredicate(filter), limit?.toInt() ?: Int.MAX_VALUE, simulate)
     }
 
     override fun extractFromSelf(
@@ -93,7 +75,7 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
         return extractFromStorage(storage, filter, limit, simulate)
     }
 
-    private fun storeInStorage(target: AgnosticItemStorage, something: ItemStack, limit: Long): Long {
+    private fun storeInStorage(target: AgnosticStorage<ItemStack, Int>, something: ItemStack, limit: Long): Long {
         val realLimit = limit.toInt().coerceAtMost(something.count)
         val stackToStore = if (something.count != realLimit) {
             something.copyWithCount(realLimit)
@@ -101,7 +83,7 @@ class DigitizedItemStrategy : DigitizedSomethingStrategy<ItemStack, DigitizedIte
             something.copy()
         }
         val amountToStore = stackToStore.count
-        val reminder = target.storeItem(stackToStore)
+        val reminder = target.store(stackToStore, false)
         return (reminder.count + (something.count - amountToStore)).toLong()
     }
 

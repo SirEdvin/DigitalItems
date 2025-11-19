@@ -41,7 +41,7 @@ class Digitizer : BaseBlockEntityBlock<DigitizerBlockEntity>(false, BlockUtil.de
     @Deprecated("Deprecated in Java")
     override fun getAnalogOutputSignal(state: BlockState, l: Level, pos: BlockPos): Int {
         val i: ItemStack =
-            (Objects.requireNonNull(l.getBlockEntity(pos)) as DigitizerBlockEntity).storage.getItem(0)
+            (Objects.requireNonNull(l.getBlockEntity(pos)) as DigitizerBlockEntity).storage.get(0)
         return if (i.isEmpty) {
             0
         } else {
@@ -75,7 +75,7 @@ class Digitizer : BaseBlockEntityBlock<DigitizerBlockEntity>(false, BlockUtil.de
                     blockPos.x.toDouble(),
                     blockPos.y.toDouble(),
                     blockPos.z.toDouble(),
-                    blockEntity.storage.getItem(0),
+                    blockEntity.storage.get(0),
                 )
                 level.updateNeighbourForOutputSignal(blockPos, this)
             }

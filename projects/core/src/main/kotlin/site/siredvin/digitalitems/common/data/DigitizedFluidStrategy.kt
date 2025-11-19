@@ -41,21 +41,10 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
     override fun amount(something: AgnosticFluidStack): Long = something.amount.toLong()
 
     private fun extractFromStorage(target: AgnosticFluidStorage, filter: Any?, limit: Long?, simulate: Boolean): AgnosticFluidStack {
-        if (simulate) {
-            val stack = when (filter) {
-                null -> {
-                    target.getFluids().asSequence().filter { !it.isEmpty }.first()
-                }
-                else -> {
-                    target.getFluids().asSequence().filter { PlatformRegistries.FLUIDS.getKey(it.fluid).toString() == filter }.first()
-                }
-            }
-            return stack.copyWithCount(limit?.toDouble() ?: stack.amount)
-        }
         if (filter == null) {
-            return target.takeFluid({ true }, limit?.toDouble() ?: Double.MAX_VALUE)
+            return target.take({ true }, limit?.toDouble() ?: Double.MAX_VALUE, simulate)
         }
-        return target.takeFluid({ PlatformRegistries.FLUIDS.getKey(it.fluid).toString() == filter }, limit?.toDouble() ?: Double.MAX_VALUE)
+        return target.take({ PlatformRegistries.FLUIDS.getKey(it.fluid).toString() == filter }, limit?.toDouble() ?: Double.MAX_VALUE, simulate)
     }
 
     override fun extractFromSelf(
@@ -87,7 +76,7 @@ class DigitizedFluidStrategy : DigitizedSomethingStrategy<AgnosticFluidStack, Di
             something.copy()
         }
         val amountToStore = stackToStore.amount
-        val reminder = target.storeFluid(stackToStore)
+        val reminder = target.store(stackToStore, false)
         return (reminder.amount + (something.amount - amountToStore)).toLong()
     }
 

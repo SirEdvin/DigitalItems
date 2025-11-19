@@ -46,7 +46,7 @@ class AdvancedDigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
 
     init {
         if (peripheralOwner is BlockEntityPeripheralOwner<*>) {
-            addPlugin(InventoryPlugin(peripheralOwner.level!!, peripheralOwner.storage!!))
+            addPlugin(InventoryPlugin(peripheralOwner.level!!, peripheralOwner.storage!!, ModConfig.inventoryTransferLimit))
         } else {
             addPlugin(SuppliedRudimentInventoryPlugin({ peripheralOwner.level!! }, { peripheralOwner.storage!! }))
         }
