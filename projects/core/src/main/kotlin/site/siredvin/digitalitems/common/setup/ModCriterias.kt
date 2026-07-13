@@ -1,32 +1,28 @@
 package site.siredvin.digitalitems.common.setup
 
-import net.minecraft.advancements.CriteriaTriggers
 import site.siredvin.digitalitems.common.criteria.DigitalizeEnergyCriteria
 import site.siredvin.digitalitems.common.criteria.DigitalizeFluidCriteria
 import site.siredvin.digitalitems.common.criteria.DigitalizeItemCriteria
 import site.siredvin.digitalitems.common.criteria.DigitalizeLavaCriteria
 import site.siredvin.digitalitems.common.criteria.DigitalizeOreCriteria
 import site.siredvin.digitalitems.common.criteria.DigitalizeStarCriteria
+import site.siredvin.digitalitems.xplat.ModPlatform
+import java.util.function.Supplier
 
 object ModCriterias {
-    val DIGITALIZE_ITEMS = CriteriaTriggers.register(
-        DigitalizeItemCriteria(),
-    )
-    val DIGITALIZE_ORES = CriteriaTriggers.register(
-        DigitalizeOreCriteria(),
-    )
-    val DIGITALIZE_STARS = CriteriaTriggers.register(
-        DigitalizeStarCriteria(),
-    )
-    val DIGITALIZE_FLUIDS = CriteriaTriggers.register(
-        DigitalizeFluidCriteria(),
-    )
-    val DIGITALIZE_ENERGY = CriteriaTriggers.register(
-        DigitalizeEnergyCriteria(),
-    )
-    val DIGITALIZE_LAVA = CriteriaTriggers.register(
-        DigitalizeLavaCriteria(),
-    )
+    private val digitalizeItems: Supplier<DigitalizeItemCriteria> = ModPlatform.registerCriterion(DigitalizeItemCriteria.ID, DigitalizeItemCriteria())
+    private val digitalizeOres: Supplier<DigitalizeOreCriteria> = ModPlatform.registerCriterion(DigitalizeOreCriteria.ID, DigitalizeOreCriteria())
+    private val digitalizeStars: Supplier<DigitalizeStarCriteria> = ModPlatform.registerCriterion(DigitalizeStarCriteria.ID, DigitalizeStarCriteria())
+    private val digitalizeFluids: Supplier<DigitalizeFluidCriteria> = ModPlatform.registerCriterion(DigitalizeFluidCriteria.ID, DigitalizeFluidCriteria())
+    private val digitalizeEnergy: Supplier<DigitalizeEnergyCriteria> = ModPlatform.registerCriterion(DigitalizeEnergyCriteria.ID, DigitalizeEnergyCriteria())
+    private val digitalizeLava: Supplier<DigitalizeLavaCriteria> = ModPlatform.registerCriterion(DigitalizeLavaCriteria.ID, DigitalizeLavaCriteria())
+
+    val DIGITALIZE_ITEMS: DigitalizeItemCriteria get() = digitalizeItems.get()
+    val DIGITALIZE_ORES: DigitalizeOreCriteria get() = digitalizeOres.get()
+    val DIGITALIZE_STARS: DigitalizeStarCriteria get() = digitalizeStars.get()
+    val DIGITALIZE_FLUIDS: DigitalizeFluidCriteria get() = digitalizeFluids.get()
+    val DIGITALIZE_ENERGY: DigitalizeEnergyCriteria get() = digitalizeEnergy.get()
+    val DIGITALIZE_LAVA: DigitalizeLavaCriteria get() = digitalizeLava.get()
 
     fun doSomething() {}
 }

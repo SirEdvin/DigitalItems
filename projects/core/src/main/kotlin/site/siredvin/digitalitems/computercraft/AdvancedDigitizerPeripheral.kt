@@ -36,7 +36,7 @@ class AdvancedDigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
     companion object {
         val rand = SecureRandom()
         const val TYPE = "advanced_digitizer"
-        val ID = ResourceLocation(DigitalItemsCore.MOD_ID, TYPE)
+        val ID = ResourceLocation.fromNamespaceAndPath(DigitalItemsCore.MOD_ID, TYPE)
         val STRATEGIES: Map<String, DigitizedSomethingStrategy<*, *>> = mapOf(
             "item" to DigitizedItemStrategy(),
             "fluid" to DigitizedFluidStrategy(),

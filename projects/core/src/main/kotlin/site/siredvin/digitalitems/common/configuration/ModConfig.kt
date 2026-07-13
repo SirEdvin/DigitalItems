@@ -1,6 +1,6 @@
 package site.siredvin.digitalitems.common.configuration
 
-import net.minecraftforge.common.ForgeConfigSpec
+import net.neoforged.neoforge.common.ModConfigSpec
 
 object ModConfig {
 
@@ -22,15 +22,15 @@ object ModConfig {
     val inventoryTransferLimit: Int
         get() = ConfigHolder.commonConfig.inventoryTransferLimit.get()
 
-    class CommonConfig internal constructor(builder: ForgeConfigSpec.Builder) {
+    class CommonConfig internal constructor(builder: ModConfigSpec.Builder) {
 
         // Generic plugins
-        var enableDecay: ForgeConfigSpec.BooleanValue
-        val decayTicks: ForgeConfigSpec.LongValue
-        val itemStackLimit: ForgeConfigSpec.IntValue
-        val fluidStackLimit: ForgeConfigSpec.LongValue
-        val energyStackLimit: ForgeConfigSpec.LongValue
-        val inventoryTransferLimit: ForgeConfigSpec.IntValue
+        var enableDecay: ModConfigSpec.BooleanValue
+        val decayTicks: ModConfigSpec.LongValue
+        val itemStackLimit: ModConfigSpec.IntValue
+        val fluidStackLimit: ModConfigSpec.LongValue
+        val energyStackLimit: ModConfigSpec.LongValue
+        val inventoryTransferLimit: ModConfigSpec.IntValue
 
         init {
             builder.comment("Item decay options")

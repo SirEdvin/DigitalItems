@@ -2,6 +2,7 @@ package site.siredvin.digitalitems.common.blockentity
 
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.chat.Component
 import net.minecraft.world.Container
@@ -40,6 +41,7 @@ class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
     }
 
     private val inventory = ExtraSimpleStorage(this)
+    private lateinit var registries: HolderLookup.Provider
     val storage = ContainerWrapper(inventory)
     var data = SimpleContainerData(8)
 
@@ -64,20 +66,35 @@ class DigitizerBlockEntity(pos: BlockPos, state: BlockState) :
 
     override fun createPeripheral(side: Direction): DigitizerPeripheral<BlockEntityPeripheralOwner<DigitizerBlockEntity>> = DigitizerPeripheral(BlockEntityPeripheralOwner(this))
 
+    override fun loadAdditional(compound: CompoundTag, provider: HolderLookup.Provider) {
+        registries = provider
+        super.loadAdditional(compound, provider)
+    }
+
+    override fun saveAdditional(compound: CompoundTag, provider: HolderLookup.Provider) {
+        registries = provider
+        super.saveAdditional(compound, provider)
+    }
+
+    override fun getUpdateTag(provider: HolderLookup.Provider): CompoundTag {
+        registries = provider
+        return super.getUpdateTag(provider)
+    }
+
     override fun loadInternalData(data: CompoundTag, state: BlockState?): BlockState {
         if (data.contains(STORED_ITEM_STACK_TAG)) {
             val itemList = data.getList(STORED_ITEM_STACK_TAG, 10)
             if (itemList.isEmpty()) {
                 inventory.clearContent()
             } else {
-                inventory.fromTag(itemList)
+                inventory.fromTag(itemList, registries)
             }
         }
         return state ?: blockState
     }
 
     override fun saveInternalData(data: CompoundTag): CompoundTag {
-        data.put(STORED_ITEM_STACK_TAG, inventory.createTag())
+        data.put(STORED_ITEM_STACK_TAG, inventory.createTag(registries))
         return data
     }
 

@@ -1,0 +1,30 @@
+{
+  "parent": "digitalitems:digitize_lava",
+  "criteria": {
+    "digitize_something": {
+      "conditions": {
+        "count": 9001000
+      },
+      "trigger": "digitalitems:digitilized_fluids"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.fluid_overdigitalization_description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:obsidian"
+    },
+    "title": {
+      "translate": "advencement.digitalitems.fluid_overdigitalization"
+    }
+  },
+  "requirements": [
+    [
+      "digitize_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

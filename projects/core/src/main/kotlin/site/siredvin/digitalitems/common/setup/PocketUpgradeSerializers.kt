@@ -1,6 +1,5 @@
 package site.siredvin.digitalitems.common.setup
 
-import dan200.computercraft.api.pocket.PocketUpgradeSerialiser
 import site.siredvin.digitalitems.computercraft.AdvancedDigitizerPeripheral
 import site.siredvin.digitalitems.computercraft.DigitizerPeripheral
 import site.siredvin.digitalitems.xplat.ModPlatform
@@ -9,27 +8,27 @@ import site.siredvin.tweakium.modules.pocket.PeripheralPocketUpgrade
 
 object PocketUpgradeSerializers {
 
-    val DIGITIZER = ModPlatform.registerPocketUpgrade(
+    val DIGITIZER = ModPlatform.registerPocketUpgradeWithSelfCustomItem(
         DigitizerPeripheral.ID,
-        PocketUpgradeSerialiser.simpleWithCustomItem { id, stack ->
-            PeripheralPocketUpgrade(
-                id,
-                stack,
-                { DigitizerPeripheral(PocketPeripheralOwner(it)) },
-            )
-        },
-    )
+    ) { id, type, stack ->
+        PeripheralPocketUpgrade(
+            id,
+            stack,
+            { DigitizerPeripheral(PocketPeripheralOwner(it)) },
+            { type },
+        )
+    }
 
-    val ADVANCED_DIGITIZER = ModPlatform.registerPocketUpgrade(
+    val ADVANCED_DIGITIZER = ModPlatform.registerPocketUpgradeWithSelfCustomItem(
         AdvancedDigitizerPeripheral.ID,
-        PocketUpgradeSerialiser.simpleWithCustomItem { id, stack ->
-            PeripheralPocketUpgrade(
-                id,
-                stack,
-                { AdvancedDigitizerPeripheral(PocketPeripheralOwner(it)) },
-            )
-        },
-    )
+    ) { id, type, stack ->
+        PeripheralPocketUpgrade(
+            id,
+            stack,
+            { AdvancedDigitizerPeripheral(PocketPeripheralOwner(it)) },
+            { type },
+        )
+    }
 
     fun doSomething() {}
 }

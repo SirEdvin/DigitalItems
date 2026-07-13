@@ -1,0 +1,30 @@
+{
+  "parent": "digitalitems:starting_up",
+  "criteria": {
+    "digitalize_something": {
+      "conditions": {
+        "count": 256
+      },
+      "trigger": "digitalitems:digitilized_items"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.continious_digitalization_description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:stone"
+    },
+    "title": {
+      "translate": "advencement.digitalitems.continious_digitalization"
+    }
+  },
+  "requirements": [
+    [
+      "digitalize_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

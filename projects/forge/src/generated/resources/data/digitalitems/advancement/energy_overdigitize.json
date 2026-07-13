@@ -1,0 +1,30 @@
+{
+  "parent": "digitalitems:digitize_energy",
+  "criteria": {
+    "digitize_something": {
+      "conditions": {
+        "count": 1073741823
+      },
+      "trigger": "digitalitems:digitilized_energy"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.energy_overdigitalization_description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:conduit"
+    },
+    "title": {
+      "translate": "advencement.digitalitems.energy_overdigitalization"
+    }
+  },
+  "requirements": [
+    [
+      "digitize_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
