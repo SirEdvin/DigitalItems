@@ -3,7 +3,6 @@ package site.siredvin.digitalitems
 import dan200.computercraft.api.pocket.IPocketUpgrade
 import dan200.computercraft.api.turtle.ITurtleUpgrade
 import dan200.computercraft.api.upgrades.UpgradeType
-import net.minecraft.advancements.CriterionTrigger
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Item
@@ -18,9 +17,7 @@ import site.siredvin.digitalitems.common.configuration.ConfigHolder
 import site.siredvin.digitalitems.forge.ForgeModPlatform
 import site.siredvin.digitalitems.forge.ForgeModRecipeIngredients
 import site.siredvin.digitalitems.xplat.ModCommonHooks
-import site.siredvin.digitalitems.xplat.ModPlatform
 import site.siredvin.tweakium.ForgeTweakium
-import java.util.function.Supplier
 
 @Mod(DigitalItemsCore.MOD_ID)
 class ForgeDigitalItems(modEventBus: IEventBus, modContainer: ModContainer) {
@@ -36,14 +33,12 @@ class ForgeDigitalItems(modEventBus: IEventBus, modContainer: ModContainer) {
             DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), DigitalItemsCore.MOD_ID)
         val menuTypes = DeferredRegister.create(BuiltInRegistries.MENU, DigitalItemsCore.MOD_ID)
         val customStats = DeferredRegister.create(BuiltInRegistries.CUSTOM_STAT, DigitalItemsCore.MOD_ID)
-        val triggerTypes: DeferredRegister<CriterionTrigger<*>> = DeferredRegister.create(BuiltInRegistries.TRIGGER_TYPES, DigitalItemsCore.MOD_ID)
         val turtleUpgradeTypes: DeferredRegister<UpgradeType<out ITurtleUpgrade>> = DeferredRegister.create(ITurtleUpgrade.typeRegistry(), DigitalItemsCore.MOD_ID)
         val pocketUpgradeTypes: DeferredRegister<UpgradeType<out IPocketUpgrade>> = DeferredRegister.create(IPocketUpgrade.typeRegistry(), DigitalItemsCore.MOD_ID)
     }
 
     init {
         ForgeTweakium.sayHi()
-        ModPlatform.configureCriterionRegistrar { id, trigger -> triggerTypes.register(id.path, Supplier { trigger }) }
         modContainer.registerConfig(ModConfig.Type.COMMON, ConfigHolder.commonSpec, "${DigitalItemsCore.MOD_ID}.toml")
         DigitalItemsCore.configure(ForgeModPlatform, ForgeModRecipeIngredients)
         ModCommonHooks.onRegister()
@@ -53,7 +48,6 @@ class ForgeDigitalItems(modEventBus: IEventBus, modContainer: ModContainer) {
         creativeTabRegistry.register(modEventBus)
         menuTypes.register(modEventBus)
         customStats.register(modEventBus)
-        triggerTypes.register(modEventBus)
         turtleUpgradeTypes.register(modEventBus)
         pocketUpgradeTypes.register(modEventBus)
     }

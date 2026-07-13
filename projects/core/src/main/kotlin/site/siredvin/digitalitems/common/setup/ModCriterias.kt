@@ -7,15 +7,14 @@ import site.siredvin.digitalitems.common.criteria.DigitalizeLavaCriteria
 import site.siredvin.digitalitems.common.criteria.DigitalizeOreCriteria
 import site.siredvin.digitalitems.common.criteria.DigitalizeStarCriteria
 import site.siredvin.digitalitems.xplat.ModPlatform
-import java.util.function.Supplier
 
 object ModCriterias {
-    private val digitalizeItems: Supplier<DigitalizeItemCriteria> = ModPlatform.registerCriterion(DigitalizeItemCriteria.ID, DigitalizeItemCriteria())
-    private val digitalizeOres: Supplier<DigitalizeOreCriteria> = ModPlatform.registerCriterion(DigitalizeOreCriteria.ID, DigitalizeOreCriteria())
-    private val digitalizeStars: Supplier<DigitalizeStarCriteria> = ModPlatform.registerCriterion(DigitalizeStarCriteria.ID, DigitalizeStarCriteria())
-    private val digitalizeFluids: Supplier<DigitalizeFluidCriteria> = ModPlatform.registerCriterion(DigitalizeFluidCriteria.ID, DigitalizeFluidCriteria())
-    private val digitalizeEnergy: Supplier<DigitalizeEnergyCriteria> = ModPlatform.registerCriterion(DigitalizeEnergyCriteria.ID, DigitalizeEnergyCriteria())
-    private val digitalizeLava: Supplier<DigitalizeLavaCriteria> = ModPlatform.registerCriterion(DigitalizeLavaCriteria.ID, DigitalizeLavaCriteria())
+    private val digitalizeItems = ModPlatform.registerCriterionTrigger(DigitalizeItemCriteria.ID, DigitalizeItemCriteria())
+    private val digitalizeOres = ModPlatform.registerCriterionTrigger(DigitalizeOreCriteria.ID, DigitalizeOreCriteria())
+    private val digitalizeStars = ModPlatform.registerCriterionTrigger(DigitalizeStarCriteria.ID, DigitalizeStarCriteria())
+    private val digitalizeFluids = ModPlatform.registerCriterionTrigger(DigitalizeFluidCriteria.ID, DigitalizeFluidCriteria())
+    private val digitalizeEnergy = ModPlatform.registerCriterionTrigger(DigitalizeEnergyCriteria.ID, DigitalizeEnergyCriteria())
+    private val digitalizeLava = ModPlatform.registerCriterionTrigger(DigitalizeLavaCriteria.ID, DigitalizeLavaCriteria())
 
     val DIGITALIZE_ITEMS: DigitalizeItemCriteria get() = digitalizeItems.get()
     val DIGITALIZE_ORES: DigitalizeOreCriteria get() = digitalizeOres.get()

@@ -12,10 +12,10 @@ spotless = "6.19.0"
 
 # Core mod dependencies
 cc-tweaked = "1.113.0"
-broccolium = "1.4.5"
-tweakium = "1.4.5"
-broccolium-jjar = "[1.4.5, 1.5.0)"
-tweakium-jjar = "[1.4.5, 1.5.0)"
+broccolium = "1.4.6"
+tweakium = "1.4.6"
+broccolium-jjar = "[1.4.6, 1.5.0)"
+tweakium-jjar = "[1.4.6, 1.5.0)"
 mixin = "0.8.5"
 
 # Fabric dependencies
