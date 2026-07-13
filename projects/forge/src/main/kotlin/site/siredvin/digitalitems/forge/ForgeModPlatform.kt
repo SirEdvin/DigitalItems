@@ -3,6 +3,7 @@ package site.siredvin.digitalitems.forge
 import dan200.computercraft.api.pocket.IPocketUpgrade
 import dan200.computercraft.api.turtle.ITurtleUpgrade
 import dan200.computercraft.api.upgrades.UpgradeType
+import net.minecraft.advancements.CriterionTrigger
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.inventory.MenuType
 import net.minecraft.world.item.CreativeModeTab
@@ -27,6 +28,8 @@ object ForgeModPlatform : ForgeInnerComputerBasePlatform() {
         get() = ForgeDigitalItems.creativeTabRegistry
     override val customStats: DeferredRegister<ResourceLocation>
         get() = ForgeDigitalItems.customStats
+    override val criterionTriggers: DeferredRegister<CriterionTrigger<*>>
+        get() = ForgeDigitalItems.criterionTriggers
     override val itemsRegistry: DeferredRegister<Item>
         get() = ForgeDigitalItems.itemsRegistry
     override val menuTypes: DeferredRegister<MenuType<*>>

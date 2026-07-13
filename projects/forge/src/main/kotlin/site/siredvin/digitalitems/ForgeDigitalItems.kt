@@ -3,6 +3,7 @@ package site.siredvin.digitalitems
 import dan200.computercraft.api.pocket.IPocketUpgrade
 import dan200.computercraft.api.turtle.ITurtleUpgrade
 import dan200.computercraft.api.upgrades.UpgradeType
+import net.minecraft.advancements.CriterionTrigger
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Item
@@ -33,6 +34,7 @@ class ForgeDigitalItems(modEventBus: IEventBus, modContainer: ModContainer) {
             DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), DigitalItemsCore.MOD_ID)
         val menuTypes = DeferredRegister.create(BuiltInRegistries.MENU, DigitalItemsCore.MOD_ID)
         val customStats = DeferredRegister.create(BuiltInRegistries.CUSTOM_STAT, DigitalItemsCore.MOD_ID)
+        val criterionTriggers = DeferredRegister.create(BuiltInRegistries.TRIGGER_TYPES, DigitalItemsCore.MOD_ID)
         val turtleUpgradeTypes: DeferredRegister<UpgradeType<out ITurtleUpgrade>> = DeferredRegister.create(ITurtleUpgrade.typeRegistry(), DigitalItemsCore.MOD_ID)
         val pocketUpgradeTypes: DeferredRegister<UpgradeType<out IPocketUpgrade>> = DeferredRegister.create(IPocketUpgrade.typeRegistry(), DigitalItemsCore.MOD_ID)
     }
@@ -48,6 +50,7 @@ class ForgeDigitalItems(modEventBus: IEventBus, modContainer: ModContainer) {
         creativeTabRegistry.register(modEventBus)
         menuTypes.register(modEventBus)
         customStats.register(modEventBus)
+        criterionTriggers.register(modEventBus)
         turtleUpgradeTypes.register(modEventBus)
         pocketUpgradeTypes.register(modEventBus)
     }
