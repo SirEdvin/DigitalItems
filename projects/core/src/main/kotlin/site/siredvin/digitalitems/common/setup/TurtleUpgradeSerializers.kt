@@ -2,7 +2,6 @@ package site.siredvin.digitalitems.common.setup
 
 import dan200.computercraft.api.turtle.ITurtleAccess
 import dan200.computercraft.api.turtle.TurtleSide
-import dan200.computercraft.api.turtle.TurtleUpgradeSerialiser
 import site.siredvin.digitalitems.computercraft.AdvancedDigitizerPeripheral
 import site.siredvin.digitalitems.computercraft.DigitizerPeripheral
 import site.siredvin.digitalitems.xplat.ModPlatform
@@ -11,26 +10,26 @@ import site.siredvin.tweakium.modules.turtle.PeripheralTurtleUpgrade
 
 object TurtleUpgradeSerializers {
 
-    val DIGITIZER = ModPlatform.registerTurtleUpgrade(
+    val DIGITIZER = ModPlatform.registerTurtleUpgradeWithSelfCustomItem(
         DigitizerPeripheral.ID,
-        TurtleUpgradeSerialiser.simpleWithCustomItem { id, stack ->
-            PeripheralTurtleUpgrade.dynamic(
-                stack.item,
-                { turtle: ITurtleAccess, side: TurtleSide -> DigitizerPeripheral(TurtlePeripheralOwner(turtle, side)) },
-                { DigitizerPeripheral.ID },
-            )
-        },
-    )
-    val ADVANCED_DIGITIZER = ModPlatform.registerTurtleUpgrade(
+    ) { id, type, stack ->
+        PeripheralTurtleUpgrade.dynamic(
+            stack.item,
+            { turtle: ITurtleAccess, side: TurtleSide -> DigitizerPeripheral(TurtlePeripheralOwner(turtle, side)) },
+            { type },
+            { id },
+        )
+    }
+    val ADVANCED_DIGITIZER = ModPlatform.registerTurtleUpgradeWithSelfCustomItem(
         AdvancedDigitizerPeripheral.ID,
-        TurtleUpgradeSerialiser.simpleWithCustomItem { id, stack ->
-            PeripheralTurtleUpgrade.dynamic(
-                stack.item,
-                { turtle: ITurtleAccess, side: TurtleSide -> AdvancedDigitizerPeripheral(TurtlePeripheralOwner(turtle, side)) },
-                { AdvancedDigitizerPeripheral.ID },
-            )
-        },
-    )
+    ) { id, type, stack ->
+        PeripheralTurtleUpgrade.dynamic(
+            stack.item,
+            { turtle: ITurtleAccess, side: TurtleSide -> AdvancedDigitizerPeripheral(TurtlePeripheralOwner(turtle, side)) },
+            { type },
+            { id },
+        )
+    }
 
     fun doSomething() {}
 }

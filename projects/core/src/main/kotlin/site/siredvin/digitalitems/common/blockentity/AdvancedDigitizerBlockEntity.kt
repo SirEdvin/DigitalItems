@@ -2,6 +2,7 @@ package site.siredvin.digitalitems.common.blockentity
 
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
+import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
 import net.minecraft.network.chat.Component
@@ -39,22 +40,22 @@ class AdvancedDigitizerBlockEntity(pos: BlockPos, state: BlockState) :
 
         override fun canPlaceItem(slot: Int, stack: ItemStack): Boolean = true
 
-        override fun createTag(): ListTag {
+        override fun createTag(registries: HolderLookup.Provider): ListTag {
             val tags = ListTag()
 
             for (slot in 0..<this.containerSize) {
                 val itemStack = this.getItem(slot)
-                tags.add(itemStack.save(CompoundTag()))
+                tags.add(itemStack.saveOptional(registries))
             }
 
             return tags
         }
 
-        override fun fromTag(tags: ListTag) {
+        override fun fromTag(tags: ListTag, registries: HolderLookup.Provider) {
             this.clearContent()
 
             for (slot in tags.indices) {
-                val stack = ItemStack.of(tags.getCompound(slot))
+                val stack = ItemStack.parseOptional(registries, tags.getCompound(slot))
                 if (!stack.isEmpty) {
                     this.setItem(slot, stack)
                 }
@@ -63,6 +64,7 @@ class AdvancedDigitizerBlockEntity(pos: BlockPos, state: BlockState) :
     }
 
     private val inventory = ExtraSimpleStorage(this)
+    private lateinit var registries: HolderLookup.Provider
     val storage = ContainerWrapper(inventory)
     var data = SimpleContainerData(8)
 
@@ -87,20 +89,35 @@ class AdvancedDigitizerBlockEntity(pos: BlockPos, state: BlockState) :
 
     override fun createPeripheral(side: Direction): AdvancedDigitizerPeripheral<BlockEntityPeripheralOwner<AdvancedDigitizerBlockEntity>> = AdvancedDigitizerPeripheral(BlockEntityPeripheralOwner(this))
 
+    override fun loadAdditional(compound: CompoundTag, provider: HolderLookup.Provider) {
+        registries = provider
+        super.loadAdditional(compound, provider)
+    }
+
+    override fun saveAdditional(compound: CompoundTag, provider: HolderLookup.Provider) {
+        registries = provider
+        super.saveAdditional(compound, provider)
+    }
+
+    override fun getUpdateTag(provider: HolderLookup.Provider): CompoundTag {
+        registries = provider
+        return super.getUpdateTag(provider)
+    }
+
     override fun loadInternalData(data: CompoundTag, state: BlockState?): BlockState {
         if (data.contains(STORED_ITEM_STACKS_TAG)) {
             val itemList = data.getList(STORED_ITEM_STACKS_TAG, 10)
             if (itemList.isEmpty()) {
                 inventory.clearContent()
             } else {
-                inventory.fromTag(itemList)
+                inventory.fromTag(itemList, registries)
             }
         }
         return state ?: blockState
     }
 
     override fun saveInternalData(data: CompoundTag): CompoundTag {
-        data.put(STORED_ITEM_STACKS_TAG, inventory.createTag())
+        data.put(STORED_ITEM_STACKS_TAG, inventory.createTag(registries))
         return data
     }
 

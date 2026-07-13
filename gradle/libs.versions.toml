@@ -1,7 +1,7 @@
 [versions]
 # Base libraries
 kotlin = "1.9.0"
-kotlin-coroutines = "1.6.4"
+kotlin-coroutines = "1.9.0"
 kotlin-atomicfu = "0.20.2"
 
 # Gradle plugins
@@ -12,29 +12,29 @@ spotless = "6.19.0"
 
 # Core mod dependencies
 cc-tweaked = "1.113.0"
-broccolium = "1.4.3"
-tweakium = "1.4.3"
-broccolium-jjar = "[1.4.3, 1.5.0)"
-tweakium-jjar = "[1.4.3, 1.5.0)"
+broccolium = "1.4.6"
+tweakium = "1.4.6"
+broccolium-jjar = "[1.4.6, 1.5.0)"
+tweakium-jjar = "[1.4.6, 1.5.0)"
 mixin = "0.8.5"
 
 # Fabric dependencies
-fabric-api = "0.92.0+1.20.1"
-fabric-loader = "0.15.11"
+fabric-api = "0.116.3+1.21.1"
+fabric-loader = "0.16.14"
 fabric-kotlin = "1.11.0+kotlin.2.0.0"
-forgeconfigapirt = "8.0.0"
-modmenu = "7.2.1"
+forgeconfigapirt = "21.1.6"
+modmenu = "11.0.1"
 
 # Forge dependencies
-forge = "47.2.0"
-forge-kotlin = "4.11.0"
-parchment = "2023.07.16"
-parchmentMc = "1.20.1"
+neoforge = "21.1.9"
+forge-kotlin = "5.7.0"
+parchment = "2024.11.17"
+parchmentMc = "1.21.1"
 # Extra mod dependencies
 
 # Dev mod dependenceis
-jei = "15.1.0.19"
-rei = "12.0.625"
+jei = "19.27.0.340"
+rei = "16.0.799"
 
 # Testing
 autoService = "1.0.1"
@@ -55,33 +55,34 @@ kotlin-plugin = {module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.r
 spotless-plugin = {module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref="spotless"}
 
 # Core mod dependencies
-cc-tweaked-common = {module = "cc.tweaked:cc-tweaked-1.20.1-common-api", version.ref = "cc-tweaked"}
-cc-tweaked-core = {module = "cc.tweaked:cc-tweaked-1.20.1-core", version.ref = "cc-tweaked"}
+cc-tweaked-common-api = {module = "cc.tweaked:cc-tweaked-1.21.1-common-api", version.ref = "cc-tweaked"}
+cc-tweaked-common = {module = "cc.tweaked:cc-tweaked-1.21.1-common", version.ref = "cc-tweaked"}
+cc-tweaked-core = {module = "cc.tweaked:cc-tweaked-1.21.1-core", version.ref = "cc-tweaked"}
 common-config = {module = "fuzs.forgeconfigapiport:forgeconfigapiport-common", version.ref = "forgeconfigapirt"}
 mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
-broccolium-core = {module = "site.siredvin:broccolium-common-1.20.1", version.ref = "broccolium"}
-tweakium-core = {module = "site.siredvin:tweakium-common-1.20.1", version.ref = "tweakium"}
+broccolium-core = {module = "site.siredvin:broccolium-common-1.21.1", version.ref = "broccolium"}
+tweakium-core = {module = "site.siredvin:tweakium-common-1.21.1", version.ref = "tweakium"}
 
 # Fabric mod dependencies
 fabric-loader = {module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader"}
 fabric-api = {module = "net.fabricmc.fabric-api:fabric-api", version.ref="fabric-api"}
 fabric-kotlin = {module = "net.fabricmc:fabric-language-kotlin", version.ref = "fabric-kotlin"}
 fabric-config = {module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "forgeconfigapirt"}
-cc-tweaked-fabric-api = {module = "cc.tweaked:cc-tweaked-1.20.1-fabric-api", version.ref = "cc-tweaked"}
-cc-tweaked-fabric = {module = "cc.tweaked:cc-tweaked-1.20.1-fabric", version.ref = "cc-tweaked"}
-broccolium-fabric = {module = "site.siredvin:broccolium-fabric-1.20.1", version.ref = "broccolium"}
-tweakium-fabric = {module = "site.siredvin:tweakium-fabric-1.20.1", version.ref = "tweakium"}
+cc-tweaked-fabric-api = {module = "cc.tweaked:cc-tweaked-1.21.1-fabric-api", version.ref = "cc-tweaked"}
+cc-tweaked-fabric = {module = "cc.tweaked:cc-tweaked-1.21.1-fabric", version.ref = "cc-tweaked"}
+broccolium-fabric = {module = "site.siredvin:broccolium-fabric-1.21.1", version.ref = "broccolium"}
+tweakium-fabric = {module = "site.siredvin:tweakium-fabric-1.21.1", version.ref = "tweakium"}
 
 # Forge mod dependencies
-cc-tweaked-forge =  {module = "cc.tweaked:cc-tweaked-1.20.1-forge", version.ref="cc-tweaked"}
-forge-kotlin = {module = "thedarkcolour:kotlinforforge", version.ref = "forge-kotlin"}
-broccolium-forge = {module = "site.siredvin:broccolium-forge-1.20.1", version.ref = "broccolium"}
-tweakium-forge = {module = "site.siredvin:tweakium-forge-1.20.1", version.ref = "tweakium"}
-broccolium-jjar-forge = {module = "site.siredvin:broccolium-forge-1.20.1", version.ref = "broccolium-jjar"}
-tweakium-jjar-forge = {module = "site.siredvin:tweakium-forge-1.20.1", version.ref = "tweakium-jjar"}
+cc-tweaked-forge =  {module = "cc.tweaked:cc-tweaked-1.21.1-forge", version.ref="cc-tweaked"}
+forge-kotlin = {module = "thedarkcolour:kotlinforforge-neoforge", version.ref = "forge-kotlin"}
+broccolium-forge = {module = "site.siredvin:broccolium-forge-1.21.1", version.ref = "broccolium"}
+tweakium-forge = {module = "site.siredvin:tweakium-forge-1.21.1", version.ref = "tweakium"}
+broccolium-jjar-forge = {module = "site.siredvin:broccolium-forge-1.21.1", version.ref = "broccolium-jjar"}
+tweakium-jjar-forge = {module = "site.siredvin:tweakium-forge-1.21.1", version.ref = "tweakium-jjar"}
 
 # Dev mod dependencies
-jei-forge = { module = "mezz.jei:jei-1.20.1-forge", version.ref = "jei" }
+jei-forge = { module = "mezz.jei:jei-1.21.1-neoforge", version.ref = "jei" }
 rei-fabric = {module = "me.shedaniel:RoughlyEnoughItems-fabric", version.ref = "rei"}
 # Testing
 autoService = { module = "com.google.auto.service:auto-service", version.ref = "autoService" }
@@ -101,7 +102,7 @@ spotless = {id = "com.diffplug.spotless", version.ref="spotless"}
 
 [bundles]
 kotlin = ["kotlin-stdlib", "kotlin-coroutines", "kotlin-atomicfu"]
-cccommon = ["cc-tweaked-common", "cc-tweaked-core", "tweakium-core", "broccolium-core"]
+cccommon = ["cc-tweaked-common-api", "cc-tweaked-common", "cc-tweaked-core", "tweakium-core", "broccolium-core"]
 apicommon = ["common-config"]
 fabric-include = ["broccolium-fabric", "tweakium-fabric"]
 fabric-cc = ["cc-tweaked-fabric"]

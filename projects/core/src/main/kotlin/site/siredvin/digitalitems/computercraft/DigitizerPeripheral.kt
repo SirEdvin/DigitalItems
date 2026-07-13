@@ -169,6 +169,6 @@ class DigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
     companion object {
         val rand = SecureRandom()
         const val TYPE = "digitizer"
-        val ID = ResourceLocation(DigitalItemsCore.MOD_ID, TYPE)
+        val ID = ResourceLocation.fromNamespaceAndPath(DigitalItemsCore.MOD_ID, TYPE)
     }
 }

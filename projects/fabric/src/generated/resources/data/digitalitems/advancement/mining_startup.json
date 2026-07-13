@@ -1,0 +1,30 @@
+{
+  "parent": "digitalitems:root",
+  "criteria": {
+    "digitilize_something": {
+      "conditions": {
+        "count": 64
+      },
+      "trigger": "digitalitems:digitilized_ores"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.mining_startup_description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:iron_ore"
+    },
+    "title": {
+      "translate": "advencement.digitalitems.mining_startup"
+    }
+  },
+  "requirements": [
+    [
+      "digitilize_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

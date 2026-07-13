@@ -1,0 +1,30 @@
+{
+  "parent": "digitalitems:advanced_digitizer",
+  "criteria": {
+    "digitize_something": {
+      "conditions": {
+        "count": 4000
+      },
+      "trigger": "digitalitems:digitilized_fluids"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.digitize_fluid_description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:water_bucket"
+    },
+    "title": {
+      "translate": "advencement.digitalitems.digitize_fluid"
+    }
+  },
+  "requirements": [
+    [
+      "digitize_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

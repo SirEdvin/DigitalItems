@@ -1,9 +1,11 @@
 package site.siredvin.digitalitems.common.data
 
+import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
 import net.minecraft.nbt.Tag
 import net.minecraft.server.level.ServerLevel
+import net.minecraft.util.datafix.DataFixTypes
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.saveddata.SavedData
 import site.siredvin.digitalitems.DigitalItemsCore
@@ -82,20 +84,23 @@ class DigitalItemsSavedData : SavedData() {
         return result
     }
 
-    private fun <T : DigitizedSomething<*>> saveSomething(map: MutableMap<ByteArrayWrapper, T>): ListTag {
+    private fun <T : DigitizedSomething<*>> saveSomething(
+        map: MutableMap<ByteArrayWrapper, T>,
+        serialize: (T, CompoundTag) -> Unit = { item, tag -> item.serialize(tag) },
+    ): ListTag {
         val items = ListTag()
         map.values.filter { !it.isEmpty }.forEach(
             Consumer { digitizedItem: T ->
                 val digitizedItemTag = CompoundTag()
-                digitizedItem.serialize(digitizedItemTag)
+                serialize(digitizedItem, digitizedItemTag)
                 items.add(digitizedItemTag)
             },
         )
         return items
     }
 
-    override fun save(tag: CompoundTag): CompoundTag {
-        tag.put("items", saveSomething(digitizedItems))
+    override fun save(tag: CompoundTag, registries: HolderLookup.Provider): CompoundTag {
+        tag.put("items", saveSomething(digitizedItems) { item, itemTag -> item.serialize(itemTag, registries) })
         tag.put("fluids", saveSomething(digitizedFluids))
         tag.put("energies", saveSomething(digitizedEnergy))
         return tag
@@ -103,6 +108,10 @@ class DigitalItemsSavedData : SavedData() {
 
     companion object {
         private var instance: DigitalItemsSavedData? = null
+
+        @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+        private val factory = Factory(::create, ::load, null as DataFixTypes?)
+
         fun getFrom(l: Level): DigitalItemsSavedData {
             if (l !is ServerLevel) {
                 throw IllegalCallerException("may only be called server side!")
@@ -110,20 +119,20 @@ class DigitalItemsSavedData : SavedData() {
             if (instance != null) {
                 return instance!!
             }
-            instance = l.server.overworld().dataStorage.computeIfAbsent({ tag: CompoundTag -> load(tag) }, { create() }, DigitalItemsCore.MOD_ID)
+            instance = l.server.overworld().dataStorage.computeIfAbsent(factory, DigitalItemsCore.MOD_ID)
             instance!!.prune(l)
             return instance!!
         }
 
         fun create(): DigitalItemsSavedData = DigitalItemsSavedData()
 
-        fun load(tag: CompoundTag): DigitalItemsSavedData {
+        fun load(tag: CompoundTag, registries: HolderLookup.Provider): DigitalItemsSavedData {
             val data = create()
             if (tag.contains("items") && tag["items"] is ListTag) {
                 val list = Objects.requireNonNull(tag["items"]) as ListTag
                 list.forEach(
                     Consumer { tag1: Tag ->
-                        val di = DigitizedItem(Objects.requireNonNull(tag1) as CompoundTag)
+                        val di = DigitizedItem(Objects.requireNonNull(tag1) as CompoundTag, registries)
                         if (!di.isEmpty) {
                             data.digitizedItems[di.id] = di
                         }

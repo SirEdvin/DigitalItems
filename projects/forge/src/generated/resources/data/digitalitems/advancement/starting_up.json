@@ -1,0 +1,30 @@
+{
+  "parent": "digitalitems:root",
+  "criteria": {
+    "digitalize_something": {
+      "conditions": {
+        "count": 64
+      },
+      "trigger": "digitalitems:digitilized_items"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.starting_up_description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:dirt"
+    },
+    "title": {
+      "translate": "advencement.digitalitems.starting_up"
+    }
+  },
+  "requirements": [
+    [
+      "digitalize_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

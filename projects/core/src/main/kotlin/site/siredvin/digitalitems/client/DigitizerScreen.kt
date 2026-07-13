@@ -78,13 +78,13 @@ class DigitizerScreen<T : AbstractContainerMenu>(menu: BasicMenu<T>, inv: Invent
     }
 
     override fun render(graphics: GuiGraphics, mouseX: Int, mouseY: Int, delta: Float) {
-        renderBackground(graphics)
+        renderBackground(graphics, mouseX, mouseY, delta)
         super.render(graphics, mouseX, mouseY, delta)
         renderTooltip(graphics, mouseX, mouseY)
     }
 
     companion object {
-        private val TEXTURE = ResourceLocation(DigitalItemsCore.MOD_ID, "textures/gui/digitizer_container.png")
-        private val ADVANCED_TEXTURE = ResourceLocation(DigitalItemsCore.MOD_ID, "textures/gui/advanced_digitizer_container.png")
+        private val TEXTURE = ResourceLocation.fromNamespaceAndPath(DigitalItemsCore.MOD_ID, "textures/gui/digitizer_container.png")
+        private val ADVANCED_TEXTURE = ResourceLocation.fromNamespaceAndPath(DigitalItemsCore.MOD_ID, "textures/gui/advanced_digitizer_container.png")
     }
 }

@@ -1,10 +1,10 @@
 package site.siredvin.digitalitems.common.blocks
 
+import com.mojang.serialization.MapCodec
 import net.minecraft.core.BlockPos
 import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.Containers
-import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
@@ -27,6 +27,8 @@ import site.siredvin.digitalitems.common.setup.ModBlockEntityTypes
 import java.util.*
 
 class AdvancedDigitizer : BaseBlockEntityBlock<AdvancedDigitizerBlockEntity>(false, BlockUtil.defaultProperties()) {
+
+    override fun codec(): MapCodec<out AdvancedDigitizer> = simpleCodec { AdvancedDigitizer() }
 
     companion object {
         val FACING = BlockStateProperties.HORIZONTAL_FACING
@@ -59,10 +61,10 @@ class AdvancedDigitizer : BaseBlockEntityBlock<AdvancedDigitizerBlockEntity>(fal
     override fun mirror(pState: BlockState, pMirror: Mirror): BlockState = pState.rotate(pMirror.getRotation(pState.getValue(FACING)))
 
     @Deprecated("Deprecated in Java")
-    override fun getRenderShape(state: BlockState): RenderShape = RenderShape.MODEL
+    override fun getRenderShape(blockState: BlockState): RenderShape = RenderShape.MODEL
 
-    override fun createBlockStateDefinition(builder: StateDefinition.Builder<Block?, BlockState?>) {
-        builder.add(FACING, POWERED)
+    override fun createBlockStateDefinition(blockState: StateDefinition.Builder<Block?, BlockState?>) {
+        blockState.add(FACING, POWERED)
     }
 
     @Deprecated("Deprecated in Java")
@@ -89,12 +91,11 @@ class AdvancedDigitizer : BaseBlockEntityBlock<AdvancedDigitizerBlockEntity>(fal
     }
 
     @Deprecated("Deprecated in Java")
-    override fun use(
+    override fun useWithoutItem(
         state: BlockState,
         level: Level,
         pos: BlockPos,
         player: Player,
-        interactionHand: InteractionHand,
         blockHitResult: BlockHitResult,
     ): InteractionResult {
         if (player !is ServerPlayer) {

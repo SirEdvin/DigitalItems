@@ -1,7 +1,7 @@
 package site.siredvin.digitalitems.forge
 
 import net.minecraft.world.item.crafting.Ingredient
-import net.minecraftforge.common.Tags
+import net.neoforged.neoforge.common.Tags
 import site.siredvin.digitalitems.xplat.ModRecipeIngredients
 
 object ForgeModRecipeIngredients : ModRecipeIngredients {

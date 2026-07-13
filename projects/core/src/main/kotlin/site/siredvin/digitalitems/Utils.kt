@@ -2,6 +2,7 @@ package site.siredvin.digitalitems
 
 import dan200.computercraft.api.lua.LuaException
 import net.minecraft.advancements.Advancement
+import net.minecraft.advancements.AdvancementHolder
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
@@ -13,9 +14,9 @@ import site.siredvin.digitalitems.common.setup.ModStats
 import java.nio.ByteBuffer
 import java.util.function.Consumer
 
-fun modId(something: String): ResourceLocation = ResourceLocation(DigitalItemsCore.MOD_ID, something)
+fun modId(something: String): ResourceLocation = ResourceLocation.fromNamespaceAndPath(DigitalItemsCore.MOD_ID, something)
 
-fun Advancement.Builder.saveWithID(consumer: Consumer<Advancement>, id: ResourceLocation): Advancement {
+fun Advancement.Builder.saveWithID(consumer: Consumer<AdvancementHolder>, id: ResourceLocation): AdvancementHolder {
     val advancement = this.build(id)
     consumer.accept(advancement)
     return advancement
