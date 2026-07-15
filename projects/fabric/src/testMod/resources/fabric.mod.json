@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "digitalitems_testmod",
+  "version": "1.0",
+  "name": "DigitalItems Testmod",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "site.siredvin.digitalitems.testmod.FabricDigitalItemsTestMod"
+      }
+    ]
+  },
+  "depends": {
+    "fabricloader": "*",
+    "digitalitems": "*",
+    "testiarium": "*",
+    "computercraft": "*"
+  }
+}
