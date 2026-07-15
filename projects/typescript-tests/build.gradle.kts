@@ -21,7 +21,7 @@ val compileTestLua by tasks.registering(NpmTask::class) {
     dependsOn(tasks.npmInstall)
     npmCommand.set(listOf("run", "build"))
     inputs.files(fileTree(projectDir) {
-        include("package.json", "package-lock.json", "tsconfig.json", "build.mjs", "src/**/*.ts")
+        include("package.json", "package-lock.json", "tsconfig.json", "build.mjs", "generate-peripheral-contracts.mjs", "src/**/*.ts")
         exclude("node_modules/**")
     })
     inputs.files(project(":typed-peripheral-digitalitems").fileTree(project(":typed-peripheral-digitalitems").projectDir) {

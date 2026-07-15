@@ -1,11 +1,13 @@
 import { BasicTest, asserts } from "@siredvin/soteria";
 import { digitizerProvider } from "@siredvin/typed-peripheral-digitalitems/digitizer";
 import { creativeFillerProvider } from "@siredvin/typed-peripheral-tweakium/creative_filler";
+import { assertDigitizerMethods } from "./peripheral_contracts";
 import { runTest } from "./run";
 
 class OldDigitizerTest extends BasicTest {
     execute(): void {
         const digitizer = digitizerProvider.findOrThrow();
+        assertDigitizerMethods(digitizer);
         asserts.assertEmptyInventory(digitizer);
         creativeFillerProvider.findOrThrow().put("item", peripheral.getName(digitizer), "minecraft:oak_log", 64);
         const id = digitizer.digitize();
