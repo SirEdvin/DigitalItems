@@ -1,0 +1,6 @@
+{
+  "name": "cc-corelib",
+  "version": "0.1.0",
+  "private": true,
+  "types": "utils.ts"
+}
