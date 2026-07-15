@@ -37,6 +37,7 @@ jei = "19.27.0.340"
 rei = "16.0.799"
 
 # Testing
+testiarium = "0.1.1"
 autoService = "1.0.1"
 byteBuddy = "1.14.2"
 hamcrest = "2.2"
@@ -85,6 +86,9 @@ tweakium-jjar-forge = {module = "site.siredvin:tweakium-forge-1.21.1", version.r
 jei-forge = { module = "mezz.jei:jei-1.21.1-neoforge", version.ref = "jei" }
 rei-fabric = {module = "me.shedaniel:RoughlyEnoughItems-fabric", version.ref = "rei"}
 # Testing
+testiarium-core = { module = "site.siredvin:testiarium-core-1.21.1", version.ref = "testiarium" }
+testiarium-forge = { module = "site.siredvin:testiarium-forge-1.21.1", version.ref = "testiarium" }
+testiarium-fabric = { module = "site.siredvin:testiarium-fabric-1.21.1", version.ref = "testiarium" }
 autoService = { module = "com.google.auto.service:auto-service", version.ref = "autoService" }
 byteBuddyAgent = { module = "net.bytebuddy:byte-buddy-agent", version.ref = "byteBuddy" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }

@@ -32,10 +32,61 @@ fabricShaking {
     shake()
 }
 
+val testMod = sourceSets.create("testMod") {
+    compileClasspath += sourceSets.main.get().compileClasspath
+    compileClasspath += sourceSets.main.get().output
+    compileClasspath += project(":core").sourceSets["testMod"].output
+    runtimeClasspath += sourceSets.main.get().runtimeClasspath
+    runtimeClasspath += sourceSets.main.get().output
+    runtimeClasspath += project(":core").sourceSets["testMod"].output
+}
+
+net.fabricmc.loom.configuration.RemapConfigurations.setupForSourceSet(project, testMod)
+
+val testiariumCctArtifacts = configurations.detachedConfiguration(
+    project.dependencies.create("site.siredvin:testiarium-core-1.21.1:0.1.1:cct-test-mod@jar"),
+    project.dependencies.create("site.siredvin:testiarium-fabric-1.21.1:0.1.1:cct-test-mod@jar"),
+).apply {
+    isTransitive = false
+}
+
+val testiariumTestArtifacts = configurations.detachedConfiguration(
+    project.dependencies.create("site.siredvin:testiarium-core-1.21.1:0.1.1:test-mod@jar"),
+    project.dependencies.create("site.siredvin:testiarium-fabric-1.21.1:0.1.1:test-mod@jar"),
+).apply {
+    isTransitive = false
+}
+
+val testiariumMainArtifacts = configurations.detachedConfiguration(
+    project.dependencies.create("site.siredvin:testiarium-core-1.21.1:0.1.1"),
+    project.dependencies.create("site.siredvin:testiarium-fabric-1.21.1:0.1.1"),
+).apply {
+    isTransitive = false
+}
+
 loom {
+    mods {
+        register("digitalitems-testmod") {
+            sourceSet(testMod)
+            sourceSet(project(":core").sourceSets["testMod"])
+        }
+    }
     runs {
         named("client") {
             this.programArgs("--username=Player")
+        }
+        create("digitalItemsGameTest") {
+            server()
+            source(testMod)
+            property("fabric-api.gametest", "true")
+            property("fabric.debug.loadLate", "testiarium_cct_testmod")
+            property("testiarium.tags", "digitalitems")
+            property("testiarium.structures", project(":core").layout.buildDirectory.dir("resources/testMod/gameteststructures").get().asFile.absolutePath)
+            property("testiarium.fixture-source", project(":core").file("src/testMod/resources/gameteststructures").absolutePath)
+            property("testiarium.cct-fixtures", project(":core").layout.buildDirectory.dir("resources/testMod/computer").get().asFile.absolutePath)
+            property("testiarium.gametest-report", layout.buildDirectory.file("test-results/digitalitems-gametest.xml").get().asFile.absolutePath)
+            vmArg("-ea")
+            runDir("run/digitalitems-gametest")
         }
     }
 }
@@ -76,6 +127,13 @@ dependencies {
         exclude("net.fabricmc.fabric-api")
         exclude("net.fabricmc", "fabric-loader")
     }
+
+    add("modTestModImplementation", libs.bundles.kotlin)
+    add("modTestModImplementation", libs.bundles.fabric.core)
+    add("modTestModImplementation", libs.bundles.fabric.cc)
+    add("modTestModImplementation", files(testiariumMainArtifacts))
+    add("modTestModImplementation", files(testiariumTestArtifacts))
+    add("modTestModImplementation", files(testiariumCctArtifacts))
 }
 
 modPublishing {

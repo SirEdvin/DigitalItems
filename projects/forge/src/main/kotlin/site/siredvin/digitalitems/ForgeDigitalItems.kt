@@ -3,7 +3,6 @@ package site.siredvin.digitalitems
 import dan200.computercraft.api.pocket.IPocketUpgrade
 import dan200.computercraft.api.turtle.ITurtleUpgrade
 import dan200.computercraft.api.upgrades.UpgradeType
-import net.minecraft.advancements.CriterionTrigger
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.world.item.CreativeModeTab
 import net.minecraft.world.item.Item

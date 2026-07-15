@@ -11,7 +11,7 @@ class DigitizedItem : DigitizedSomething<ItemStack> {
 
     constructor(compoundTag: CompoundTag, registries: HolderLookup.Provider) : super(
         ByteArrayWrapper(compoundTag.getByteArray("id")),
-        ItemStack.parseOptional(registries, compoundTag.getCompound("itemStack")),
+        deserializeStack(compoundTag, registries),
         compoundTag.getLong("digitizedAt"),
         null,
     ) {
@@ -28,7 +28,8 @@ class DigitizedItem : DigitizedSomething<ItemStack> {
 
     fun serialize(compoundTag: CompoundTag, registries: HolderLookup.Provider) {
         compoundTag.putByteArray("id", id.byteArray)
-        compoundTag.put(somethingTagName, something.save(registries))
+        compoundTag.put(somethingTagName, something.copyWithCount(1).save(registries))
+        compoundTag.putInt("count", something.count)
         compoundTag.putLong("digitizedAt", digitizedAt)
         compoundTag.putLong("lastRefresh", lastRefresh)
         compoundTag.putLong("decaysAt", decaysAt)
@@ -49,4 +50,10 @@ class DigitizedItem : DigitizedSomething<ItemStack> {
         get() = something.isEmpty
     override val amount: Long
         get() = something.count.toLong()
+
+    companion object {
+        private fun deserializeStack(compoundTag: CompoundTag, registries: HolderLookup.Provider): ItemStack = ItemStack.parseOptional(registries, compoundTag.getCompound("itemStack")).also {
+            if (compoundTag.contains("count")) it.count = compoundTag.getInt("count")
+        }
+    }
 }
