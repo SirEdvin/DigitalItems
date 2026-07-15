@@ -1,0 +1,33 @@
+{
+  "name": "@siredvin/typed-peripheral-digitalitems",
+  "version": "0.2.1",
+  "description": "Typed peripheral library for Digital Items 3 peripherals",
+  "files": [
+    "./*.d.ts",
+    "./*.lua"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "SirEdvin",
+  "license": "MIT",
+  "scripts": {
+    "build": "tstl",
+    "clean": "rm -f *.lua *.d.ts",
+    "docs": "typedoc",
+    "docs:watch": "typedoc --watch"
+  },
+  "dependencies": {
+    "@jackmacwindows/lua-types": "^2.13.1",
+    "@siredvin/api-types": "^1.1.0",
+    "@siredvin/cc-types": "^1.1.0",
+    "@siredvin/craftos-types": "^1.2.0",
+    "@siredvin/typed-peripheral-api": "*",
+    "@siredvin/typed-peripheral-base": "*"
+  },
+  "devDependencies": {
+    "typedoc": "0.28.20",
+    "typescript": "5.7.2",
+    "typescript-to-lua": "1.29.1"
+  }
+}
