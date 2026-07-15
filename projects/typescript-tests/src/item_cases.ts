@@ -1,6 +1,6 @@
-import { calculateLength } from "cc-corelib/utils";
-import { minecraft } from "cc-corelib/extra/names";
-import { BasicTest, asserts } from "soteria";
+import { minecraft } from "@siredvin/cc-names";
+import { calculateLength } from "@siredvin/cc-utils";
+import { BasicTest, asserts } from "@siredvin/soteria";
 import { InventoryAPI, inventoryPeripheralProvider } from "@siredvin/typed-peripheral-api/inventory";
 import { AdvancedDigitizer, advancedDigitizerProvider } from "@siredvin/typed-peripheral-digitalitems/advanced_digitizer";
 import { creativeFillerProvider } from "@siredvin/typed-peripheral-tweakium/creative_filler";

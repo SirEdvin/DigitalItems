@@ -1,4 +1,4 @@
-import { printReports, Test, TestResult, TestSuite } from "soteria";
+import { printReports, Test, TestResult, TestSuite } from "@siredvin/soteria";
 
 export function runTest(suiteName: string, test: Test): void {
     const suite = new TestSuite(suiteName);

@@ -37,8 +37,8 @@ dependencies {
 }
 
 tasks.named<ProcessResources>(testMod.processResourcesTaskName) {
-    dependsOn(rootProject.tasks.named("compileTestLua"))
-    from(layout.buildDirectory.dir("generated/test-lua")) {
+    dependsOn(":typescript-tests:compileTestLua")
+    from(project(":typescript-tests").layout.buildDirectory.dir("generated/test-lua")) {
         into("computer/tests")
     }
 }

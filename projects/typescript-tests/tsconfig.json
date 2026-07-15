@@ -6,8 +6,7 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
-      "cc-corelib/*": ["packages/cc-corelib/*"],
-      "soteria": ["packages/soteria/index.ts"]
+      "@siredvin/soteria": ["build/soteria-source/index.ts"]
     },
     "strict": false,
     "types": [
@@ -23,5 +22,5 @@
     "sourceMapTraceback": false,
     "noResolvePaths": ["cc.expect"]
   },
-  "include": ["src/**/*.ts", "packages/**/*.ts"]
+  "include": ["src/**/*.ts"]
 }

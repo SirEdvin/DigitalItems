@@ -1,4 +1,4 @@
-import { mkdirSync, rmSync } from "node:fs";
+import { cpSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -13,9 +13,15 @@ const entries = [
   "energy_digitize",
   "old_digitize"
 ];
-const output = resolve("../../build/generated/test-lua");
+const output = resolve("build/generated/test-lua");
+const soteriaSource = resolve("build/soteria-source");
 rmSync(output, { recursive: true, force: true });
+rmSync(soteriaSource, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
+mkdirSync(soteriaSource, { recursive: true });
+for (const file of ["index.ts", "base.ts", "asserts.ts", "reports.ts"]) {
+  cpSync(resolve("node_modules/@siredvin/soteria", file), resolve(soteriaSource, file));
+}
 
 for (const entry of entries) {
   const bundle = resolve(output, `digitalitemsgametests.${entry}.lua`);

@@ -1,7 +1,6 @@
 {
   "name": "digitalitems-gametests",
   "private": true,
-  "workspaces": ["packages/*"],
   "scripts": {
     "build": "node build.mjs"
   },
@@ -9,8 +8,9 @@
     "@siredvin/typed-peripheral-api": "0.2.2",
     "@siredvin/typed-peripheral-digitalitems": "0.2.1",
     "@siredvin/typed-peripheral-tweakium": "0.2.1",
-    "cc-corelib": "0.1.0",
-    "soteria": "0.1.0"
+    "@siredvin/cc-names": "0.3.0",
+    "@siredvin/cc-utils": "0.1.0",
+    "@siredvin/soteria": "0.1.0"
   },
   "devDependencies": {
     "@jackmacwindows/lua-types": "2.13.1",

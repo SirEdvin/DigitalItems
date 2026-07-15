@@ -1,4 +1,4 @@
-import { BasicTest, asserts } from "soteria";
+import { BasicTest, asserts } from "@siredvin/soteria";
 import { advancedDigitizerProvider } from "@siredvin/typed-peripheral-digitalitems/advanced_digitizer";
 import { creativeFillerProvider } from "@siredvin/typed-peripheral-tweakium/creative_filler";
 import { fluidStoragePeripheralProvider } from "@siredvin/typed-peripheral-api/fluid_storage";
