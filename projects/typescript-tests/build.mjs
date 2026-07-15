@@ -3,7 +3,6 @@ import { dirname, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 const entries = [
-  "peripheral_contracts",
   "base_digitize",
   "remote_digitize",
   "base_more_digitize",

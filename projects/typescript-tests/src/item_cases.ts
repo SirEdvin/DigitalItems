@@ -4,6 +4,7 @@ import { BasicTest, asserts } from "@siredvin/soteria";
 import { InventoryAPI, inventoryPeripheralProvider } from "@siredvin/typed-peripheral-api/inventory";
 import { AdvancedDigitizer, advancedDigitizerProvider } from "@siredvin/typed-peripheral-digitalitems/advanced_digitizer";
 import { creativeFillerProvider } from "@siredvin/typed-peripheral-tweakium/creative_filler";
+import { assertAdvancedDigitizerMethods } from "./peripheral_contracts";
 import { runTest } from "./run";
 
 const filler = creativeFillerProvider.findOrThrow();
@@ -102,6 +103,7 @@ class LimitTest extends ItemTest {
 
 export function runItemCase(kind: "base" | "more" | "limit", remote: boolean): void {
     const digitizer = advancedDigitizerProvider.findOrThrow();
+    if (kind == "base" && !remote) assertAdvancedDigitizerMethods(digitizer);
     const target = remote ? inventoryPeripheralProvider.findOrThrow(minecraft.chest()) : digitizer;
     const targetName = remote ? peripheral.getName(target) : "self";
     const name = (remote ? "remote_" : "base_") + (kind == "base" ? "digitize" : kind + "_digitize");
