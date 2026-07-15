@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 
 const entries = [
+  "peripheral_contracts",
   "base_digitize",
   "remote_digitize",
   "base_more_digitize",
@@ -22,6 +23,9 @@ mkdirSync(soteriaSource, { recursive: true });
 for (const file of ["index.ts", "base.ts", "asserts.ts", "reports.ts"]) {
   cpSync(resolve("node_modules/@siredvin/soteria", file), resolve(soteriaSource, file));
 }
+
+const contractsResult = spawnSync(process.execPath, ["generate-peripheral-contracts.mjs"], { stdio: "inherit" });
+if (contractsResult.status !== 0) process.exit(contractsResult.status ?? 1);
 
 for (const entry of entries) {
   const bundle = resolve(output, `digitalitemsgametests.${entry}.lua`);

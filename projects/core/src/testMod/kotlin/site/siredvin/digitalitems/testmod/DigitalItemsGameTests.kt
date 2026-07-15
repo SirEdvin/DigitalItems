@@ -7,6 +7,9 @@ import site.siredvin.testiarium.cct.thenLua
 
 @TestGroup("digitalitems")
 class DigitalItemsGameTests {
+    @GameTest(template = "digitalitemsgametests.peripheral_contracts", timeoutTicks = 1200)
+    fun peripheralContracts(helper: GameTestHelper) = helper.thenLua().thenSucceed()
+
     @GameTest(template = "digitalitemsgametests.base_digitize", timeoutTicks = 1200)
     fun baseDigitize(helper: GameTestHelper) = helper.thenLua().thenSucceed()
 
