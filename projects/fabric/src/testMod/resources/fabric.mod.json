@@ -5,6 +5,9 @@
   "name": "DigitalItems Testmod",
   "environment": "*",
   "entrypoints": {
+    "fabric-gametest": [
+      "site.siredvin.digitalitems.testmod.DigitalItemsGameTests"
+    ],
     "main": [
       {
         "adapter": "kotlin",
