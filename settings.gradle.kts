@@ -34,6 +34,7 @@ rootProject.name = "DigitalItems $minecraftVersion"
 include(":core")
 include(":forge")
 include(":fabric")
+include(":typed-peripheral-digitalitems")
 include(":typescript-tests")
 
 
