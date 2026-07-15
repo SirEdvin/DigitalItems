@@ -94,10 +94,10 @@ repositories {
         }
     }
     maven {
-        name = "ModMenu maven"
-        url = uri("https://maven.terraformersmc.com/releases")
+        name = "Modrinth"
+        url = uri("https://api.modrinth.com/maven")
         content {
-            includeGroup("com.terraformersmc")
+            includeGroup("maven.modrinth")
         }
     }
 }
@@ -113,8 +113,12 @@ dependencies {
     modImplementation(libs.bundles.fabric.include) {
         exclude("net.fabricmc.fabric-api")
         exclude("net.fabricmc", "fabric-loader")
+        exclude("com.terraformersmc", "modmenu")
     }
-    include(libs.bundles.fabric.include)
+    include(libs.bundles.fabric.include) {
+        exclude("com.terraformersmc", "modmenu")
+    }
+    modRuntimeOnly("maven.modrinth:modmenu:${libs.versions.modmenu.get()}")
 
     modRuntimeOnly(libs.bundles.externalMods.fabric.runtime) {
         exclude("net.fabricmc.fabric-api")
