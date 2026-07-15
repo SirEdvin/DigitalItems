@@ -4,5 +4,8 @@
 
 This project is the successor to the original [Digital Items 2 mod](https://www.curseforge.com/minecraft/mc-mods/digital-items-2).
 
+Peripheral API documentation and TypeScript/Lua examples are available on the
+[Digital Items documentation site](https://siredvin.github.io/DigitalItems/).
+
 [curseforge]: https://www.curseforge.com/minecraft/mc-mods/digital-items-3 "Download Digital Items 3 from CurseForge"
 [modrinth]: https://modrinth.com/mod/digital-items-3 "Download Digital Items 3 from Modrinth"

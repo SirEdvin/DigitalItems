@@ -1,0 +1,62 @@
+name: Documentation checks
+
+on:
+  pull_request:
+    paths:
+      - ".github/scripts/docs-site.mjs"
+      - ".github/scripts/docs-site.test.mjs"
+      - ".github/workflows/docs-check.yml"
+      - ".github/workflows/docs-pages.yml"
+      - "projects/typed-peripheral-digitalitems/**"
+      - "settings.gradle.kts"
+      - "build.gradle.kts"
+      - "gradle.properties"
+      - "gradle/**"
+      - "gradlew"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout complete history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up Java for target branch
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ startsWith(github.base_ref || github.ref_name, '1.21') && '21' || '17' }}
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build package and documentation
+        run: timeout --foreground 600s ./gradlew :typed-peripheral-digitalitems:compileTypeScript :typed-peripheral-digitalitems:generateDocs --no-daemon
+
+      - name: Compile TypeScript GameTests
+        run: timeout --foreground 300s ./gradlew :typescript-tests:compileTestLua --no-daemon
+
+      - name: Test, assemble, and validate tooling
+        env:
+          DOCS_PLAN: >-
+            [{"kind":"branch","name":"1.20","label":"Pull request preview","path":"branch/1.20","ref":"origin/1.20","sha":"${{ github.event.pull_request.head.sha || github.sha }}","minecraftVersion":"1.20.1","packageVersion":"0.2.1"}]
+        run: |
+          set -euo pipefail
+          NODE="$PWD/.gradle/nodejs/node-v22.14.0-linux-x64/bin/node"
+          timeout --foreground 60s "$NODE" --test .github/scripts/docs-site.test.mjs
+          mkdir -p build/docs-fragments/branch/1.20
+          cp -a projects/typed-peripheral-digitalitems/docs/. build/docs-fragments/branch/1.20/
+          timeout --foreground 60s "$NODE" .github/scripts/docs-site.mjs assemble --input build/docs-fragments --output build/docs-site --plan-json "$DOCS_PLAN"
+          timeout --foreground 60s "$NODE" .github/scripts/docs-site.mjs validate --site build/docs-site
