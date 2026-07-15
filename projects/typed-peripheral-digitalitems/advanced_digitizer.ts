@@ -32,9 +32,16 @@ export interface AdvancedDigitizer
     InventoryAPI,
     ConfigurationAPI<AdvancedDigitizerConfiguration> {
   digitize(
-    mode: "item" | "fluid" | "energy",
+    mode: "item",
     source?: string,
     filter?: number | LuaTable,
+    limit?: number,
+    destination?: string
+  ): LuaMultiReturn<[null, string] | [string, null]>;
+  digitize(
+    mode: "fluid" | "energy",
+    source?: string,
+    filter?: string,
     limit?: number,
     destination?: string
   ): LuaMultiReturn<[null, string] | [string, null]>;
