@@ -1,0 +1,9 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./shared.ts", "./digitizer.ts", "./advanced_digitizer.ts"],
+  "tsconfig": "./tsconfig.docs.json",
+  "out": "./docs",
+  "name": "@siredvin/typed-peripheral-digitalitems",
+  "readme": "none",
+  "excludeExternals": true
+}
