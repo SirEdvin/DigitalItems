@@ -39,6 +39,7 @@ rootProject.name = "DigitalItems $minecraftVersion"
 include(":core")
 include(":forge")
 include(":fabric")
+include(":typescript-tests")
 
 
 for (project in rootProject.children) {

@@ -4,6 +4,12 @@ plugins {
     id("site.siredvin.release") version "0.9.0"
 }
 
+tasks.register("gameTest") {
+    group = "verification"
+    description = "Runs DigitalItems GameTests on NeoForge and Fabric."
+    dependsOn(":forge:runGameTestServer", ":fabric:runDigitalItemsGameTest")
+}
+
 subprojectShaking {
     withKotlin.set(true)
     kotlinVersion.set("2.0.0")
@@ -13,7 +19,9 @@ subprojectShaking {
 val setupSubproject = subprojectShaking::setupSubproject
 
 subprojects {
-    setupSubproject(this)
+    if (name != "typescript-tests") {
+        setupSubproject(this)
+    }
 }
 
 githubShaking {
