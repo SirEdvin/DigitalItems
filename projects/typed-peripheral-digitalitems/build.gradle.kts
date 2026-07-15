@@ -32,11 +32,45 @@ val compileTypeScript by tasks.registering(NpmTask::class) {
     )
 }
 
+val docsOutput = providers.gradleProperty("docsOutput").orElse(file("docs").absolutePath)
+val docsGitRevision = providers.gradleProperty("docsGitRevision")
+val docsHostedBaseUrl = providers.gradleProperty("docsHostedBaseUrl")
+
+val generateDocs by tasks.registering(NpmTask::class) {
+    dependsOn(tasks.npmInstall)
+    npmCommand.set(providers.provider {
+        buildList {
+            addAll(listOf("run", "docs", "--", "--out", docsOutput.get()))
+            docsGitRevision.orNull?.let {
+                addAll(listOf("--gitRevision", it))
+            }
+            docsHostedBaseUrl.orNull?.let {
+                addAll(listOf("--hostedBaseUrl", it))
+            }
+        }
+    })
+    inputs.files(fileTree(projectDir) {
+        include(
+            "package.json",
+            "package-lock.json",
+            "tsconfig.json",
+            "tsconfig.docs.json",
+            "typedoc.json",
+            "*.ts",
+            "documentation/**/*.md",
+            "documentation/theme/**",
+        )
+        exclude("node_modules/**", "*.d.ts")
+    })
+    outputs.dir(docsOutput.map { file(it) })
+}
+
 tasks.assemble {
     dependsOn(compileTypeScript)
 }
 
 tasks.clean {
+    delete(file("docs"))
     delete(fileTree(projectDir) {
         include("*.d.ts", "*.lua")
     })
