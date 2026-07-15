@@ -13,12 +13,19 @@ node {
     npmInstallCommand.set("ci")
 }
 
+tasks.npmInstall {
+    dependsOn(":typed-peripheral-digitalitems:compileTypeScript")
+}
+
 val compileTestLua by tasks.registering(NpmTask::class) {
     dependsOn(tasks.npmInstall)
     npmCommand.set(listOf("run", "build"))
     inputs.files(fileTree(projectDir) {
         include("package.json", "package-lock.json", "tsconfig.json", "build.mjs", "src/**/*.ts")
         exclude("node_modules/**")
+    })
+    inputs.files(project(":typed-peripheral-digitalitems").fileTree(project(":typed-peripheral-digitalitems").projectDir) {
+        include("*.d.ts")
     })
     outputs.dir(layout.buildDirectory.dir("generated/test-lua"))
 }

@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "@siredvin/typed-peripheral-api": "0.2.2",
-    "@siredvin/typed-peripheral-digitalitems": "0.2.1",
+    "@siredvin/typed-peripheral-digitalitems": "file:../typed-peripheral-digitalitems",
     "@siredvin/typed-peripheral-tweakium": "0.2.1",
     "@siredvin/cc-names": "0.3.0",
     "@siredvin/cc-utils": "0.1.0",

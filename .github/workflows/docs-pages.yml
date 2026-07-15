@@ -1,0 +1,135 @@
+name: Documentation Pages
+
+on:
+  push:
+    branches:
+      - "1.20"
+      - "1.21"
+    tags:
+      - "v*"
+    paths:
+      - ".github/scripts/docs-site.mjs"
+      - ".github/workflows/docs-pages.yml"
+      - "projects/typed-peripheral-digitalitems/**"
+      - "settings.gradle.kts"
+      - "build.gradle.kts"
+      - "gradle.properties"
+      - "gradle/**"
+      - "gradlew"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: digitalitems-pages
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.docs.outputs.matrix }}
+      plan: ${{ steps.docs.outputs.plan }}
+    steps:
+      - name: Checkout complete history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Discover documentation refs
+        id: docs
+        run: timeout --foreground 60s node .github/scripts/docs-site.mjs discover --github-output "$GITHUB_OUTPUT"
+
+  generate:
+    needs: discover
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact documentation commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.sha }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up Java ${{ matrix.javaVersion }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.javaVersion }}
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Generate documentation with ref-owned task
+        env:
+          DOCS_PATH: ${{ matrix.path }}
+          DOCS_SHA: ${{ matrix.sha }}
+        run: >-
+          timeout --foreground 600s ./gradlew :typed-peripheral-digitalitems:generateDocs
+          -PdocsOutput="$PWD/build/docs-fragments/$DOCS_PATH"
+          -PdocsGitRevision="$DOCS_SHA"
+          -PdocsHostedBaseUrl="https://siredvin.github.io/DigitalItems/$DOCS_PATH/"
+          --no-daemon
+
+      - name: Upload version fragment
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: build/docs-fragments
+          if-no-files-found: error
+          retention-days: 1
+
+  assemble:
+    needs:
+      - discover
+      - generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout complete history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Download all version fragments
+        uses: actions/download-artifact@v4
+        with:
+          pattern: docs-*
+          path: build/docs-fragments
+          merge-multiple: true
+
+      - name: Rebuild and validate complete site
+        env:
+          DOCS_PLAN: ${{ needs.discover.outputs.plan }}
+        run: |
+          set -euo pipefail
+          timeout --foreground 60s node .github/scripts/docs-site.mjs assemble --input build/docs-fragments --output build/docs-site --plan-json "$DOCS_PLAN"
+          timeout --foreground 60s node .github/scripts/docs-site.mjs validate --site build/docs-site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/docs-site
+
+  deploy:
+    needs: assemble
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,168 @@
+:root {
+  --di-ink: #071116;
+  --di-panel: #0c1c23;
+  --di-panel-raised: #102832;
+  --di-grid: rgba(75, 225, 210, 0.08);
+  --di-cyan: #4be1d2;
+  --di-cyan-soft: #a0fff4;
+  --di-amber: #ffbd59;
+  --di-muted: #9fb4ba;
+  --color-background: var(--di-ink);
+  --color-background-secondary: var(--di-panel);
+  --color-background-active: var(--di-panel-raised);
+  --color-accent: var(--di-cyan);
+  --color-text: #e4f2f2;
+  --color-text-aside: var(--di-muted);
+  --color-link: var(--di-cyan-soft);
+  --color-ts-keyword: #ff8d72;
+  --color-ts-string: #b7e67b;
+}
+
+html[data-theme="light"] {
+  --di-ink: #eef6f4;
+  --di-panel: #deebe8;
+  --di-panel-raised: #cce1dc;
+  --di-grid: rgba(0, 104, 104, 0.09);
+  --di-cyan: #007f7c;
+  --di-cyan-soft: #006a69;
+  --di-amber: #a55a00;
+  --di-muted: #496669;
+  --color-text: #102b2e;
+}
+
+body {
+  background-color: var(--di-ink);
+  background-image:
+    linear-gradient(var(--di-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--di-grid) 1px, transparent 1px),
+    radial-gradient(circle at 83% 9%, rgba(75, 225, 210, 0.11), transparent 28rem);
+  background-size: 48px 48px, 48px 48px, auto;
+  font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+}
+
+.di-signal-line {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--di-cyan) 0 12%, transparent 12% 13%, var(--di-amber) 13% 18%, transparent 18% 100%);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--di-cyan) 65%, transparent);
+}
+
+.container-main {
+  backdrop-filter: blur(2px);
+}
+
+.col-content {
+  position: relative;
+}
+
+.col-content::before {
+  content: "DIGITAL ITEMS // PERIPHERAL ARCHIVE";
+  display: block;
+  margin: 1.5rem 0 2rem;
+  color: var(--di-cyan);
+  font: 700 0.72rem/1.2 "Lucida Console", Monaco, monospace;
+  letter-spacing: 0.16em;
+}
+
+h1,
+h2,
+h3,
+h4,
+.site-menu,
+.tsd-page-title {
+  font-family: "Lucida Console", Monaco, monospace;
+  letter-spacing: -0.035em;
+}
+
+h1 {
+  text-wrap: balance;
+}
+
+h2 {
+  border-bottom: 1px solid color-mix(in srgb, var(--di-cyan) 28%, transparent);
+  padding-bottom: 0.55rem;
+}
+
+.tsd-panel,
+.tsd-member,
+pre,
+table {
+  border: 1px solid color-mix(in srgb, var(--di-cyan) 18%, transparent);
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.14);
+}
+
+.tsd-signature,
+code,
+pre {
+  font-family: "Lucida Console", Monaco, monospace;
+}
+
+a {
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: var(--di-amber);
+}
+
+.di-version-panel {
+  margin: 0.75rem 0 1.35rem;
+  padding: 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--di-cyan) 42%, transparent);
+  background: linear-gradient(135deg, var(--di-panel-raised), var(--di-panel));
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+}
+
+.di-version-label {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: var(--di-amber);
+  font: 700 0.64rem/1 "Lucida Console", Monaco, monospace;
+  letter-spacing: 0.12em;
+}
+
+#di-version-select {
+  width: 100%;
+  padding: 0.5rem 1.8rem 0.5rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--di-cyan) 55%, transparent);
+  border-radius: 2px;
+  color: var(--color-text);
+  background: var(--di-ink);
+}
+
+#di-version-select:focus-visible {
+  outline: 2px solid var(--di-amber);
+  outline-offset: 2px;
+}
+
+@media (max-width: 769px) {
+  .col-content::before {
+    margin-top: 0.75rem;
+    font-size: 0.64rem;
+  }
+
+  .tsd-signature,
+  pre,
+  table {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .col-content > * {
+    animation: di-reveal 360ms ease-out both;
+  }
+
+  @keyframes di-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+}
