@@ -1,4 +1,10 @@
 (() => {
+  const themeSelector = document.querySelector("#tsd-theme");
+  if (themeSelector instanceof HTMLSelectElement) {
+    const systemOption = themeSelector.querySelector('option[value="os"]');
+    if (systemOption) systemOption.textContent = "System";
+  }
+
   const selector = document.querySelector("#di-version-select");
   if (!(selector instanceof HTMLSelectElement)) return;
 
