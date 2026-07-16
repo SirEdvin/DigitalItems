@@ -1,58 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
 :root {
-  --di-ink: #071116;
-  --di-panel: #0c1c23;
-  --di-panel-raised: #102832;
-  --di-grid: rgba(75, 225, 210, 0.08);
-  --di-cyan: #4be1d2;
-  --di-cyan-soft: #a0fff4;
-  --di-amber: #ffbd59;
-  --di-muted: #9fb4ba;
-  --color-background: var(--di-ink);
-  --color-background-secondary: var(--di-panel);
-  --color-background-active: var(--di-panel-raised);
-  --color-accent: var(--di-cyan);
-  --color-text: #e4f2f2;
-  --color-text-aside: var(--di-muted);
-  --color-link: var(--di-cyan-soft);
-  --color-ts-keyword: #ff8d72;
-  --color-ts-string: #b7e67b;
+  --di-accent: #6366f1;
+  --di-accent-hover: #818cf8;
+  --di-accent-dark: #4f46e5;
+  --di-accent-subtle: rgba(99, 102, 241, 0.08);
+  --di-bg: #0c0e16;
+  --di-bg-secondary: #141622;
+  --di-bg-elevated: #1a1d2e;
+  --di-bg-code: #111322;
+  --di-border: rgba(99, 102, 241, 0.12);
+  --di-border-subtle: rgba(148, 163, 184, 0.08);
+  --di-text-primary: #e2e8f0;
+  --di-text-secondary: #8892b0;
+  --di-text-muted: #5a6380;
+  --di-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.12);
+  --di-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.18);
+  --color-background: var(--di-bg);
+  --color-background-secondary: var(--di-bg-secondary);
+  --color-background-active: var(--di-bg-elevated);
+  --color-accent: var(--di-accent);
+  --color-text: var(--di-text-primary);
+  --color-text-aside: var(--di-text-secondary);
+  --color-link: #818cf8;
+  --color-ts-keyword: #c084fc;
+  --color-ts-string: #34d399;
+  --color-ts-number: #fb923c;
 }
 
 html[data-theme="light"] {
-  --di-ink: #eef6f4;
-  --di-panel: #deebe8;
-  --di-panel-raised: #cce1dc;
-  --di-grid: rgba(0, 104, 104, 0.09);
-  --di-cyan: #007f7c;
-  --di-cyan-soft: #006a69;
-  --di-amber: #a55a00;
-  --di-muted: #496669;
-  --color-text: #102b2e;
+  --di-accent: #4f46e5;
+  --di-accent-hover: #4338ca;
+  --di-accent-dark: #3730a3;
+  --di-accent-subtle: rgba(79, 70, 229, 0.06);
+  --di-bg: #ffffff;
+  --di-bg-secondary: #f8fafc;
+  --di-bg-elevated: #eef2ff;
+  --di-bg-code: #f1f5f9;
+  --di-border: rgba(79, 70, 229, 0.1);
+  --di-border-subtle: rgba(148, 163, 184, 0.12);
+  --di-text-primary: #0f172a;
+  --di-text-secondary: #475569;
+  --di-text-muted: #94a3b8;
+  --di-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --di-shadow-md: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --color-text: var(--di-text-primary);
+  --color-link: #4f46e5;
 }
 
 body {
-  background-color: var(--di-ink);
-  background-image:
-    linear-gradient(var(--di-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--di-grid) 1px, transparent 1px),
-    radial-gradient(circle at 83% 9%, rgba(75, 225, 210, 0.11), transparent 28rem);
-  background-size: 48px 48px, 48px 48px, auto;
-  font-family: "Trebuchet MS", "Gill Sans", sans-serif;
-}
-
-.di-signal-line {
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--di-cyan) 0 12%, transparent 12% 13%, var(--di-amber) 13% 18%, transparent 18% 100%);
-  box-shadow: 0 0 18px color-mix(in srgb, var(--di-cyan) 65%, transparent);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  background-color: var(--di-bg);
 }
 
 .container-main {
-  backdrop-filter: blur(2px);
+  backdrop-filter: none;
 }
 
 .col-content {
@@ -60,109 +65,271 @@ body {
 }
 
 .col-content::before {
-  content: "DIGITAL ITEMS // PERIPHERAL ARCHIVE";
-  display: block;
-  margin: 1.5rem 0 2rem;
-  color: var(--di-cyan);
-  font: 700 0.72rem/1.2 "Lucida Console", Monaco, monospace;
-  letter-spacing: 0.16em;
+  content: none;
+  display: none;
 }
 
-h1,
-h2,
-h3,
-h4,
+h1, h2, h3, h4, h5, h6,
 .site-menu,
 .tsd-page-title {
-  font-family: "Lucida Console", Monaco, monospace;
-  letter-spacing: -0.035em;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.025em;
 }
 
 h1 {
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1.25;
   text-wrap: balance;
+  margin-bottom: 1rem;
 }
 
 h2 {
-  border-bottom: 1px solid color-mix(in srgb, var(--di-cyan) 28%, transparent);
-  padding-bottom: 0.55rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  border-bottom: 1px solid var(--di-border);
+  padding-bottom: 0.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
 }
 
-.tsd-panel,
-.tsd-member,
-pre,
-table {
-  border: 1px solid color-mix(in srgb, var(--di-cyan) 18%, transparent);
-  border-radius: 4px;
-  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.14);
+h3 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+ul, ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+}
+
+.tsd-panel {
+  border: 1px solid var(--di-border);
+  border-radius: 10px;
+  box-shadow: var(--di-shadow-sm);
+  background: var(--di-bg-secondary);
+}
+
+.tsd-member {
+  border: 1px solid var(--di-border);
+  border-radius: 10px;
+  box-shadow: var(--di-shadow-sm);
 }
 
 .tsd-signature,
 code,
 pre {
-  font-family: "Lucida Console", Monaco, monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+}
+
+code {
+  background: var(--di-bg-code);
+  border: 1px solid var(--di-border-subtle);
+  border-radius: 5px;
+  padding: 0.1em 0.4em;
+  font-size: 0.875em;
+  color: var(--di-accent-hover);
+}
+
+html[data-theme="light"] code {
+  color: var(--di-accent);
+}
+
+pre {
+  background: var(--di-bg-code);
+  border: 1px solid var(--di-border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  box-shadow: var(--di-shadow-sm);
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--di-text-primary);
 }
 
 a {
+  color: var(--color-link);
+  text-decoration: none;
   text-underline-offset: 0.2em;
+  transition: color 0.15s ease;
 }
 
 a:hover {
-  color: var(--di-amber);
+  color: var(--di-accent-hover);
+}
+
+table {
+  border: 1px solid var(--di-border);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--di-shadow-sm);
+}
+
+th, td {
+  border-color: var(--di-border-subtle);
+}
+
+.tsd-page-toolbar {
+  background: var(--di-bg);
+  border-bottom: 1px solid var(--di-border);
+}
+
+.tsd-page-toolbar .title {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 700;
+  color: var(--di-text-primary);
+}
+
+.di-signal-line {
+  display: none !important;
 }
 
 .di-version-panel {
-  margin: 0.75rem 0 1.35rem;
-  padding: 0.8rem;
-  border: 1px solid color-mix(in srgb, var(--di-cyan) 42%, transparent);
-  background: linear-gradient(135deg, var(--di-panel-raised), var(--di-panel));
-  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+  margin: 0.5rem 0 1rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--di-border);
+  border-radius: 8px;
+  background: var(--di-bg-secondary);
 }
 
 .di-version-label {
   display: block;
-  margin-bottom: 0.45rem;
-  color: var(--di-amber);
-  font: 700 0.64rem/1 "Lucida Console", Monaco, monospace;
-  letter-spacing: 0.12em;
+  margin-bottom: 0.3rem;
+  color: var(--di-accent);
+  font: 600 0.68rem/1.2 "Inter", system-ui, sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 #di-version-select {
   width: 100%;
-  padding: 0.5rem 1.8rem 0.5rem 0.55rem;
-  border: 1px solid color-mix(in srgb, var(--di-cyan) 55%, transparent);
-  border-radius: 2px;
-  color: var(--color-text);
-  background: var(--di-ink);
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--di-border);
+  border-radius: 6px;
+  color: var(--di-text-primary);
+  background: var(--di-bg);
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 0.82rem;
 }
 
 #di-version-select:focus-visible {
-  outline: 2px solid var(--di-amber);
-  outline-offset: 2px;
+  outline: 2px solid var(--di-accent);
+  outline-offset: 1px;
+}
+
+.tsd-typography {
+  line-height: 1.7;
+}
+
+.tsd-anchor-link {
+  color: var(--di-accent);
+}
+
+.tsd-anchor-link:hover {
+  color: var(--di-accent-hover);
+}
+
+.tsd-kind-icon {
+  color: var(--di-accent);
+}
+
+.tsd-navigation a,
+.tsd-nav-link {
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.tsd-accordion-summary {
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.tsd-filter-visibility .settings-label {
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--di-text-secondary);
+}
+
+#tsd-theme {
+  font-family: "Inter", system-ui, sans-serif;
+  border: 1px solid var(--di-border);
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  background: var(--di-bg);
+  color: var(--di-text-primary);
+  font-size: 0.82rem;
+}
+
+.tsd-search-input {
+  font-family: "Inter", system-ui, sans-serif;
+  border: 1px solid var(--di-border);
+  border-radius: 8px;
+}
+
+.tsd-generator {
+  border-top: 1px solid var(--di-border);
+  padding-top: 1rem;
+  margin-top: 2rem;
+  color: var(--di-text-muted);
+  font-size: 0.82rem;
+}
+
+footer {
+  border-top: 1px solid var(--di-border);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .col-content > * {
+    animation: di-fade-in 180ms ease-out both;
+  }
+
+  @keyframes di-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+  }
+
+  a, .tsd-panel, .tsd-member {
+    transition: all 0.15s ease;
+  }
 }
 
 @media (max-width: 769px) {
-  .col-content::before {
-    margin-top: 0.75rem;
-    font-size: 0.64rem;
-  }
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.1rem; }
 
   .tsd-signature,
   pre,
   table {
     max-width: 100%;
     overflow-x: auto;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .col-content > * {
-    animation: di-reveal 360ms ease-out both;
-  }
-
-  @keyframes di-reveal {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
   }
 }
