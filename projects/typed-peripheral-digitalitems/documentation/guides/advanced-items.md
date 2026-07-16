@@ -5,8 +5,8 @@ peripheralInterface: AdvancedDigitizer
 # Advanced Digitizer
 
 <div class="di-peripheral-hero di-peripheral-hero--advanced">
-  <div class="di-peripheral-image"><img src="../../../core/src/main/resources/assets/digitalitems/textures/block/advanced_digitizer_front_on.png" alt="Advanced digitizer block" /></div>
-  <div><span class="di-eyebrow">MULTI-STORAGE PERIPHERAL</span><p>The advanced digitizer moves items, fluids, and energy between attached storage and durable digital identifiers.</p><dl><div><dt>Peripheral type</dt><dd><code>advanced_digitizer</code></dd></div><div><dt>Storage</dt><dd>Items, fluids, energy</dd></div><div><dt>Failure style</dt><dd>Recoverable result pairs</dd></div></dl></div>
+  <div class="di-peripheral-image"><img src="../../assets/peripherals/advanced_digitizer.png" alt="Advanced digitizer block" /></div>
+  <div><span class="di-eyebrow">MULTI-STORAGE PERIPHERAL</span><p>The advanced digitizer moves items, fluids, and energy between attached storage and durable digital identifiers.</p><dl><div><dt>Peripheral type</dt><dd><code>{{ peripheralType }}</code></dd></div><div><dt>Storage</dt><dd>Items, fluids, energy</dd></div><div><dt>Failure style</dt><dd>Recoverable result pairs</dd></div></dl></div>
 </div>
 
 The advanced digitizer can extract from its internal inventory with source

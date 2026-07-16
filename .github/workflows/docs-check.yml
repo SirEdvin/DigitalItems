@@ -42,6 +42,16 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: projects/typed-peripheral-digitalitems/requirements-docs.txt
+
+      - name: Install documentation dependencies
+        run: timeout --foreground 120s python -m pip install -r projects/typed-peripheral-digitalitems/requirements-docs.txt
+
       - name: Build package and documentation
         run: timeout --foreground 600s ./gradlew :typed-peripheral-digitalitems:compileTypeScript :typed-peripheral-digitalitems:generateDocs --no-daemon
 
@@ -55,7 +65,7 @@ jobs:
         run: |
           set -euo pipefail
           NODE="$PWD/.gradle/nodejs/node-v22.14.0-linux-x64/bin/node"
-          timeout --foreground 60s "$NODE" --test .github/scripts/docs-site.test.mjs
+          timeout --foreground 60s "$NODE" --test .github/scripts/docs-site.test.mjs projects/typed-peripheral-digitalitems/documentation/generate-docs.test.mjs
           mkdir -p build/docs-fragments/branch/1.20
           cp -a projects/typed-peripheral-digitalitems/docs/. build/docs-fragments/branch/1.20/
           timeout --foreground 60s "$NODE" .github/scripts/docs-site.mjs assemble --input build/docs-fragments --output build/docs-site --plan-json "$DOCS_PLAN"
