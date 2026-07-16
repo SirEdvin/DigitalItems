@@ -14,6 +14,8 @@
   "customCss": "./documentation/theme/digitalitems.css",
   "customJs": "./documentation/theme/digitalitems.js",
   "favicon": "./documentation/theme/favicon.svg",
+  "lightHighlightTheme": "material-theme-lighter",
+  "darkHighlightTheme": "material-theme-darker",
   "highlightLanguages": ["typescript", "lua", "json", "bash"],
   "excludeExternals": true,
   "basePath": "../..",
