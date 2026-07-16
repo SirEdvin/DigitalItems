@@ -23,11 +23,11 @@ function entry(kind, name, sha = SHA_A) {
   };
 }
 
-async function fragment(root, path, html = '<a href="assets/main.js">asset</a>') {
+async function fragment(root, path, html = '<link rel="stylesheet" href="assets/main.css"><script src="assets/main.js"></script>') {
   const directory = join(root, path);
   await mkdir(join(directory, "assets"), { recursive: true });
   await writeFile(join(directory, "index.html"), html);
-  for (const asset of ["main.js", "search.js", "navigation.js", "custom.css", "custom.js"]) {
+  for (const asset of ["main.js", "main.css"]) {
     await writeFile(join(directory, "assets", asset), "// docs\n");
   }
 }
@@ -107,14 +107,23 @@ test("validate rejects links escaping the site", async () => {
   await assert.rejects(validateSite(output), /escapes site/);
 });
 
-test("validate rejects missing TypeDoc assets", async () => {
+test("validate resolves hosted version paths below the Pages project prefix", async () => {
+  const root = await mkdtemp(join(tmpdir(), "docs-site-prefix-"));
+  const input = join(root, "input");
+  const output = join(root, "output");
+  await fragment(input, "branch/1.20", '<script src="/DigitalItems/branch/1.20/assets/main.js"></script>');
+  await assembleSite({ input, output, plan: [entry("branch", "1.20")] });
+  await validateSite(output);
+});
+
+test("validate rejects a missing linked asset", async () => {
   const root = await mkdtemp(join(tmpdir(), "docs-site-assets-"));
   const input = join(root, "input");
   const output = join(root, "output");
   await fragment(input, "branch/1.20");
   await assembleSite({ input, output, plan: [entry("branch", "1.20")] });
-  await unlink(join(output, "branch", "1.20", "assets", "search.js"));
-  await assert.rejects(validateSite(output), /Missing branch\/1.20 search.js/);
+  await unlink(join(output, "branch", "1.20", "assets", "main.css"));
+  await assert.rejects(validateSite(output), /Broken local link.*assets\/main.css/);
 });
 
 test("assemble rejects a symlinked output ancestor", async () => {

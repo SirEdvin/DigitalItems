@@ -5,8 +5,8 @@ peripheralInterface: Digitizer
 # Basic Digitizer
 
 <div class="di-peripheral-hero">
-  <div class="di-peripheral-image"><img src="../../../core/src/main/resources/assets/digitalitems/textures/block/digitizer_front_on.png" alt="Digitizer block" /></div>
-  <div><span class="di-eyebrow">ITEM PERIPHERAL</span><p>The basic digitizer turns physical item stacks into portable digital identifiers and restores them through its internal inventory.</p><dl><div><dt>Peripheral type</dt><dd><code>digitizer</code></dd></div><div><dt>Storage</dt><dd>Items</dd></div><div><dt>Failure style</dt><dd>Lua errors</dd></div></dl></div>
+  <div class="di-peripheral-image"><img src="../../assets/peripherals/digitizer.png" alt="Digitizer block" /></div>
+  <div><span class="di-eyebrow">ITEM PERIPHERAL</span><p>The basic digitizer turns physical item stacks into portable digital identifiers and restores them through its internal inventory.</p><dl><div><dt>Peripheral type</dt><dd><code>{{ peripheralType }}</code></dd></div><div><dt>Storage</dt><dd>Items</dd></div><div><dt>Failure style</dt><dd>Lua errors</dd></div></dl></div>
 </div>
 
 Slots are one-based and default to slot 1. `digitize()` removes the complete

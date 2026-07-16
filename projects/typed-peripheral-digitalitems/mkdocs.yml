@@ -1,0 +1,65 @@
+site_name: Digital Items Peripheral API
+site_description: TypeScript and Lua reference for Digital Items peripherals
+site_url: !ENV [DOCS_SITE_URL, "https://siredvin.github.io/DigitalItems/branch/1.20/"]
+repo_url: https://github.com/SirEdvin/DigitalItems
+repo_name: SirEdvin/DigitalItems
+docs_dir: .mkdocs-build
+site_dir: docs
+strict: true
+
+theme:
+  name: material
+  logo: assets/favicon.svg
+  favicon: assets/favicon.svg
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Use dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Use light mode
+  features:
+    - content.code.copy
+    - navigation.footer
+    - navigation.indexes
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+
+nav:
+  - Overview: index.md
+  - Getting started: getting-started.md
+  - Digital identifiers: digital-identifiers.md
+  - Peripherals:
+      - Basic digitizer: guides/basic-digitizer.md
+      - Advanced digitizer: guides/advanced-items.md
+  - Guides:
+      - Fluids and energy: guides/fluids-and-energy.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+
+extra_css:
+  - assets/stylesheets/digitalitems.css
+extra_javascript:
+  - assets/javascripts/digitalitems.js
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/SirEdvin/DigitalItems
