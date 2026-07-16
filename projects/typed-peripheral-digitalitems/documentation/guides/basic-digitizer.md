@@ -1,8 +1,27 @@
 # Basic Digitizer
 
-The basic digitizer handles items in its own inventory. Slots are one-based and
-default to slot 1. `digitize()` removes the complete stack; `digitizeAmount()`
-requires an exact positive amount no greater than the physical stack.
+<div class="di-peripheral-hero">
+  <div class="di-peripheral-image"><img src="../../../core/src/main/resources/assets/digitalitems/textures/block/digitizer_front_on.png" alt="Digitizer block" /></div>
+  <div><span class="di-eyebrow">ITEM PERIPHERAL</span><p>The basic digitizer turns physical item stacks into portable digital identifiers and restores them through its internal inventory.</p><dl><div><dt>Peripheral type</dt><dd><code>digitizer</code></dd></div><div><dt>Storage</dt><dd>Items</dd></div><div><dt>Failure style</dt><dd>Lua errors</dd></div></dl></div>
+</div>
+
+## At a glance
+
+| Method | Returns | What it does |
+| --- | --- | --- |
+| `digitize(slot?)` | Digital ID | Digitizes the complete stack in a slot. |
+| `digitizeAmount(amount, slot?)` | Digital ID | Digitizes an exact number of items. |
+| `rematerialize(id)` | Item count | Restores as much of an ID as the inventory accepts. |
+| `rematerializeAmount(id, amount)` | Item count | Requests an exact portion of an ID. |
+| `getIDInfo(id)` | Item and timing data | Inspects the contents and decay deadline. |
+| `refresh(id)` | Nothing | Resets the identifier's decay deadline. |
+
+Slots are one-based and default to slot 1. `digitize()` removes the complete
+stack; `digitizeAmount()` requires an exact positive amount no greater than the
+physical stack.
+
+> **Inherited inventory API:** `size`, `list`, `getItemDetail`, `getItemLimit`,
+> `pushItems`, and `pullItems` are also available on this peripheral.
 
 ## Round trip a partial stack
 
@@ -28,6 +47,8 @@ print(('%d %s'):format(info.item.count, info.item.name))
 local inserted = digitizer.rematerializeAmount(id, 8)
 print("Inserted " .. inserted)
 ```
+
+## Errors and remaining items
 
 All failures throw. Empty slots, non-positive amounts, requesting more than the
 physical or digital count, and unknown or decayed identifiers are errors.
