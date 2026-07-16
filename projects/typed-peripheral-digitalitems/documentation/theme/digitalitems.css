@@ -277,6 +277,61 @@ a:hover {
   font-weight: 650;
 }
 
+.di-method-reference {
+  margin-top: 3rem;
+}
+
+.di-generated-note {
+  margin-bottom: 1.25rem;
+  color: var(--di-muted);
+  font-size: 0.9rem;
+}
+
+.di-method-card {
+  margin: 1rem 0;
+  border: 1px solid color-mix(in srgb, var(--di-cyan) 24%, transparent);
+  border-radius: 8px;
+  background: var(--di-panel);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.di-method-card > h3 {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--di-cyan) 18%, transparent);
+  background: var(--di-panel-raised);
+  color: var(--di-cyan-soft);
+  font-size: 1rem;
+}
+
+.di-method-overload {
+  padding: 1rem;
+}
+
+.di-method-overload + .di-method-overload {
+  border-top: 1px dashed color-mix(in srgb, var(--di-cyan) 28%, transparent);
+}
+
+.di-method-overload .tsd-signature {
+  margin: 0 0 1rem;
+  padding: 0.8rem;
+  box-shadow: none;
+  overflow-x: auto;
+}
+
+.di-method-overload .tsd-comment {
+  margin: 0.75rem 0;
+}
+
+.di-method-overload h4 {
+  margin: 1rem 0 0.35rem;
+  color: var(--di-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 .di-version-panel {
   margin: 0.75rem 0 1.35rem;
   padding: 0.8rem;

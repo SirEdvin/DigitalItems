@@ -1,19 +1,13 @@
+---
+peripheralInterface: AdvancedDigitizer
+---
+
 # Advanced Digitizer
 
 <div class="di-peripheral-hero di-peripheral-hero--advanced">
   <div class="di-peripheral-image"><img src="../../../core/src/main/resources/assets/digitalitems/textures/block/advanced_digitizer_front_on.png" alt="Advanced digitizer block" /></div>
   <div><span class="di-eyebrow">MULTI-STORAGE PERIPHERAL</span><p>The advanced digitizer moves items, fluids, and energy between attached storage and durable digital identifiers.</p><dl><div><dt>Peripheral type</dt><dd><code>advanced_digitizer</code></dd></div><div><dt>Storage</dt><dd>Items, fluids, energy</dd></div><div><dt>Failure style</dt><dd>Recoverable result pairs</dd></div></dl></div>
 </div>
-
-## At a glance
-
-| Method | Returns | What it does |
-| --- | --- | --- |
-| `digitize(mode, source?, filter?, limit?, destination?)` | `id, error` | Extracts content and creates or extends an ID. |
-| `rematerialize(mode, id, limit?, destination?)` | `amount, error` | Inserts stored content into a destination. |
-| `get(mode, id)` | ID information or `nil` | Inspects current contents and decay metadata. |
-| `refresh(mode, id)` | Boolean | Refreshes an ID if it still exists. |
-| `getConfiguration()` | Configuration table | Reports decay and per-mode stack limits. |
 
 The advanced digitizer can extract from its internal inventory with source
 `self`, or from an attached inventory/item storage by peripheral name. The
