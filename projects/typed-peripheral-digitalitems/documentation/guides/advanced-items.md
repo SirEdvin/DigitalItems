@@ -1,8 +1,20 @@
-# Advanced Items
+---
+peripheralInterface: AdvancedDigitizer
+---
+
+# Advanced Digitizer
+
+<div class="di-peripheral-hero di-peripheral-hero--advanced">
+  <div class="di-peripheral-image"><img src="../../../core/src/main/resources/assets/digitalitems/textures/block/advanced_digitizer_front_on.png" alt="Advanced digitizer block" /></div>
+  <div><span class="di-eyebrow">MULTI-STORAGE PERIPHERAL</span><p>The advanced digitizer moves items, fluids, and energy between attached storage and durable digital identifiers.</p><dl><div><dt>Peripheral type</dt><dd><code>advanced_digitizer</code></dd></div><div><dt>Storage</dt><dd>Items, fluids, energy</dd></div><div><dt>Failure style</dt><dd>Recoverable result pairs</dd></div></dl></div>
+</div>
 
 The advanced digitizer can extract from its internal inventory with source
 `self`, or from an attached inventory/item storage by peripheral name. The
 source defaults to `self`.
+
+> **Mode matters:** an identifier belongs to exactly one of `item`, `fluid`, or
+> `energy`. Always use the same mode when inspecting, refreshing, or restoring it.
 
 Item filters may be:
 
