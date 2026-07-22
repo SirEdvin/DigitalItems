@@ -19,7 +19,10 @@ test("extracts direct, inherited, and generic digitizer methods", () => {
   assert.equal(peripheral.methods.length, 15);
   assert.match(peripheral.methods.find(({ name }) => name === "getConfiguration").signatures[0].signature, /DigitizerConfiguration/);
   assert.equal(peripheral.methods.find(({ name }) => name === "size").inheritedFrom, "InventoryViewAPI");
-  assert.match(renderPeripheral(peripheral), /\*\*Throws:\*\* A Lua error if the slot is empty/);
+  const markdown = renderPeripheral(peripheral);
+  assert.match(markdown, /\*\*Throws:\*\* A Lua error if the slot is empty/);
+  assert.match(markdown, /### `getConfiguration\(\): DigitizerConfiguration`/);
+  assert.doesNotMatch(markdown, /```typescript/);
 });
 
 test("preserves advanced digitizer overloads and nullable tuple unions", () => {
