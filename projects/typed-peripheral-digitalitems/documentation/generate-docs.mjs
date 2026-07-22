@@ -2,6 +2,7 @@ import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { inflateSync } from "node:zlib";
 import ts from "typescript";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -96,6 +97,102 @@ function escapeCell(value) {
   return value.replaceAll("|", "\\|").replaceAll("\n", " ");
 }
 
+function paeth(left, above, upperLeft) {
+  const estimate = left + above - upperLeft;
+  const leftDistance = Math.abs(estimate - left);
+  const aboveDistance = Math.abs(estimate - above);
+  const upperLeftDistance = Math.abs(estimate - upperLeft);
+  return leftDistance <= aboveDistance && leftDistance <= upperLeftDistance ? left : aboveDistance <= upperLeftDistance ? above : upperLeft;
+}
+
+function decodePng(data) {
+  let width;
+  let height;
+  let channels;
+  const compressed = [];
+  for (let offset = 8; offset < data.length;) {
+    const length = data.readUInt32BE(offset);
+    const type = data.toString("ascii", offset + 4, offset + 8);
+    const chunk = data.subarray(offset + 8, offset + 8 + length);
+    if (type === "IHDR") {
+      width = chunk.readUInt32BE(0);
+      height = chunk.readUInt32BE(4);
+      // ponytail: decode only the PNG formats used by Minecraft textures; expand if an asset requires it.
+      if (chunk[8] !== 8 || chunk[12] !== 0 || ![2, 6].includes(chunk[9])) throw new Error("Unsupported block texture PNG");
+      channels = chunk[9] === 6 ? 4 : 3;
+    } else if (type === "IDAT") compressed.push(chunk);
+    offset += length + 12;
+  }
+  if (!width || !height || !channels) throw new Error("Invalid block texture PNG");
+
+  const raw = inflateSync(Buffer.concat(compressed));
+  const stride = width * channels;
+  const pixels = [];
+  let previous = Buffer.alloc(stride);
+  let offset = 0;
+  for (let y = 0; y < height; y++) {
+    const filter = raw[offset++];
+    const row = Buffer.from(raw.subarray(offset, offset + stride));
+    offset += stride;
+    for (let index = 0; index < stride; index++) {
+      const left = index >= channels ? row[index - channels] : 0;
+      const above = previous[index];
+      const upperLeft = index >= channels ? previous[index - channels] : 0;
+      const predictor = filter === 0 ? 0
+        : filter === 1 ? left
+          : filter === 2 ? above
+            : filter === 3 ? Math.floor((left + above) / 2)
+              : filter === 4 ? paeth(left, above, upperLeft)
+                : NaN;
+      if (Number.isNaN(predictor)) throw new Error(`Unsupported PNG filter ${filter}`);
+      row[index] = (row[index] + predictor) & 0xff;
+    }
+    for (let x = 0; x < width; x++) {
+      const index = x * channels;
+      pixels.push([row[index], row[index + 1], row[index + 2], channels === 4 ? row[index + 3] : 255]);
+    }
+    previous = row;
+  }
+  return { width, height, pixels };
+}
+
+function renderFace(texture, shade, project) {
+  if (texture.width !== 16 || texture.height !== 16) throw new Error("Block textures must be 16x16");
+  const paths = [];
+  for (let y = 0; y < 16; y++) {
+    for (let x = 0; x < 16; x++) {
+      const [red, green, blue, alpha] = texture.pixels[y * 16 + x];
+      if (alpha === 0) continue;
+      const color = [red, green, blue].map((channel) => Math.round(channel * shade).toString(16).padStart(2, "0")).join("");
+      const points = [project(x, y), project(x + 1, y), project(x + 1, y + 1), project(x, y + 1)];
+      paths.push(`  <polygon points="${points.map((point) => point.join(",")).join(" ")}" fill="#${color}"${alpha < 255 ? ` fill-opacity="${alpha / 255}"` : ""}/>`);
+    }
+  }
+  return paths.join("\n");
+}
+
+export async function renderBlock(textureRoot, block) {
+  const texture = async (face) => decodePng(await readFile(resolve(textureRoot, `${block}_${face}.png`)));
+  const [side, front, top] = await Promise.all([texture("side"), texture("front_on"), texture("top")]);
+  const sideFace = renderFace(side, 0.72, (x, y) => [16 + x * 3, 32 + x * 1.5 + y * 3]);
+  const frontFace = renderFace(front, 0.9, (x, y) => [64 + x * 3, 56 - x * 1.5 + y * 3]);
+  const topFace = renderFace(top, 1, (x, y) => [64 + (x - y) * 3, 8 + (x + y) * 1.5]);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" shape-rendering="crispEdges">
+  <polygon points="12,83 64,113 116,83 64,53" fill="#000" opacity=".28"/>
+${sideFace}
+${frontFace}
+${topFace}
+</svg>\n`;
+}
+
+function methodHeading(method, signature) {
+  const literalType = /^"[^"]+"(?: \| "[^"]+")*$/;
+  const parameters = signature.parameters.map((parameter, index) => (
+    method.signatures.length > 1 && index === 0 && literalType.test(parameter.type) ? parameter.type : parameter.name
+  ));
+  return `${method.name}(${parameters.join(", ")})`;
+}
+
 export function renderPeripheral(peripheral, revision = "") {
   const lines = [
     "## Peripheral methods",
@@ -105,7 +202,7 @@ export function renderPeripheral(peripheral, revision = "") {
   ];
   for (const method of peripheral.methods) {
     for (const signature of method.signatures) {
-      lines.push(`### \`${signature.signature}\``, "");
+      lines.push(`### \`${methodHeading(method, signature)}\``, "");
       if (method.inheritedFrom) lines.push(`*Inherited from \`${method.inheritedFrom}\`.*`, "");
       if (signature.summary) lines.push(signature.summary, "");
       if (signature.parameters.length) {
@@ -148,7 +245,7 @@ export async function buildDocs(args = []) {
   await mkdir(resolve(buildRoot, "assets/peripherals"), { recursive: true });
   const textureRoot = resolve(projectRoot, "../core/src/main/resources/assets/digitalitems/textures/block");
   for (const block of ["digitizer", "advanced_digitizer"]) {
-    await cp(resolve(textureRoot, `${block}_front_on.png`), resolve(buildRoot, "assets/peripherals", `${block}.png`));
+    await writeFile(resolve(buildRoot, "assets/peripherals", `${block}.svg`), await renderBlock(textureRoot, block));
   }
   await mkdir(resolve(buildRoot, "assets/stylesheets"), { recursive: true });
   await mkdir(resolve(buildRoot, "assets/javascripts"), { recursive: true });
