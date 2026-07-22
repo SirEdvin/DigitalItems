@@ -96,6 +96,17 @@ function escapeCell(value) {
   return value.replaceAll("|", "\\|").replaceAll("\n", " ");
 }
 
+async function renderBlock(textureRoot, block) {
+  const texture = async (face) => (await readFile(resolve(textureRoot, `${block}_${face}.png`))).toString("base64");
+  const [side, front, top] = await Promise.all([texture("side"), texture("front_on"), texture("top")]);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <polygon points="12,83 64,113 116,83 64,53" fill="#000" opacity=".28"/>
+  <image href="data:image/png;base64,${side}" width="16" height="16" image-rendering="pixelated" transform="matrix(3 1.5 0 3 16 32)"/>
+  <image href="data:image/png;base64,${front}" width="16" height="16" image-rendering="pixelated" transform="matrix(3 -1.5 0 3 64 56)"/>
+  <image href="data:image/png;base64,${top}" width="16" height="16" image-rendering="pixelated" transform="matrix(3 1.5 -3 1.5 64 8)"/>
+</svg>\n`;
+}
+
 export function renderPeripheral(peripheral, revision = "") {
   const lines = [
     "## Peripheral methods",
@@ -104,11 +115,9 @@ export function renderPeripheral(peripheral, revision = "") {
     "",
   ];
   for (const method of peripheral.methods) {
-    lines.push(`### \`${method.name}\``, "");
-    if (method.inheritedFrom) lines.push(`*Inherited from \`${method.inheritedFrom}\`.*`, "");
-    for (const [index, signature] of method.signatures.entries()) {
-      if (method.signatures.length > 1) lines.push(`#### Overload ${index + 1}`, "");
-      lines.push("```typescript", signature.signature, "```", "");
+    for (const signature of method.signatures) {
+      lines.push(`### \`${signature.signature}\``, "");
+      if (method.inheritedFrom) lines.push(`*Inherited from \`${method.inheritedFrom}\`.*`, "");
       if (signature.summary) lines.push(signature.summary, "");
       if (signature.parameters.length) {
         lines.push("| Parameter | Type | Description |", "| --- | --- | --- |");
@@ -149,8 +158,9 @@ export async function buildDocs(args = []) {
   });
   await mkdir(resolve(buildRoot, "assets/peripherals"), { recursive: true });
   const textureRoot = resolve(projectRoot, "../core/src/main/resources/assets/digitalitems/textures/block");
-  await cp(resolve(textureRoot, "digitizer_front_on.png"), resolve(buildRoot, "assets/peripherals/digitizer.png"));
-  await cp(resolve(textureRoot, "advanced_digitizer_front_on.png"), resolve(buildRoot, "assets/peripherals/advanced_digitizer.png"));
+  for (const block of ["digitizer", "advanced_digitizer"]) {
+    await writeFile(resolve(buildRoot, "assets/peripherals", `${block}.svg`), await renderBlock(textureRoot, block));
+  }
   await mkdir(resolve(buildRoot, "assets/stylesheets"), { recursive: true });
   await mkdir(resolve(buildRoot, "assets/javascripts"), { recursive: true });
   await cp(resolve(projectRoot, "documentation/theme/digitalitems.css"), resolve(buildRoot, "assets/stylesheets/digitalitems.css"));
