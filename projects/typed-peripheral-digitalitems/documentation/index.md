@@ -8,11 +8,11 @@ TypeScript with TypeScriptToLua.
 
 <div class="di-peripheral-grid">
   <a class="di-peripheral-card" href="guides/basic-digitizer/">
-    <span class="di-peripheral-image"><img src="assets/peripherals/digitizer.svg" alt="Digitizer block" /></span>
+    <span class="di-peripheral-image"><img src="assets/peripherals/digitizer.png" alt="Digitizer block" /></span>
     <span class="di-peripheral-copy"><strong>Digitizer</strong><small>Peripheral type: <code>digitizer</code></small><span>Digitize and restore items through a simple internal inventory.</span><b>Open peripheral guide &rarr;</b></span>
   </a>
   <a class="di-peripheral-card di-peripheral-card--advanced" href="guides/advanced-items/">
-    <span class="di-peripheral-image"><img src="assets/peripherals/advanced_digitizer.svg" alt="Advanced digitizer block" /></span>
+    <span class="di-peripheral-image"><img src="assets/peripherals/advanced_digitizer.png" alt="Advanced digitizer block" /></span>
     <span class="di-peripheral-copy"><strong>Advanced Digitizer</strong><small>Peripheral type: <code>advanced_digitizer</code></small><span>Move items, fluids, and energy between remote storage and digital IDs.</span><b>Open peripheral guide &rarr;</b></span>
   </a>
 </div>
