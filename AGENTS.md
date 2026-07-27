@@ -2,11 +2,11 @@
 
 ## Overview
 
-Digital Items is a Minecraft 1.20.1 mod that adds digital item storage peripherals for CC:Tweaked. It supports both Fabric and Forge from a shared core module.
+Digital Items is a Minecraft 1.21.1 mod that adds digital item storage peripherals for CC:Tweaked. It supports both Fabric and Forge from a shared core module.
 
 ## Tech Stack
 
-- Runtime: Minecraft 1.20.1 / Java 17
+- Runtime: Minecraft 1.21.1 / Java 21
 - Languages: Kotlin 2.0, Java, TypeScript, and Lua
 - Loaders: Fabric Loader 0.15 and Forge 47
 - Computer mod: CC:Tweaked 1.113
