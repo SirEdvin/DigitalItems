@@ -14,8 +14,8 @@
   "scripts": {
     "build": "tstl",
     "clean": "rm -f *.lua *.d.ts",
-    "docs": "typedoc",
-    "docs:watch": "typedoc --watch"
+    "docs": "node documentation/generate-docs.mjs",
+    "docs:test": "node --test documentation/generate-docs.test.mjs"
   },
   "dependencies": {
     "@jackmacwindows/lua-types": "^2.13.1",
@@ -26,7 +26,6 @@
     "@siredvin/typed-peripheral-base": "*"
   },
   "devDependencies": {
-    "typedoc": "0.28.20",
     "typescript": "5.7.2",
     "typescript-to-lua": "1.29.1"
   }

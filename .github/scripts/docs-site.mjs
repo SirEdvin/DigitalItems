@@ -5,19 +5,20 @@ import { spawnSync } from "node:child_process";
 import { dirname, isAbsolute, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const REQUIRED_DOC_FILES = [
+export const COMMON_DOC_FILES = [
   "projects/typed-peripheral-digitalitems/build.gradle.kts",
   "projects/typed-peripheral-digitalitems/package.json",
   "projects/typed-peripheral-digitalitems/package-lock.json",
-  "projects/typed-peripheral-digitalitems/typedoc.json",
-  "projects/typed-peripheral-digitalitems/tsconfig.docs.json",
   "projects/typed-peripheral-digitalitems/shared.ts",
   "projects/typed-peripheral-digitalitems/digitizer.ts",
   "projects/typed-peripheral-digitalitems/advanced_digitizer.ts",
   "projects/typed-peripheral-digitalitems/documentation/index.md",
-  "projects/typed-peripheral-digitalitems/documentation/theme/plugin.mjs",
   "projects/typed-peripheral-digitalitems/documentation/theme/digitalitems.css",
   "projects/typed-peripheral-digitalitems/documentation/theme/digitalitems.js",
+];
+const DOC_GENERATORS = [
+  ["projects/typed-peripheral-digitalitems/typedoc.json", "projects/typed-peripheral-digitalitems/documentation/theme/plugin.mjs"],
+  ["projects/typed-peripheral-digitalitems/mkdocs.yml", "projects/typed-peripheral-digitalitems/requirements-docs.txt", "projects/typed-peripheral-digitalitems/documentation/generate-docs.mjs"],
 ];
 
 const BRANCHES = ["1.20", "1.21"];
@@ -119,9 +120,10 @@ function show(repository, ref, path) {
 }
 
 function refHasDocs(repository, ref) {
-  return REQUIRED_DOC_FILES.every((path) =>
-    git(repository, ["cat-file", "-e", `${ref}:${path}`], true).status === 0
-  ) && /\bgenerateDocs\b/.test(show(repository, ref, REQUIRED_DOC_FILES[0]));
+  const has = (path) => git(repository, ["cat-file", "-e", `${ref}:${path}`], true).status === 0;
+  return COMMON_DOC_FILES.every(has)
+    && DOC_GENERATORS.some((files) => files.every(has))
+    && /\bgenerateDocs\b/.test(show(repository, ref, COMMON_DOC_FILES[0]));
 }
 
 function metadata(repository, ref) {
@@ -265,7 +267,10 @@ function localTarget(root, html, rawLink) {
     fail(`Malformed local link in ${html}: ${rawLink}`);
   }
   if (pathname.includes("\\") || pathname.includes("\0")) fail(`Unsafe local link in ${html}: ${rawLink}`);
-  const target = pathname.startsWith("/") ? resolve(root, `.${pathname}`) : resolve(dirname(html), pathname);
+  const versionedPath = pathname.match(/^\/.*?\/((?:branch|tag)\/.*)$/)?.[1];
+  const target = pathname.startsWith("/")
+    ? resolve(root, versionedPath ?? `.${pathname}`)
+    : resolve(dirname(html), pathname);
   if (!within(root, target)) fail(`Local link escapes site in ${html}: ${rawLink}`);
   return target;
 }
@@ -290,9 +295,6 @@ export async function validateSite(site) {
   for (const entry of plan) {
     const versionRoot = resolve(root, entry.path);
     await regularFile(resolve(versionRoot, "index.html"), `${entry.path} index.html`);
-    for (const asset of ["search.js", "navigation.js", "custom.css", "custom.js"]) {
-      await regularFile(resolve(versionRoot, "assets", asset), `${entry.path} ${asset}`);
-    }
   }
   const canonicalRoot = await realpath(root);
   for (const html of await htmlFiles(root)) {

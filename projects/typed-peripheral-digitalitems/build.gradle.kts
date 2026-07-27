@@ -54,10 +54,11 @@ val generateDocs by tasks.registering(NpmTask::class) {
             "package.json",
             "package-lock.json",
             "tsconfig.json",
-            "tsconfig.docs.json",
-            "typedoc.json",
+            "mkdocs.yml",
+            "requirements-docs.txt",
             "*.ts",
             "documentation/**/*.md",
+            "documentation/**/*.mjs",
             "documentation/theme/**",
         )
         exclude("node_modules/**", "*.d.ts")
@@ -71,6 +72,7 @@ tasks.assemble {
 
 tasks.clean {
     delete(file("docs"))
+    delete(file(".mkdocs-build"))
     delete(fileTree(projectDir) {
         include("*.d.ts", "*.lua")
     })
