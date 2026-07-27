@@ -67,6 +67,17 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install MkDocs for migrated refs
+        run: |
+          if [[ -f projects/typed-peripheral-digitalitems/requirements-docs.txt ]]; then
+            timeout --foreground 120s python -m pip install -r projects/typed-peripheral-digitalitems/requirements-docs.txt
+          fi
+
       - name: Generate documentation with ref-owned task
         env:
           DOCS_PATH: ${{ matrix.path }}

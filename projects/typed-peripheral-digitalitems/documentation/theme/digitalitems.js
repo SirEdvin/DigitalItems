@@ -1,22 +1,18 @@
-(() => {
-  const selector = document.querySelector("#di-version-select");
-  if (!(selector instanceof HTMLSelectElement)) return;
-
-  const script = document.currentScript ?? [...document.scripts].find((entry) =>
-    entry.src.endsWith("/custom.js")
-  );
+document.addEventListener("DOMContentLoaded", () => {
+  const script = [...document.scripts].find((entry) => entry.src.endsWith("/assets/javascripts/digitalitems.js"));
   if (!script) return;
-
   const scriptUrl = new URL(script.src);
-  const versionRoot = scriptUrl.pathname.match(
-    /^(.*\/)(?:branch|tag)\/[^/]+\/assets\/custom\.js$/
-  );
-  if (!versionRoot) return;
+  const match = scriptUrl.pathname.match(/^(.*\/)((?:branch|tag)\/[^/]+)\/assets\/javascripts\/digitalitems\.js$/);
+  if (!match) return;
 
-  const siteRoot = new URL(versionRoot[1], scriptUrl.origin);
-  const currentPath = decodeURIComponent(
-    scriptUrl.pathname.slice(versionRoot[1].length).replace(/assets\/custom\.js$/, "")
-  );
+  const siteRoot = new URL(match[1], scriptUrl.origin);
+  const currentVersion = `${decodeURIComponent(match[2])}/`;
+  const select = document.createElement("select");
+  select.id = "di-version-select";
+  select.ariaLabel = "Documentation version";
+  select.disabled = true;
+  select.append(new Option("Loading versions..."));
+  document.querySelector(".md-header__inner")?.append(select);
 
   fetch(new URL("versions.json", siteRoot))
     .then((response) => {
@@ -24,38 +20,15 @@
       return response.json();
     })
     .then((manifest) => {
-      if (!manifest || !Array.isArray(manifest.versions)) {
-        throw new Error("Unsupported version manifest");
+      select.replaceChildren();
+      for (const entry of manifest.versions ?? []) {
+        const option = new Option(entry.label || entry.name, entry.path);
+        option.selected = entry.path === currentVersion;
+        select.append(option);
       }
-
-      selector.replaceChildren();
-      const groups = new Map([
-        ["branch", document.createElement("optgroup")],
-        ["tag", document.createElement("optgroup")],
-      ]);
-      groups.get("branch").label = "Development branches";
-      groups.get("tag").label = "Releases";
-
-      for (const entry of manifest.versions) {
-        if (!entry || !groups.has(entry.kind) || typeof entry.path !== "string") continue;
-        const option = document.createElement("option");
-        option.value = entry.path;
-        option.textContent = entry.label || entry.name;
-        option.selected = entry.path === currentPath;
-        groups.get(entry.kind).append(option);
-      }
-
-      for (const group of groups.values()) {
-        if (group.children.length > 0) selector.append(group);
-      }
-      selector.disabled = selector.options.length === 0;
+      select.disabled = select.options.length === 0;
     })
-    .catch(() => {
-      selector.options[0].textContent = "Version list unavailable";
-    });
+    .catch(() => { select.options[0].textContent = "Versions unavailable"; });
 
-  selector.addEventListener("change", () => {
-    if (!selector.value) return;
-    window.location.assign(new URL(selector.value, siteRoot));
-  });
-})();
+  select.addEventListener("change", () => window.location.assign(new URL(select.value, siteRoot)));
+});
