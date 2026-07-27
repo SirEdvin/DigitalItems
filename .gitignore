@@ -36,3 +36,5 @@ run/
 .env
 UnlimitedPeripheralWorks-*
 .kotlin
+
+.venv
