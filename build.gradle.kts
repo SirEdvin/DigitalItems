@@ -1,7 +1,7 @@
 plugins {
     java
-    id("site.siredvin.root") version "0.9.0"
-    id("site.siredvin.release") version "0.9.0"
+    id("site.siredvin.root") version "0.9.1"
+    id("site.siredvin.release") version "0.9.1"
 }
 
 tasks.register("gameTest") {
