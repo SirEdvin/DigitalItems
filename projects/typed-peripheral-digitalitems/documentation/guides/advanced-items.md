@@ -4,10 +4,13 @@ peripheralInterface: AdvancedDigitizer
 
 # Advanced Digitizer
 
-<div class="di-peripheral-hero di-peripheral-hero--advanced">
-  <div class="di-peripheral-image"><img src="../../assets/peripherals/advanced_digitizer.svg" alt="Advanced digitizer block" /></div>
-  <div><span class="di-eyebrow">MULTI-STORAGE PERIPHERAL</span><p>The advanced digitizer moves items, fluids, and energy between attached storage and durable digital identifiers.</p><dl><div><dt>Peripheral type</dt><dd><code>{{ peripheralType }}</code></dd></div><div><dt>Storage</dt><dd>Items, fluids, energy</dd></div><div><dt>Failure style</dt><dd>Recoverable result pairs</dd></div></dl></div>
-</div>
+<aside class="di-peripheral-hero di-peripheral-hero--advanced" aria-label="Advanced digitizer at a glance">
+  <div class="di-peripheral-image"><img src="../../assets/peripherals/advanced_digitizer.png" alt="Advanced digitizer rendered in Minecraft" width="128" height="128" /></div>
+  <div><span class="di-eyebrow">MULTI-STORAGE PERIPHERAL</span><dl><div><dt>Peripheral type</dt><dd><code>{{ peripheralType }}</code></dd></div><div><dt>Storage</dt><dd>Items, fluids, energy</dd></div><div><dt>Failure style</dt><dd>Recoverable result pairs</dd></div></dl></div>
+</aside>
+
+The advanced digitizer moves items, fluids, and energy between attached storage
+and durable digital identifiers.
 
 The advanced digitizer can extract from its internal inventory with source
 `self`, or from an attached inventory/item storage by peripheral name. The

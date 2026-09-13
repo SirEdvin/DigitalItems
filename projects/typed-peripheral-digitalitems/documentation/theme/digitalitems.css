@@ -56,21 +56,23 @@
 .di-peripheral-copy b { margin-top: auto; color: var(--md-accent-fg-color); font-size: .78rem; }
 
 .di-peripheral-hero {
+  float: right;
   display: grid;
-  grid-template-columns: 10rem minmax(0, 1fr);
-  gap: 1.5rem;
-  margin: 1rem 0 2rem;
-  padding: 1.4rem;
+  width: 13rem;
+  max-width: 45%;
+  gap: .75rem;
+  margin: .25rem 0 1.5rem 1.5rem;
+  padding: 1.2rem;
   border-radius: .55rem;
 }
 
 .di-peripheral-hero .di-peripheral-image { min-height: 10rem; }
 .di-peripheral-hero .di-peripheral-image img { width: 8rem; height: 8rem; }
 .di-eyebrow { color: var(--di-warm); font: 600 .66rem/1 "IBM Plex Mono"; letter-spacing: .12em; }
-.di-peripheral-hero p { margin: .55rem 0 1rem; font-size: .95rem; }
-.di-peripheral-hero dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; margin: 0; }
+.di-peripheral-hero dl { display: grid; gap: .7rem; margin: .75rem 0 0; }
 .di-peripheral-hero dt { opacity: .65; font-size: .62rem; text-transform: uppercase; letter-spacing: .06em; }
 .di-peripheral-hero dd { margin: .15rem 0 0; overflow-wrap: anywhere; font-weight: 700; }
+#peripheral-methods { clear: both; }
 
 .md-typeset table:not([class]) { display: table; width: 100%; }
 .md-typeset table:not([class]) th { background: var(--di-panel); }
@@ -78,7 +80,10 @@
 
 @media (max-width: 760px) {
   .di-peripheral-grid { grid-template-columns: 1fr; }
-  .di-peripheral-hero { grid-template-columns: 1fr; }
-  .di-peripheral-hero dl { grid-template-columns: 1fr; }
+  .di-peripheral-hero { float: none; width: auto; max-width: 20rem; margin: 1rem auto 1.5rem; }
   .di-peripheral-hero .di-peripheral-image { min-height: 9rem; }
+}
+
+@media (max-width: 400px) {
+  .di-peripheral-card { flex-direction: column; }
 }

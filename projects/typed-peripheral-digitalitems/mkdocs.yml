@@ -9,8 +9,8 @@ strict: true
 
 theme:
   name: material
-  logo: assets/favicon.svg
-  favicon: assets/favicon.svg
+  logo: assets/favicon.png
+  favicon: assets/favicon.png
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default

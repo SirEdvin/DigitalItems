@@ -43,6 +43,15 @@ val testMod = sourceSets.create("testMod") {
 
 net.fabricmc.loom.configuration.RemapConfigurations.setupForSourceSet(project, testMod)
 
+val docsRender = sourceSets.create("docsRender") {
+    compileClasspath += sourceSets.main.get().compileClasspath
+    compileClasspath += sourceSets.main.get().output
+    runtimeClasspath += sourceSets.main.get().runtimeClasspath
+    runtimeClasspath += sourceSets.main.get().output
+}
+
+net.fabricmc.loom.configuration.RemapConfigurations.setupForSourceSet(project, docsRender)
+
 val testiariumCctArtifacts = configurations.detachedConfiguration(
     project.dependencies.create("site.siredvin:testiarium-core-1.20.1:0.1.1:cct-test-mod@jar"),
     project.dependencies.create("site.siredvin:testiarium-fabric-1.20.1:0.1.1:cct-test-mod@jar"),
@@ -59,12 +68,21 @@ val testiariumMainArtifacts = configurations.detachedConfiguration(
 
 loom {
     mods {
+        register("digitalitems-docs-render") {
+            sourceSet(docsRender)
+        }
         register("digitalitems-testmod") {
             sourceSet(testMod)
             sourceSet(project(":core").sourceSets["testMod"])
         }
     }
     runs {
+        create("docsRender") {
+            client()
+            source(docsRender)
+            property("digitalitems.docsOutput", layout.buildDirectory.dir("docs-models").get().asFile.absolutePath)
+            runDir("run/docs-render")
+        }
         named("client") {
             this.programArgs("--username=Player")
         }
@@ -100,6 +118,30 @@ repositories {
             includeGroup("maven.modrinth")
         }
     }
+}
+
+val docsModels = layout.buildDirectory.dir("docs-models")
+tasks.named("runDocsRender") {
+    doFirst {
+        delete(docsModels)
+    }
+    doLast {
+        for (name in listOf("digitizer", "advanced_digitizer")) {
+            check(docsModels.get().file("$name.png").asFile.isFile) {
+                "Missing native documentation render: $name"
+            }
+        }
+    }
+}
+
+tasks.register<Copy>("exportDocsModels") {
+    group = "documentation"
+    description = "Renders native Minecraft item models and refreshes the documentation PNGs."
+    dependsOn("runDocsRender")
+    from(docsModels) {
+        include("digitizer.png", "advanced_digitizer.png")
+    }
+    into(project(":typed-peripheral-digitalitems").file("documentation/assets/peripherals"))
 }
 
 dependencies {

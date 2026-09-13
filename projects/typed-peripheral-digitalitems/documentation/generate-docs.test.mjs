@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import test from "node:test";
 import ts from "typescript";
-import { extractPeripheral, renderBlock, renderPeripheral } from "./generate-docs.mjs";
+import { extractPeripheral, renderPeripheral } from "./generate-docs.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const parsed = ts.parseJsonConfigFileContent(
@@ -42,10 +43,15 @@ test("preserves advanced digitizer overloads and nullable tuple unions", () => {
   assert.match(markdown, /### `digitize\("fluid" \| "energy", source, filter, limit, destination\)`/);
 });
 
-test("renders all 16x16 block texture pixels as crisp SVG faces", async () => {
-  const textureRoot = resolve(root, "../core/src/main/resources/assets/digitalitems/textures/block");
-  const svg = await renderBlock(textureRoot, "digitizer");
-  assert.match(svg, /shape-rendering="crispEdges"/);
-  assert.equal(svg.match(/<polygon /g).length, 769);
-  assert.doesNotMatch(svg, /<image /);
+test("ships distinct 128px RGBA Minecraft renders for both peripherals", async () => {
+  const images = [];
+  for (const name of ["digitizer", "advanced_digitizer"]) {
+    const png = await readFile(resolve(root, "documentation/assets/peripherals", `${name}.png`));
+    assert.equal(png.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
+    assert.equal(png.readUInt32BE(16), 128);
+    assert.equal(png.readUInt32BE(20), 128);
+    assert.equal(png[25], 6);
+    images.push(png);
+  }
+  assert.notDeepEqual(images[0], images[1]);
 });

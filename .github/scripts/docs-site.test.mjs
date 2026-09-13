@@ -86,6 +86,9 @@ test("assemble writes a versioned manifest and validates the site", async () => 
   const manifest = JSON.parse(await readFile(join(output, "versions.json"), "utf8"));
   assert.equal(manifest.schemaVersion, 1);
   assert.equal(manifest.defaultPath, "branch/1.20/");
+  const icon = await readFile(new URL("../../projects/typed-peripheral-digitalitems/documentation/theme/favicon.png", import.meta.url));
+  assert.deepEqual(await readFile(join(output, "favicon.png")), icon);
+  assert.match(await readFile(join(output, "index.html"), "utf8"), /rel="icon" href="favicon.png"/);
   assert.deepEqual(manifest.versions.map(({ path }) => path), ["branch/1.20/", "tag/v1.20.1-0.5.8/"]);
   await validateSite(output);
 });
