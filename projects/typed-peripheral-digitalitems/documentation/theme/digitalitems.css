@@ -76,7 +76,27 @@
 
 .md-typeset table:not([class]) { display: table; width: 100%; }
 .md-typeset table:not([class]) th { background: var(--di-panel); }
-#di-version-select { max-width: 15rem; padding: .28rem .5rem; border: 1px solid var(--di-line); border-radius: .25rem; color: inherit; background: var(--md-default-bg-color); font: 600 .65rem "IBM Plex Mono"; }
+#di-version-select {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 12rem;
+  margin-inline: .4rem;
+  padding: .4rem;
+  border: 1px solid currentColor;
+  border-radius: .25rem;
+  color: var(--md-default-fg-color);
+  background: var(--md-default-bg-color);
+  font: 600 .65rem "IBM Plex Mono";
+  cursor: pointer;
+}
+#di-version-select option { color: var(--md-default-fg-color); background: var(--md-default-bg-color); }
+#di-version-select:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+#di-version-select:disabled { cursor: default; opacity: .7; }
+
+@media (max-width: 599px) {
+  .md-header__inner { flex-wrap: wrap; }
+  #di-version-select { order: 1; max-width: calc(100% - .8rem); margin-block: 0 .4rem; }
+}
 
 @media (max-width: 760px) {
   .di-peripheral-grid { grid-template-columns: 1fr; }

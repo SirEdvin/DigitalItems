@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/scripts/docs-site.mjs"
       - ".github/scripts/docs-site.test.mjs"
+      - ".github/scripts/docs-version-selector.test.mjs"
       - ".github/workflows/docs-check.yml"
       - ".github/workflows/docs-pages.yml"
       - "projects/typed-peripheral-digitalitems/**"
@@ -65,7 +66,7 @@ jobs:
         run: |
           set -euo pipefail
           NODE="$PWD/.gradle/nodejs/node-v22.14.0-linux-x64/bin/node"
-          timeout --foreground 60s "$NODE" --test .github/scripts/docs-site.test.mjs projects/typed-peripheral-digitalitems/documentation/generate-docs.test.mjs
+          timeout --foreground 60s "$NODE" --test .github/scripts/docs-site.test.mjs .github/scripts/docs-version-selector.test.mjs projects/typed-peripheral-digitalitems/documentation/generate-docs.test.mjs
           mkdir -p build/docs-fragments/branch/1.20
           cp -a projects/typed-peripheral-digitalitems/docs/. build/docs-fragments/branch/1.20/
           timeout --foreground 60s "$NODE" .github/scripts/docs-site.mjs assemble --input build/docs-fragments --output build/docs-site --plan-json "$DOCS_PLAN"
