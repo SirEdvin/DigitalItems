@@ -1,6 +1,6 @@
 site_name: Digital Items Peripheral API
 site_description: TypeScript and Lua reference for Digital Items peripherals
-site_url: !ENV [DOCS_SITE_URL, "https://siredvin.github.io/DigitalItems/branch/1.20/"]
+site_url: !ENV [DOCS_SITE_URL, "https://siredvin.github.io/DigitalItems/branch/1.21/"]
 repo_url: https://github.com/SirEdvin/DigitalItems
 repo_name: SirEdvin/DigitalItems
 docs_dir: .mkdocs-build
@@ -9,8 +9,8 @@ strict: true
 
 theme:
   name: material
-  logo: assets/favicon.svg
-  favicon: assets/favicon.svg
+  logo: assets/favicon.png
+  favicon: assets/favicon.png
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default

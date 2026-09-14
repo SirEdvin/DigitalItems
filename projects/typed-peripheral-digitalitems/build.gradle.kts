@@ -38,6 +38,8 @@ val docsHostedBaseUrl = providers.gradleProperty("docsHostedBaseUrl")
 
 val generateDocs by tasks.registering(NpmTask::class) {
     dependsOn(tasks.npmInstall)
+    // Rendering is opt-in, but a combined refresh/build must consume the new PNGs.
+    mustRunAfter(":fabric:exportDocsModels")
     npmCommand.set(providers.provider {
         buildList {
             addAll(listOf("run", "docs", "--", "--out", docsOutput.get()))
@@ -59,6 +61,7 @@ val generateDocs by tasks.registering(NpmTask::class) {
             "*.ts",
             "documentation/**/*.md",
             "documentation/**/*.mjs",
+            "documentation/assets/**",
             "documentation/theme/**",
         )
         exclude("node_modules/**", "*.d.ts")

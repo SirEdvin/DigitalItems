@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   select.ariaLabel = "Documentation version";
   select.disabled = true;
   select.append(new Option("Loading versions..."));
-  document.querySelector(".md-header__inner")?.append(select);
+  document.querySelector(".md-header__title")?.after(select);
 
   fetch(new URL("versions.json", siteRoot))
     .then((response) => {
@@ -22,13 +22,18 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((manifest) => {
       select.replaceChildren();
       for (const entry of manifest.versions ?? []) {
-        const option = new Option(entry.label || entry.name, entry.path);
+        if (!/^(branch|tag)\/[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*\/$/.test(entry.path)) continue;
+        const label = entry.kind === "branch" ? `Minecraft ${entry.minecraftVersion || entry.name}` : entry.label || entry.name;
+        const option = new Option(label, entry.path);
         option.selected = entry.path === currentVersion;
         select.append(option);
       }
       select.disabled = select.options.length === 0;
     })
-    .catch(() => { select.options[0].textContent = "Versions unavailable"; });
+    .catch(() => {
+      select.replaceChildren(new Option("Versions unavailable"));
+      select.disabled = true;
+    });
 
   select.addEventListener("change", () => window.location.assign(new URL(select.value, siteRoot)));
 });
