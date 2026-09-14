@@ -204,18 +204,13 @@ function escapeHtml(value) {
 }
 
 function rootHtml(manifest) {
-  const cards = manifest.versions.map((entry) => `
-        <a class="version" href="${escapeHtml(entry.path)}">
-          <span>${entry.kind === "branch" ? "LIVE BRANCH" : "RELEASE"}</span>
-          <strong>${escapeHtml(entry.label)}</strong>
-          <small>${escapeHtml(entry.packageVersion ? `Types ${entry.packageVersion}` : entry.name)}</small>
-        </a>`).join("");
+  const target = escapeHtml(manifest.defaultPath);
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="icon" href="favicon.png" type="image/png">
-<title>Digital Items Peripheral Archive</title><style>
-:root{color-scheme:dark;font-family:"Trebuchet MS",sans-serif;background:#071116;color:#e4f2f2}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(rgba(75,225,210,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(75,225,210,.07) 1px,transparent 1px),radial-gradient(circle at 80% 15%,#123942,#071116 42%);background-size:48px 48px,48px 48px,auto}main{width:min(920px,calc(100% - 2rem));margin:auto;padding:12vh 0}p.kicker{color:#4be1d2;font:700 .72rem "Lucida Console",monospace;letter-spacing:.18em}h1{max-width:760px;margin:.7rem 0 1rem;font:700 clamp(2.7rem,8vw,6.8rem)/.91 "Lucida Console",monospace;letter-spacing:-.08em}p.lead{max-width:620px;color:#9fb4ba;font-size:1.14rem;line-height:1.65}.versions{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:3.5rem}.version{position:relative;display:grid;gap:.55rem;padding:1.35rem;color:inherit;text-decoration:none;background:#0c1c23;border:1px solid #286a6b;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,0 100%);transition:transform .18s,border-color .18s}.version:hover{transform:translateY(-4px);border-color:#ffbd59}.version span{color:#ffbd59;font:700 .62rem "Lucida Console",monospace;letter-spacing:.16em}.version strong{font:700 1.1rem "Lucida Console",monospace}.version small{color:#9fb4ba}</style></head>
-<body><main><p class="kicker">DIGITAL ITEMS // PERIPHERAL ARCHIVE</p><h1>Code becomes matter.</h1><p class="lead">Versioned TypeScript and Lua reference for Digital Items peripherals. Choose the Minecraft branch or immutable release matching your installation.</p><section class="versions" aria-label="Documentation versions">${cards}</section></main></body></html>\n`;
+<meta http-equiv="refresh" content="0; url=${target}">
+<title>Digital Items documentation</title></head>
+<body><main><p>Continue to the <a href="${target}">Digital Items documentation</a>.</p></main></body></html>\n`;
 }
 
 export async function assembleSite({ input, output, plan: rawPlan }) {
@@ -231,7 +226,8 @@ export async function assembleSite({ input, output, plan: rawPlan }) {
   await mkdir(outputRoot, { recursive: true });
   for (const entry of plan) await copyTree(resolve(inputRoot, entry.path), resolve(outputRoot, entry.path));
   const versions = plan.map((entry) => ({ ...entry, path: `${entry.path}/` }));
-  const manifest = { schemaVersion: 1, defaultPath: versions[0].path, versions };
+  const defaultVersion = versions.find((entry) => entry.path === "branch/1.20/") ?? versions[0];
+  const manifest = { schemaVersion: 1, defaultPath: defaultVersion.path, versions };
   await writeFile(resolve(outputRoot, "versions.json"), `${JSON.stringify(manifest, null, 2)}\n`);
   await writeFile(resolve(outputRoot, "index.html"), rootHtml(manifest));
   const icon = resolve(dirname(fileURLToPath(import.meta.url)), "../../projects/typed-peripheral-digitalitems/documentation/theme/favicon.png");
