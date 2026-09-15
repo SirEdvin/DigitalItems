@@ -77,16 +77,35 @@ test("assemble writes a versioned manifest and validates the site", async () => 
   const input = join(root, "input");
   const output = join(root, "output");
   await fragment(input, "branch/1.20");
+  await fragment(input, "branch/1.21");
   await fragment(input, "tag/v1.20.1-0.5.8");
   await assembleSite({
     input,
     output,
-    plan: [entry("branch", "1.20"), entry("tag", "v1.20.1-0.5.8", SHA_B)],
+    plan: [entry("branch", "1.21"), entry("branch", "1.20"), entry("tag", "v1.20.1-0.5.8", SHA_B)],
   });
   const manifest = JSON.parse(await readFile(join(output, "versions.json"), "utf8"));
   assert.equal(manifest.schemaVersion, 1);
   assert.equal(manifest.defaultPath, "branch/1.20/");
-  assert.deepEqual(manifest.versions.map(({ path }) => path), ["branch/1.20/", "tag/v1.20.1-0.5.8/"]);
+  const icon = await readFile(new URL("../../projects/typed-peripheral-digitalitems/documentation/theme/favicon.png", import.meta.url));
+  assert.deepEqual(await readFile(join(output, "favicon.png")), icon);
+  assert.match(await readFile(join(output, "index.html"), "utf8"), /rel="icon" href="favicon.png"/);
+  const html = await readFile(join(output, "index.html"), "utf8");
+  assert.match(html, /http-equiv="refresh" content="0; url=branch\/1.20\/"/);
+  assert.match(html, /<a href="branch\/1.20\/">/);
+  assert.doesNotMatch(html, /Choose the Minecraft branch/);
+  assert.deepEqual(manifest.versions.map(({ path }) => path), ["branch/1.21/", "branch/1.20/", "tag/v1.20.1-0.5.8/"]);
+  await validateSite(output);
+});
+
+test("assemble falls back to an available version when 1.20 is absent", async () => {
+  const root = await mkdtemp(join(tmpdir(), "docs-site-fallback-"));
+  const input = join(root, "input");
+  const output = join(root, "output");
+  await fragment(input, "branch/1.21");
+  const manifest = await assembleSite({ input, output, plan: [entry("branch", "1.21")] });
+  assert.equal(manifest.defaultPath, "branch/1.21/");
+  assert.match(await readFile(join(output, "index.html"), "utf8"), /content="0; url=branch\/1.21\/"/);
   await validateSite(output);
 });
 
