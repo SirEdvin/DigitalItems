@@ -21,7 +21,7 @@ def audit():
                   if "=" in line and not line.startswith("#") for key, _, value in [line.partition("=")]}
     version = properties["modVersion"]
     result = []
-    for minecraft, library, major in [("1.20.1", "1.4.3", 61), ("1.21.1", "1.4.6", 65)]:
+    for minecraft, library, major in [("1.20.1", "2.0.0-rc.1", 61), ("1.21.1", "2.0.0-rc.1", 65)]:
         common = Path("projects/core/versions") / minecraft / "build"
         for loader in ("fabric", "forge"):
             build = Path("projects") / loader / "versions" / minecraft / "build"
@@ -56,6 +56,7 @@ def audit():
                     assert "${" not in metadata and f'version="{version}"' in metadata
                     nested_metadata = json.loads(archive.read("META-INF/jarjar/metadata.json"))["jars"]
                     assert len(nested_metadata) == 2 and all(entry["version"]["artifactVersion"] == library for entry in nested_metadata)
+                    assert all(entry["version"]["range"] == f"[{library}]" for entry in nested_metadata), f"{binary}: jar-in-jar must require the qualified RC"
                     nested = [entry["path"] for entry in nested_metadata]
                     assert "fabric.mod.json" not in entries
                     assert ("digitalitems.mixins.json" in entries) == (minecraft == "1.20.1")

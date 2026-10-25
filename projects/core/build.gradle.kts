@@ -34,9 +34,13 @@ dependencies {
     compileOnly(if (is121) libs121.fabric.config else libs.fabric.config) {
         isTransitive = false
     }
-    add(testMod.implementationConfigurationName, "site.siredvin:testiarium-core-$minecraftVersion:0.1.1")
-    add(testMod.implementationConfigurationName, "site.siredvin:testiarium-core-$minecraftVersion:0.1.1:test-mod@jar")
-    add(testMod.implementationConfigurationName, "site.siredvin:testiarium-core-$minecraftVersion:0.1.1:cct-test-mod@jar")
+    val testiarium = (if (is121) libs121.testiarium.core else libs.testiarium.core).get().toString()
+    add(testMod.implementationConfigurationName, testiarium)
+    for (feature in listOf("test-mod", "cct-test-mod")) {
+        add(testMod.implementationConfigurationName, testiarium) {
+            capabilities { requireCapability("site.siredvin:testiarium-core-$feature") }
+        }
+    }
     add(testMod.compileOnlyConfigurationName, if (is121) libs121.bundles.cccommon else libs.bundles.cccommon)
     if (!is121) {
         add(testMod.compileOnlyConfigurationName, libs.mixin)

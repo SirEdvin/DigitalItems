@@ -65,13 +65,12 @@ dependencies {
         runtimeOnly(libs121.bundles.externalMods.forge.runtime)
     }
 
-    val testiariumArtifacts = listOf(
-        "site.siredvin:testiarium-forge-1.21.1:0.1.1",
-        "site.siredvin:testiarium-forge-1.21.1:0.1.1:cct-test-mod@jar",
-    )
-    testiariumArtifacts.forEach { notation ->
-        add(testMod.implementationConfigurationName, notation) {
-            isTransitive = false
+    // The production all-JAR already supplies KFF; its POM adds a second FML loader.
+    add(testMod.implementationConfigurationName, libs121.testiarium.forge.get().toString()) { exclude(group = "thedarkcolour") }
+    for (feature in listOf("test-mod", "cct-test-mod")) {
+        add(testMod.implementationConfigurationName, libs121.testiarium.forge.get().toString()) {
+            exclude(group = "thedarkcolour")
+            capabilities { requireCapability("site.siredvin:testiarium-forge-$feature") }
         }
     }
 }

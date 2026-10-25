@@ -24,7 +24,7 @@ fabricShaking {
     accessWidener.set(rootProject.file("projects/core/src/main/resources/digitalitems.accesswidener"))
     extraRawVersionMappings.set(
         mapOf(
-            "computercraft" to libs.versions.cc.tweaked.get(),
+            "computercraft" to if (is121) libs121.versions.cc.tweaked.get() else libs.versions.cc.tweaked.get(),
             "forgeconfigapiport" to if (is121) libs121.versions.forgeconfigapirt.get() else libs.versions.forgeconfigapirt.get(),
             "tweakium" to if (is121) libs121.versions.tweakium.asProvider().get() else libs.versions.tweakium.asProvider().get(),
             "broccolium" to if (is121) libs121.versions.broccolium.asProvider().get() else libs.versions.broccolium.asProvider().get(),
@@ -54,25 +54,15 @@ val docsRender = sourceSets.create("docsRender") {
 
 net.fabricmc.loom.configuration.RemapConfigurations.setupForSourceSet(project, docsRender)
 
-val testiariumCctArtifacts = configurations.detachedConfiguration(
-    project.dependencies.create("site.siredvin:testiarium-core-$minecraftVersion:0.1.1:cct-test-mod@jar"),
-    project.dependencies.create("site.siredvin:testiarium-fabric-$minecraftVersion:0.1.1:cct-test-mod@jar"),
-).apply {
-    isTransitive = false
-}
-
-val testiariumTestArtifacts = configurations.detachedConfiguration(
-    project.dependencies.create("site.siredvin:testiarium-core-$minecraftVersion:0.1.1:test-mod@jar"),
-    project.dependencies.create("site.siredvin:testiarium-fabric-$minecraftVersion:0.1.1:test-mod@jar"),
-).apply {
-    isTransitive = false
-}
-
-val testiariumMainArtifacts = configurations.detachedConfiguration(
-    project.dependencies.create("site.siredvin:testiarium-core-$minecraftVersion:0.1.1"),
-    project.dependencies.create("site.siredvin:testiarium-fabric-$minecraftVersion:0.1.1"),
-).apply {
-    isTransitive = false
+// Loom remaps multiple feature variants of one component into overlapping outputs.
+val testiariumArtifacts = listOf("", "test-mod", "cct-test-mod").map { feature ->
+    configurations.detachedConfiguration(
+        *listOf("core", "fabric").map { part ->
+            dependencies.create("site.siredvin:testiarium-$part-$minecraftVersion:${libs.versions.testiarium.get()}") {
+                if (feature.isNotEmpty()) capabilities { requireCapability("site.siredvin:testiarium-$part-$feature") }
+            }
+        }.toTypedArray(),
+    ).apply { isTransitive = false }
 }
 
 loom {
@@ -99,7 +89,7 @@ loom {
             server()
             source(testMod)
             property("fabric-api.gametest", "true")
-            // Testiarium 0.1.1 scans once from either fixture entrypoint.
+            // Consumer registration must precede the fixture entrypoints' one-shot scan.
             property("fabric.debug.loadLate", "testiarium_testmod,testiarium_cct_testmod")
             property("testiarium.tags", "digitalitems")
             property("testiarium.structures", commonProject.layout.buildDirectory.dir("resources/testMod/gameteststructures").get().asFile.absolutePath)
@@ -181,9 +171,7 @@ dependencies {
     add("modTestModImplementation", if (is121) libs121.bundles.kotlin else libs.bundles.kotlin)
     add("modTestModImplementation", if (is121) libs121.bundles.fabric.core else libs.bundles.fabric.core)
     add("modTestModImplementation", if (is121) libs121.bundles.fabric.cc else libs.bundles.fabric.cc)
-    add("modTestModImplementation", files(testiariumMainArtifacts))
-    add("modTestModImplementation", files(testiariumTestArtifacts))
-    add("modTestModImplementation", files(testiariumCctArtifacts))
+    add("modTestModImplementation", files(testiariumArtifacts))
 }
 
 modPublishing {

@@ -1,6 +1,8 @@
 package site.siredvin.digitalitems.testmod
 
 import dan200.computercraft.api.turtle.TurtleSide
+import dan200.computercraft.shared.computer.core.ServerContext
+import dan200.computercraft.shared.pocket.core.PocketServerComputer
 import dan200.computercraft.shared.pocket.items.PocketComputerItem
 import dan200.computercraft.shared.turtle.blocks.TurtleBlockEntity
 import net.minecraft.core.BlockPos
@@ -29,7 +31,9 @@ object RematerializeFixture {
         player.inventory.setItem(0, stack)
         try {
             item.inventoryTick(stack, helper.level, player, 0, true)
-            val computer = requireNotNull(PocketComputerItem.getServerComputer(helper.level.server, stack))
+            val computer = ServerContext.get(helper.level.server).registry().computers.single {
+                PocketComputerItem.isServerComputer(it, stack)
+            } as PocketServerComputer
             try {
                 checkTransfers(helper, DigitizerPeripheral(PocketPeripheralOwner(computer.brain)), player.inventory, 1)
             } finally {

@@ -94,8 +94,11 @@ dependencies {
     }
     jarJar(libs.bundles.forge.jjar) { isTransitive = false }
     annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
-    for (suffix in listOf("", ":cct-test-mod@jar")) {
-        add(modTestImplementation.name, "site.siredvin:testiarium-forge-1.20.1:0.1.1$suffix") { isTransitive = false }
+    add(modTestImplementation.name, libs.testiarium.forge)
+    for (feature in listOf("test-mod", "cct-test-mod")) {
+        add(modTestImplementation.name, libs.testiarium.forge.get().toString()) {
+            capabilities { requireCapability("site.siredvin:testiarium-forge-$feature") }
+        }
     }
 }
 
