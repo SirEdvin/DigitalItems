@@ -1,0 +1,33 @@
+{
+  "parent": "digitalitems:mining_business",
+  "criteria": {
+    "digitilize_something": {
+      "conditions": {
+        "count": 2000
+      },
+      "trigger": "digitalitems:digitilized_ores"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.mining_industry_description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:diamond_ore"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advencement.digitalitems.mining_industry"
+    }
+  },
+  "requirements": [
+    [
+      "digitilize_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

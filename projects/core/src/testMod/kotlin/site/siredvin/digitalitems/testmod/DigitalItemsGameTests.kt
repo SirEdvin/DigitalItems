@@ -3,6 +3,7 @@ package site.siredvin.digitalitems.testmod
 import net.minecraft.gametest.framework.GameTest
 import net.minecraft.gametest.framework.GameTestHelper
 import site.siredvin.testiarium.api.TestGroup
+import site.siredvin.testiarium.api.immediate
 import site.siredvin.testiarium.cct.thenLua
 
 @TestGroup("digitalitems")
@@ -33,4 +34,16 @@ class DigitalItemsGameTests {
 
     @GameTest(template = "digitalitemsgametests.old_digitize", timeoutTicks = 1200)
     fun oldDigitize(helper: GameTestHelper) = helper.thenLua().thenSucceed()
+
+    @GameTest(template = "digitalitemsgametests.persistence")
+    fun pocketRematerializeConservation(helper: GameTestHelper) = helper.immediate { RematerializeFixture.pocket(helper) }
+
+    @GameTest(template = "digitalitemsgametests.persistence")
+    fun turtleRematerializeConservation(helper: GameTestHelper) = helper.immediate { RematerializeFixture.turtle(helper) }
+
+    @GameTest(template = "digitalitemsgametests.persistence")
+    fun blockRematerializeConservation(helper: GameTestHelper) = helper.immediate { RematerializeFixture.block(helper) }
+
+    @GameTest(template = "digitalitemsgametests.persistence")
+    fun sameVersionPersistence(helper: GameTestHelper) = helper.immediate { PersistenceFixture.check(helper) }
 }

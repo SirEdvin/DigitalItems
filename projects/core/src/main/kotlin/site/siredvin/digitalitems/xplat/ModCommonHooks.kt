@@ -6,6 +6,7 @@ import net.minecraft.world.item.CreativeModeTab
 import site.siredvin.broccolium.modules.platform.PlatformToolkit
 import site.siredvin.digitalitems.DigitalItemsCore
 import site.siredvin.digitalitems.common.setup.*
+import site.siredvin.tweakium.modules.platform.ComputerPlatformRegistries
 import site.siredvin.tweakium.modules.platform.ComputerPlatformToolkit
 
 object ModCommonHooks {
@@ -20,19 +21,21 @@ object ModCommonHooks {
         PocketUpgradeSerializers.doSomething()
         TurtleUpgradeSerializers.doSomething()
         ModPlatform.registerCreativeTab(
-            ResourceLocation.fromNamespaceAndPath(DigitalItemsCore.MOD_ID, "tab"),
+            ResourceLocation(DigitalItemsCore.MOD_ID, "tab"),
             DigitalItemsCore.configureCreativeTab(PlatformToolkit.get().createTabBuilder()).build(),
         )
     }
 
     fun registerUpgradesInCreativeTab(output: CreativeModeTab.Output) {
-        ModPlatform.holder.turtleUpgrades.forEach {
-            ComputerPlatformToolkit.get().getTurtleUpgrade(it.id.toString()).ifPresent { upgrade ->
+        ModPlatform.holder.turtleSerializers.forEach {
+            val upgrade = ComputerPlatformToolkit.get().getTurtleUpgrade(ComputerPlatformRegistries.TURTLE_SERIALIZERS.getKey(it.get()).toString())
+            if (upgrade != null) {
                 ComputerPlatformToolkit.get().createTurtlesWithUpgrade(UpgradeData.ofDefault(upgrade)).forEach(output::accept)
             }
         }
-        ModPlatform.holder.pocketUpgrades.forEach {
-            ComputerPlatformToolkit.get().getPocketUpgrade(it.id.toString()).ifPresent { upgrade ->
+        ModPlatform.holder.pocketSerializers.forEach {
+            val upgrade = ComputerPlatformToolkit.get().getPocketUpgrade(ComputerPlatformRegistries.POCKET_SERIALIZERS.getKey(it.get()).toString())
+            if (upgrade != null) {
                 ComputerPlatformToolkit.get().createPocketsWithUpgrade(UpgradeData.ofDefault(upgrade)).forEach(output::accept)
             }
         }

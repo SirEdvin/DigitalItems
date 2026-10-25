@@ -27,7 +27,7 @@ const SHA_RE = /^[0-9a-f]{40}$/;
 const HELP = `Usage: node .github/scripts/docs-site.mjs <command> [options]
 
 Commands:
-  discover [--repository DIR] [--github-output FILE] [--plan FILE]
+  discover [--repository DIR] [--source-ref REF] [--github-output FILE] [--plan FILE]
   assemble --input DIR --output DIR (--plan FILE | --plan-json JSON)
   validate --site DIR
 `;
@@ -92,12 +92,13 @@ export function normalizePlan(value) {
     const name = safeSegment(raw.name, "name");
     if (raw.kind === "branch" && !BRANCHES.includes(name)) fail(`Unsupported branch: ${name}`);
     if (raw.kind === "tag" && safeTagName(name) !== name) fail(`Unsafe tag: ${name}`);
-    const ref = raw.kind === "branch" ? `origin/${name}` : `refs/tags/${name}`;
+    const ref = raw.kind === "branch" && raw.ref === "origin/multiversion"
+      ? "origin/multiversion" : raw.kind === "branch" ? `origin/${name}` : `refs/tags/${name}`;
     if (raw.ref !== ref) fail(`Ref does not match ${raw.kind} ${name}`);
     if (!SHA_RE.test(raw.sha)) fail(`Invalid SHA for ${name}`);
     const path = `${raw.kind}/${name}`;
     if (raw.path !== path) fail(`Path must be ${path}`);
-    if (paths.has(path) || refs.has(ref)) fail(`Duplicate plan entry: ${path}`);
+    if (paths.has(path) || (ref !== "origin/multiversion" && refs.has(ref))) fail(`Duplicate plan entry: ${path}`);
     paths.add(path);
     refs.add(ref);
     return {
@@ -137,8 +138,12 @@ function metadata(repository, ref) {
   };
 }
 
-export function discover(repository = ".") {
-  const candidates = BRANCHES.map((name) => ({ kind: "branch", name, ref: `origin/${name}` }));
+export function discover(repository = ".", sourceRef = "origin/multiversion") {
+  const properties = git(repository, ["show", `${sourceRef}:gradle.properties`], true);
+  const maintained = /^maintainedMinecraftVersions\s*=\s*(.+)$/m.exec(properties.stdout)?.[1].trim().split(',');
+  const candidates = maintained
+    ? maintained.map((minecraftVersion) => ({ kind: "branch", name: minecraftVersion.slice(0, -2), ref: sourceRef, minecraftVersion }))
+    : BRANCHES.map((name) => ({ kind: "branch", name, ref: `origin/${name}` }));
   const tags = git(repository, ["for-each-ref", "--format=%(refname)", "refs/tags"]).stdout
     .split("\n")
     .filter(Boolean)
@@ -150,9 +155,14 @@ export function discover(repository = ".") {
     if (!refHasDocs(repository, candidate.ref)) continue;
     const sha = git(repository, ["rev-parse", `${candidate.ref}^{commit}`]).stdout.trim().toLowerCase();
     const details = metadata(repository, candidate.ref);
+    if (candidate.minecraftVersion) {
+      details.minecraftVersion = candidate.minecraftVersion;
+      details.javaVersion = candidate.minecraftVersion.startsWith("1.21") ? "21" : "17";
+    }
     entries.push({
       ...candidate,
       ...details,
+      ref: candidate.minecraftVersion ? "origin/multiversion" : candidate.ref,
       sha,
       path: `${candidate.kind}/${candidate.name}`,
       label: candidate.kind === "branch"
@@ -335,8 +345,8 @@ async function main(args) {
   const command = args[0];
   const options = parseOptions(args.slice(1));
   if (command === "discover") {
-    requireOptions(options, [], ["--repository", "--github-output", "--plan"]);
-    const result = discover(options["--repository"] ?? ".");
+    requireOptions(options, [], ["--repository", "--source-ref", "--github-output", "--plan"]);
+    const result = discover(options["--repository"] ?? ".", options["--source-ref"] ?? "origin/multiversion");
     const matrix = JSON.stringify(result.matrix);
     const plan = JSON.stringify(result.plan);
     if (options["--github-output"]) await appendFile(options["--github-output"], `matrix=${matrix}\nplan=${plan}\n`);

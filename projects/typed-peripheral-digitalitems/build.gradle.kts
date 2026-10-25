@@ -17,10 +17,12 @@ node {
 val compileTypeScript by tasks.registering(NpmTask::class) {
     dependsOn(tasks.npmInstall)
     npmCommand.set(listOf("run", "build"))
-    inputs.files(fileTree(projectDir) {
-        include("package.json", "package-lock.json", "tsconfig.json", "*.ts")
-        exclude("node_modules/**")
-    })
+    inputs.files(
+        fileTree(projectDir) {
+            include("package.json", "package-lock.json", "tsconfig.json", "*.ts")
+            exclude("node_modules/**")
+        },
+    )
     outputs.files(
         file("advanced_digitizer.d.ts"),
         file("advanced_digitizer.lua"),
@@ -39,33 +41,37 @@ val docsHostedBaseUrl = providers.gradleProperty("docsHostedBaseUrl")
 val generateDocs by tasks.registering(NpmTask::class) {
     dependsOn(tasks.npmInstall)
     // Rendering is opt-in, but a combined refresh/build must consume the new PNGs.
-    mustRunAfter(":fabric:exportDocsModels")
-    npmCommand.set(providers.provider {
-        buildList {
-            addAll(listOf("run", "docs", "--", "--out", docsOutput.get()))
-            docsGitRevision.orNull?.let {
-                addAll(listOf("--gitRevision", it))
+    mustRunAfter(":fabric:1.20.1:exportDocsModels", ":fabric:1.21.1:exportDocsModels")
+    npmCommand.set(
+        providers.provider {
+            buildList {
+                addAll(listOf("run", "docs", "--", "--out", docsOutput.get()))
+                docsGitRevision.orNull?.let {
+                    addAll(listOf("--gitRevision", it))
+                }
+                docsHostedBaseUrl.orNull?.let {
+                    addAll(listOf("--hostedBaseUrl", it))
+                }
             }
-            docsHostedBaseUrl.orNull?.let {
-                addAll(listOf("--hostedBaseUrl", it))
-            }
-        }
-    })
-    inputs.files(fileTree(projectDir) {
-        include(
-            "package.json",
-            "package-lock.json",
-            "tsconfig.json",
-            "mkdocs.yml",
-            "requirements-docs.txt",
-            "*.ts",
-            "documentation/**/*.md",
-            "documentation/**/*.mjs",
-            "documentation/assets/**",
-            "documentation/theme/**",
-        )
-        exclude("node_modules/**", "*.d.ts")
-    })
+        },
+    )
+    inputs.files(
+        fileTree(projectDir) {
+            include(
+                "package.json",
+                "package-lock.json",
+                "tsconfig.json",
+                "mkdocs.yml",
+                "requirements-docs.txt",
+                "*.ts",
+                "documentation/**/*.md",
+                "documentation/**/*.mjs",
+                "documentation/assets/**",
+                "documentation/theme/**",
+            )
+            exclude("node_modules/**", "*.d.ts")
+        },
+    )
     outputs.dir(docsOutput.map { file(it) })
 }
 
@@ -76,7 +82,9 @@ tasks.assemble {
 tasks.clean {
     delete(file("docs"))
     delete(file(".mkdocs-build"))
-    delete(fileTree(projectDir) {
-        include("*.d.ts", "*.lua")
-    })
+    delete(
+        fileTree(projectDir) {
+            include("*.d.ts", "*.lua")
+        },
+    )
 }

@@ -1,39 +1,40 @@
 package site.siredvin.digitalitems.common.data
 
-import net.minecraft.core.HolderLookup
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import net.minecraft.world.item.ItemStack
+import site.siredvin.broccolium.modules.platform.PlatformRegistries
 
 class DigitizedItem : DigitizedSomething<ItemStack> {
 
     constructor(id: ByteArrayWrapper, item: ItemStack, currentTime: Long, player: ServerPlayer?) : super(id, item, currentTime, player)
 
-    constructor(compoundTag: CompoundTag, registries: HolderLookup.Provider) : super(
-        ByteArrayWrapper(compoundTag.getByteArray("id")),
-        deserializeStack(compoundTag, registries),
-        compoundTag.getLong("digitizedAt"),
-        null,
-    ) {
-        lastRefresh = compoundTag.getLong("lastRefresh")
-        decaysAt = compoundTag.getLong("decaysAt")
-        ownerUUID = if (compoundTag.hasUUID("ownerUUID")) compoundTag.getUUID("ownerUUID") else null
-    }
+    constructor(compoundTag: CompoundTag) : super(compoundTag)
 
     override fun fromCompound(tag: CompoundTag): ItemStack {
-        error("ItemStack deserialization requires registry access")
+        val id = tag.getString("id")
+        val item = PlatformRegistries.ITEMS.tryGet(ResourceLocation(id)) ?: return ItemStack.EMPTY
+        val baseStack = item.defaultInstance
+        baseStack.count = tag.getInt("Count")
+        if (tag.contains("tag")) {
+            baseStack.tag = tag.getCompound("tag")
+        }
+        if (baseStack.item.canBeDepleted()) {
+            baseStack.damageValue = baseStack.damageValue
+        }
+        return baseStack
     }
 
-    override fun toCompound(): CompoundTag = error("ItemStack serialization requires registry access")
-
-    fun serialize(compoundTag: CompoundTag, registries: HolderLookup.Provider) {
-        compoundTag.putByteArray("id", id.byteArray)
-        compoundTag.put(somethingTagName, something.copyWithCount(1).save(registries))
-        compoundTag.putInt("count", something.count)
-        compoundTag.putLong("digitizedAt", digitizedAt)
-        compoundTag.putLong("lastRefresh", lastRefresh)
-        compoundTag.putLong("decaysAt", decaysAt)
-        ownerUUID?.let { compoundTag.putUUID("ownerUUID", it) }
+    override fun toCompound(): CompoundTag {
+        val id = PlatformRegistries.ITEMS.getKey(something.item)
+        val tag = CompoundTag()
+        tag.putString("id", id.toString())
+        tag.putInt("Count", something.count)
+        if (something.tag != null) {
+            tag.put("tag", something.tag!!.copy())
+        }
+        return tag
     }
 
     override fun shrink(amount: Int) {
@@ -50,10 +51,4 @@ class DigitizedItem : DigitizedSomething<ItemStack> {
         get() = something.isEmpty
     override val amount: Long
         get() = something.count.toLong()
-
-    companion object {
-        private fun deserializeStack(compoundTag: CompoundTag, registries: HolderLookup.Provider): ItemStack = ItemStack.parseOptional(registries, compoundTag.getCompound("itemStack")).also {
-            if (compoundTag.contains("count")) it.count = compoundTag.getInt("count")
-        }
-    }
 }

@@ -112,14 +112,15 @@ class DigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
         val limitedAmount: ItemStack = item.something.copy()
         limitedAmount.count = amount
         val remaining: ItemStack = peripheralOwner.storage!!.store(limitedAmount, false)
-        item.something.count -= (limitedAmount.count - remaining.count)
+        val transferred = amount - remaining.count
+        item.something.count -= transferred
         if (item.something.count == 0) {
             sd.pop(id)
         } else {
             item.refresh(peripheralOwner.level!!.gameTime)
         }
         sd.setDirty()
-        return limitedAmount.count - remaining.count
+        return transferred
     }
 
     @LuaFunction(mainThread = true)
@@ -169,6 +170,6 @@ class DigitizerPeripheral<T : IPeripheralOwner>(peripheralOwner: T) :
     companion object {
         val rand = SecureRandom()
         const val TYPE = "digitizer"
-        val ID = ResourceLocation.fromNamespaceAndPath(DigitalItemsCore.MOD_ID, TYPE)
+        val ID = ResourceLocation(DigitalItemsCore.MOD_ID, TYPE)
     }
 }

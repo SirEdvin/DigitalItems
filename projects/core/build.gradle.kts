@@ -7,6 +7,7 @@ plugins {
 val modVersion: String by extra
 val minecraftVersion: String by extra
 val modBaseName: String by extra
+val is121 = sc.current.parsed >= "1.21"
 
 baseShaking {
     projectPart.set("common")
@@ -14,8 +15,8 @@ baseShaking {
 }
 
 vanillaShaking {
-    accessWideners.add("src/main/resources/digitalitems-common.accesswidener")
-    accessWideners.add("src/main/resources/digitalitems.accesswidener")
+    accessWideners.add(rootProject.file("projects/core/${if (is121) "versions/1.21.1/" else ""}src/main/resources/digitalitems-common.accesswidener").absolutePath)
+    accessWideners.add(rootProject.file("projects/core/src/main/resources/digitalitems.accesswidener").absolutePath)
     shake()
 }
 
@@ -27,16 +28,20 @@ val testMod = sourceSets.create("testMod") {
 }
 
 dependencies {
-    implementation(libs.bundles.kotlin)
-    implementation(libs.bundles.cccommon)
-    api(libs.bundles.apicommon)
-    compileOnly(libs.fabric.config) {
+    implementation(if (is121) libs121.bundles.kotlin else libs.bundles.kotlin)
+    implementation(if (is121) libs121.bundles.cccommon else libs.bundles.cccommon)
+    api(if (is121) libs121.bundles.apicommon else libs.bundles.apicommon)
+    compileOnly(if (is121) libs121.fabric.config else libs.fabric.config) {
         isTransitive = false
     }
-    add(testMod.implementationConfigurationName, libs.testiarium.core)
-    add(testMod.implementationConfigurationName, "site.siredvin:testiarium-core-1.21.1:0.1.1:test-mod@jar")
-    add(testMod.implementationConfigurationName, "site.siredvin:testiarium-core-1.21.1:0.1.1:cct-test-mod@jar")
-    add(testMod.compileOnlyConfigurationName, libs.bundles.cccommon)
+    add(testMod.implementationConfigurationName, "site.siredvin:testiarium-core-$minecraftVersion:0.1.1")
+    add(testMod.implementationConfigurationName, "site.siredvin:testiarium-core-$minecraftVersion:0.1.1:test-mod@jar")
+    add(testMod.implementationConfigurationName, "site.siredvin:testiarium-core-$minecraftVersion:0.1.1:cct-test-mod@jar")
+    add(testMod.compileOnlyConfigurationName, if (is121) libs121.bundles.cccommon else libs.bundles.cccommon)
+    if (!is121) {
+        add(testMod.compileOnlyConfigurationName, libs.mixin)
+        add(testMod.compileOnlyConfigurationName, "cc.tweaked:cc-tweaked-1.20.1-common:${libs.versions.cc.tweaked.get()}")
+    }
 }
 
 tasks.named<ProcessResources>(testMod.processResourcesTaskName) {

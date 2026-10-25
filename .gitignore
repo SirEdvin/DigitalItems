@@ -4,6 +4,7 @@
 .kotlin/
 build/
 node_modules/
+__pycache__/
 out/
 classes/
 

@@ -3,8 +3,7 @@
 package site.siredvin.digitalitems.data
 
 import net.minecraft.advancements.Advancement
-import net.minecraft.advancements.AdvancementHolder
-import net.minecraft.advancements.AdvancementType
+import net.minecraft.advancements.FrameType
 import net.minecraft.advancements.critereon.InventoryChangeTrigger
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.PackOutput
@@ -28,15 +27,15 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
 object ModAdvancementsSubProvider : AdvancementSubProvider {
-    private val stoneTexture = ResourceLocation.withDefaultNamespace("textures/gui/advancements/backgrounds/stone.png")
+    private val stoneTexture = ResourceLocation("textures/gui/advancements/backgrounds/stone.png")
 
-    override fun generate(p0: HolderLookup.Provider, p1: Consumer<AdvancementHolder>) {
+    override fun generate(p0: HolderLookup.Provider, p1: Consumer<Advancement>) {
         val inTheGame = Advancement.Builder.advancement().display(
             ModBlocks.DIGITIZER.get().asItem(),
             AdvancementTexts.DIGITIZER.text,
             AdvancementTexts.DIGITIZER_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -46,7 +45,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.STARTING_UP.text,
             AdvancementTexts.STARTING_UP_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -56,7 +55,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.CONTINIOUS_DIGITALIZATION.text,
             AdvancementTexts.CONTINIOUS_DIGITALIZATION_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -66,7 +65,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.OVERDIGITALIZATION.text,
             AdvancementTexts.OVERDIGITALIZATION_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.CHALLENGE,
+            FrameType.CHALLENGE,
             true,
             true,
             false,
@@ -76,7 +75,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.DIGITILIZE_THE_STARS.text,
             AdvancementTexts.DIGITILIZE_THE_STARS_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -87,7 +86,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.MINING_STARTUP.text,
             AdvancementTexts.MINING_STARTUP_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -97,7 +96,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.MINING_BUSINESS.text,
             AdvancementTexts.MINING_BUSINESS_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -107,7 +106,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.MINING_INDUSTRY.text,
             AdvancementTexts.MINING_INDUSTRY_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -118,7 +117,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.ADVANCED_DIGITIZER.text,
             AdvancementTexts.ADVANCED_DIGITIZER_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -128,7 +127,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.DIGITIZE_FLUID.text,
             AdvancementTexts.DIGITIZE_FLUID_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -138,17 +137,17 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.DIGITIZE_LAVA.text,
             AdvancementTexts.DIGITIZE_LAVA_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
         ).parent(waterDigitize).addCriterion("digitize_something", DigitalizeLavaCriteria.digitilizeSome(4000)).saveWithID(p1, modId("digitize_lava"))
         Advancement.Builder.advancement().display(
-            Blocks.OBSIDIAN,
+            Blocks.NETHER_PORTAL,
             AdvancementTexts.FLUID_OVERDIGITALIZATION.text,
             AdvancementTexts.FLUID_OVERDIGITALIZATION_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -159,7 +158,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.DIGITIZE_ENERGY.text,
             AdvancementTexts.DIGITIZE_ENERGY_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,
@@ -169,7 +168,7 @@ object ModAdvancementsSubProvider : AdvancementSubProvider {
             AdvancementTexts.ENERGY_OVERDIGITALIZATION.text,
             AdvancementTexts.ENERGY_OVERDIGITALIZATION_DESCRIPTION.text,
             stoneTexture,
-            AdvancementType.TASK,
+            FrameType.TASK,
             true,
             true,
             false,

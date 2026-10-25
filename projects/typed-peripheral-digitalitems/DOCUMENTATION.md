@@ -30,13 +30,13 @@ To refresh the images after changing models, textures, or Minecraft versions:
 ```sh
 mkdir -p build
 LOG="build/docs-models-$(date +%Y%m%d-%H%M%S).log"
-timeout --foreground 10m xvfb-run -a ./gradlew :fabric:exportDocsModels --no-daemon >"$LOG" 2>&1
+timeout --foreground 10m xvfb-run -a ./gradlew :fabric:1.20.1:exportDocsModels --no-daemon >"$LOG" 2>&1
 ```
 
-This launches an isolated Fabric client in `projects/fabric/run/docs-render`,
+This launches an isolated Fabric client in `projects/fabric/versions/1.20.1/run/docs-render`,
 waits for resource loading, exports both models at 128×128, and exits without
 creating a world. The run rejects missing models, blank renders, and missing
-outputs. `exportDocsModels` copies the PNGs from `projects/fabric/build/docs-models`
+outputs. `exportDocsModels` copies the PNGs from `projects/fabric/versions/1.20.1/build/docs-models`
 into the documentation's source assets. Inspect and commit both refreshed images
 with the source changes, then regenerate the site. Never hand-edit the renders.
 On a graphical workstation, `xvfb-run -a` can be omitted.
@@ -57,8 +57,7 @@ model geometry or introduce a runtime dependency.
 
 ```sh
 .gradle/nodejs/node-v22.14.0-linux-x64/bin/node --test \
-  .github/scripts/docs-site.test.mjs \
-  .github/scripts/docs-version-selector.test.mjs \
+  .github/scripts/docs-*.test.mjs \
   projects/typed-peripheral-digitalitems/documentation/generate-docs.test.mjs
 ```
 
@@ -66,3 +65,10 @@ After assembling a versioned site, run `.github/scripts/docs-site.mjs validate`
 with `--site` pointing at the assembled directory. Check the overview and both
 peripheral guides in a browser at desktop and phone widths; the guide cards sit
 to the right on wide screens and stack on narrow screens.
+
+`multiversion` discovers both maintained Minecraft lines from one commit, keeping
+the historical `branch/1.20/` and `branch/1.21/` URLs and the 1.20.1 default.
+Use `docs-site.mjs discover --source-ref HEAD` for a feature-head preview; pass
+each entry's SHA as `-PdocsGitRevision` when generating its fragment. Historical
+release tags still use their own generators. See the root `MULTIVERSION.md` and
+the documentation check workflow for the complete multi-version assembly.
