@@ -24,6 +24,37 @@ class FluidTest extends BasicTest {
         asserts.assertNull(error3, "Fluid rematerialization failed");
         asserts.assertEqual(amount, 8000, "Fluid rematerialized amount does not match");
         asserts.assertEqual(target.tanks()[1].amount, 8000, "Physical fluid amount does not match");
+        const [stored] = digitizer.digitize("fluid", targetName);
+        asserts.assertNotNull(stored, "Conservation fixture needs a stored fluid ID");
+        const filler = creativeFillerProvider.findOrThrow();
+        filler.put("fluid", targetName, "minecraft:water", 1000);
+        const [merged, mergeError] = digitizer.digitize("fluid", targetName, null, 1000, stored);
+        asserts.assertNull(merged, "Different fluids must not merge");
+        asserts.assertEqual(mergeError, "Can't merge found item into destination, they are different", "Fluid rejection error changed");
+        asserts.assertEqual(target.tanks()[1].amount, 1000, "Rejected simulated extraction drained physical fluid");
+        asserts.assertEqual(digitizer.get("fluid", stored).fluid.amount, 8000, "Rejected extraction changed digital fluid");
+        const [rejected, rejectedError] = digitizer.rematerialize("fluid", stored, null, targetName);
+        asserts.assertNull(rejected, "Incompatible fluid destination must reject");
+        asserts.assertEqual(rejectedError, "Unable to place rematerialized object", "Fluid storage error changed");
+        asserts.assertEqual(target.tanks()[1].amount, 1000, "Rejected insertion changed physical fluid");
+        asserts.assertEqual(digitizer.get("fluid", stored).fluid.amount, 8000, "Rejected insertion consumed digital fluid");
+        digitizer.digitize("fluid", targetName);
+        filler.put("fluid", targetName, "minecraft:lava", 99000);
+        const [partial, partialError] = digitizer.rematerialize("fluid", stored, null, targetName);
+        asserts.assertNull(partialError, "Partial fluid insertion failed");
+        asserts.assertEqual(partial, 1000, "Partial fluid transfer report changed");
+        asserts.assertEqual(target.tanks()[1].amount, 100000, "Partial fluid insertion physical amount");
+        asserts.assertEqual(digitizer.get("fluid", stored).fluid.amount, 7000, "Partial fluid insertion digital remainder");
+        const [full, fullError] = digitizer.rematerialize("fluid", stored, null, targetName);
+        asserts.assertNull(full, "Full fluid destination must reject");
+        asserts.assertEqual(fullError, "Unable to place rematerialized object", "Full fluid error changed");
+        asserts.assertEqual(target.tanks()[1].amount, 100000, "Full rejection changed physical fluid");
+        asserts.assertEqual(digitizer.get("fluid", stored).fluid.amount, 7000, "Full rejection consumed digital fluid");
+        digitizer.digitize("fluid", targetName);
+        const [recovered] = digitizer.rematerialize("fluid", stored, null, targetName);
+        asserts.assertEqual(recovered, 7000, "Rejected fluid must remain redeemable");
+        asserts.assertEqual(target.tanks()[1].amount, 7000, "Recovered fluid physical amount");
+        asserts.assertNull(digitizer.get("fluid", stored), "Exhausted fluid ID must be removed");
         digitizer.digitize("fluid", targetName);
     }
 }
