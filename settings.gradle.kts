@@ -67,3 +67,7 @@ for (version in listOf("1.20.1", "1.21.1")) {
     val node = project(":forge:$version")
     node.buildFileName = rootDir.resolve("gradle/forge-$version.gradle.kts").relativeTo(node.projectDir).path
 }
+for (part in listOf("core", "fabric", "forge")) {
+    val node = project(":$part:26.1.2")
+    node.buildFileName = rootDir.resolve("gradle/minecraft-26-1.gradle.kts").relativeTo(node.projectDir).path
+}

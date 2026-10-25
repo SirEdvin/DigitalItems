@@ -21,7 +21,7 @@ const DOC_GENERATORS = [
   ["projects/typed-peripheral-digitalitems/mkdocs.yml", "projects/typed-peripheral-digitalitems/requirements-docs.txt", "projects/typed-peripheral-digitalitems/documentation/generate-docs.mjs"],
 ];
 
-const BRANCHES = ["1.20", "1.21"];
+const BRANCHES = ["1.20", "1.21", "26.1"];
 const TAG_RE = /^v\d+(?:\.\d+)+(?:-[0-9A-Za-z]+(?:[.-][0-9A-Za-z]+)*)?$/;
 const SHA_RE = /^[0-9a-f]{40}$/;
 const HELP = `Usage: node .github/scripts/docs-site.mjs <command> [options]
@@ -110,7 +110,7 @@ export function normalizePlan(value) {
       sha: raw.sha,
       minecraftVersion: typeof raw.minecraftVersion === "string" ? raw.minecraftVersion : null,
       packageVersion: typeof raw.packageVersion === "string" ? raw.packageVersion : null,
-      javaVersion: raw.javaVersion === "21" ? "21" : "17",
+      javaVersion: ["21", "25"].includes(raw.javaVersion) ? raw.javaVersion : "17",
     };
   });
   return sortEntries(entries);
@@ -134,7 +134,7 @@ function metadata(repository, ref) {
   return {
     packageVersion: packageJson.version ?? null,
     minecraftVersion,
-    javaVersion: minecraftVersion?.startsWith("1.21") ? "21" : "17",
+    javaVersion: minecraftVersion?.startsWith("26.") ? "25" : minecraftVersion?.startsWith("1.21") ? "21" : "17",
   };
 }
 
@@ -157,7 +157,7 @@ export function discover(repository = ".", sourceRef = "origin/multiversion") {
     const details = metadata(repository, candidate.ref);
     if (candidate.minecraftVersion) {
       details.minecraftVersion = candidate.minecraftVersion;
-      details.javaVersion = candidate.minecraftVersion.startsWith("1.21") ? "21" : "17";
+      details.javaVersion = candidate.minecraftVersion.startsWith("26.") ? "25" : candidate.minecraftVersion.startsWith("1.21") ? "21" : "17";
     }
     entries.push({
       ...candidate,

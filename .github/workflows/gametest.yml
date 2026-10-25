@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    name: Four-node build
+    name: Six-node build
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -28,6 +28,7 @@ jobs:
           java-version: |
             17
             21
+            25
       - uses: gradle/actions/setup-gradle@v4
       - name: Compile fixtures and build every node
         run: |
@@ -38,7 +39,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: four-node-build
+          name: six-node-build
           path: |
             build/*.log
             build/artifact-manifest.json
@@ -51,7 +52,7 @@ jobs:
       fail-fast: false
       matrix:
         loader: [fabric, forge]
-        minecraft: [1.20.1, 1.21.1]
+        minecraft: [1.20.1, 1.21.1, 26.1.2]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -65,6 +66,7 @@ jobs:
           java-version: |
             17
             21
+            25
       - uses: gradle/actions/setup-gradle@v4
       - name: Run native GameTests and verify exact inventory
         env:

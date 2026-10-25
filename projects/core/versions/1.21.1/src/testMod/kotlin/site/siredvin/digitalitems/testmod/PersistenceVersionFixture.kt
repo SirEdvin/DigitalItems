@@ -5,15 +5,14 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.gametest.framework.GameTestHelper
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.chat.Component
-import net.minecraft.util.datafix.DataFixTypes
 import net.minecraft.util.datafix.DataFixers
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.material.Fluids
-import net.minecraft.world.level.saveddata.SavedData
 import net.minecraft.world.level.storage.DimensionDataStorage
 import site.siredvin.broccolium.modules.storage.fluid.AgnosticFluidStack
 import site.siredvin.digitalitems.common.data.DigitalItemsSavedData
+import site.siredvin.digitalitems.common.data.DigitalItemsSavedDataType
 import site.siredvin.digitalitems.common.data.DigitizedItem
 import java.io.File
 
@@ -27,9 +26,8 @@ object PersistenceVersionFixture {
         damageValue = 17
     }
 
-    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     fun reload(directory: File, helper: GameTestHelper): DigitalItemsSavedData = DimensionDataStorage(directory, DataFixers.getDataFixer(), helper.level.registryAccess()).computeIfAbsent(
-        SavedData.Factory(DigitalItemsSavedData::create, DigitalItemsSavedData::load, null as DataFixTypes?),
+        DigitalItemsSavedDataType.createFactory(),
         "digitalitems",
     )
 }

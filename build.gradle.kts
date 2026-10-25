@@ -3,7 +3,8 @@ import com.diffplug.gradle.spotless.SpotlessExtension
 plugins {
     java
     id("fabric-loom") version "1.17.11" apply false
-    id("org.jetbrains.kotlin.jvm") version "2.2.20" apply false
+    id("net.fabricmc.fabric-loom") version "1.17.11" apply false
+    id("org.jetbrains.kotlin.jvm") version "2.4.0" apply false
     id("net.neoforged.moddev.legacyforge") version "2.0.142" apply false
     id("site.siredvin.root") version "0.9.2"
     id("site.siredvin.release") version "0.9.2"
@@ -54,15 +55,19 @@ subprojects {
     if (projectDir.parentFile.name == "versions") {
         val minecraftVersion = name
         extra["minecraftVersion"] = minecraftVersion
-        config.javaVersion.set(if (name == "1.20.1") JavaVersion.VERSION_17 else JavaVersion.VERSION_21)
-        setupSubproject(this)
-        if (path.startsWith(":core:")) pluginManager.apply("net.fabricmc.fabric-loom-companion")
+        if (name != "26.1.2") {
+            config.javaVersion.set(if (name == "1.20.1") JavaVersion.VERSION_17 else JavaVersion.VERSION_21)
+            setupSubproject(this)
+            if (path.startsWith(":core:")) pluginManager.apply("net.fabricmc.fabric-loom-companion")
+        }
         // Every leaf has the same name; Gradle module identities must still be unique.
         group = "$projectGroup.${path.split(':')[1]}"
-        extensions.configure<SpotlessExtension> {
-            java { target(emptyList<String>()) }
-            kotlin { target(emptyList<String>()) }
-            kotlinGradle { target(emptyList<String>()) }
+        if (name != "26.1.2") {
+            extensions.configure<SpotlessExtension> {
+                java { target(emptyList<String>()) }
+                kotlin { target(emptyList<String>()) }
+                kotlinGradle { target(emptyList<String>()) }
+            }
         }
         val shared = projectDir.parentFile.parentFile.resolve("src").toPath()
         val local = projectDir.resolve("src")
@@ -92,9 +97,11 @@ subprojects {
         }
         pluginManager.withPlugin("org.jetbrains.kotlin.jvm") {
             tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-                compilerOptions.languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
-                compilerOptions.apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
-                compilerOptions.freeCompilerArgs.add("-Xsuppress-version-warnings")
+                if (minecraftVersion != "26.1.2") {
+                    compilerOptions.languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+                    compilerOptions.apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+                    compilerOptions.freeCompilerArgs.add("-Xsuppress-version-warnings")
+                }
             }
             extensions.getByType<org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension>().sourceSets.configureEach {
                 kotlin.exclude(overridden)
@@ -140,12 +147,12 @@ githubShaking {
 extensions.configure<com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension> {
     val modVersion = providers.gradleProperty("modVersion")
     tagName.set(modVersion.map { "v$it" })
-    releaseName.set(modVersion.map { "Digital Items $it (1.20.1 / 1.21.1)" })
+    releaseName.set(modVersion.map { "Digital Items $it (1.20.1 / 1.21.1 / 26.1.2)" })
     overwrite.set(false)
     allowUploadToExisting.set(false)
     gradle.projectsEvaluated {
         for (version in minecraftVersions) {
-            releaseAssets.from(project(":fabric:$version").tasks.named("remapJar"))
+            releaseAssets.from(project(":fabric:$version").tasks.named(if (version == "26.1.2") "jar" else "remapJar"))
             releaseAssets.from(project(":forge:$version").tasks.named(if (version == "1.20.1") "reobfJar" else "jar"))
         }
     }

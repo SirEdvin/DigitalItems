@@ -1,0 +1,22 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+
+[[mods]]
+modId="digitalitems_testmod"
+version="1.0"
+displayName="DigitalItems Testmod"
+
+[[dependencies.digitalitems_testmod]]
+modId="digitalitems"
+type="required"
+versionRange="*"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.digitalitems_testmod]]
+modId="testiarium"
+type="required"
+versionRange="*"
+ordering="AFTER"
+side="BOTH"

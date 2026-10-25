@@ -101,7 +101,7 @@ abstract class DigitizedSomethingStrategy<T, V : DigitizedSomething<T>> {
         } else {
             store(access, level, destination, something.something, realLimit)
         }
-        val storedAmount = (something.amount - leftAmount.toLong()).toInt()
+        val storedAmount = (something.amount - leftAmount).toInt()
         if (storedAmount == 0) {
             return MethodResult.of(null, "Unable to place rematerialized object")
         }

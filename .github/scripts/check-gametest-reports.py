@@ -10,6 +10,7 @@ EXPECTED = {
     "pocketrematerializeconservation", "turtlerematerializeconservation", "blockrematerializeconservation",
     "baselimitdigitize", "remotelimitdigitize", "fluiddigitize", "energydigitize", "olddigitize", "sameversionpersistence",
 }
+TARGET_EXPECTED = EXPECTED | {"minecraft:alwayspass", "inventorycallbacks", "menupacketvalidation", "removalconservation"}
 
 
 def check_report(path):
@@ -21,7 +22,8 @@ def check_report(path):
     suites = [root] if root.tag == "testsuite" else root.findall(".//testsuite")
     assert sum(int(s.get("tests", "0")) for s in suites) == len(cases), f"{path}: count mismatch"
     names = [c.get("name", "").split(".")[-1].lower().replace("_", "") for c in cases]
-    assert len(names) == len(EXPECTED) and set(names) == EXPECTED, f"{path}: unexpected inventory {names}"
+    expected = TARGET_EXPECTED if "26.1.2" in path.parts else EXPECTED
+    assert len(names) == len(expected) and set(names) == expected, f"{path}: unexpected inventory {names}"
     return {"report": str(path), "tests": len(cases), "names": names}
 
 

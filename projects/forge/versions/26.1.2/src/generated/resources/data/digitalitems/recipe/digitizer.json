@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "#c:storage_blocks/diamond",
+    "I": "#c:storage_blocks/iron"
+  },
+  "pattern": [
+    "III",
+    "DID",
+    "III"
+  ],
+  "result": {
+    "id": "digitalitems:digitizer"
+  },
+  "show_notification": false
+}

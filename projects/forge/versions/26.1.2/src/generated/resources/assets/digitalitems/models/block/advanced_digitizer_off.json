@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "digitalitems:block/advanced_digitizer_front_off",
+    "side": "digitalitems:block/advanced_digitizer_side",
+    "top": "digitalitems:block/advanced_digitizer_top"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "tweakium:base/upgrade_base_left",
+  "textures": {
+    "texture": "digitalitems:block/digitizer_front_on"
+  }
+}
