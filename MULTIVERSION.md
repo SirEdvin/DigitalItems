@@ -26,7 +26,7 @@ The source snapshots were taken from these history-preserving ancestors:
 | Criteria, advancement providers, upgrades | Original 1.20 criteria/serializers versus 1.21 codecs/registry criteria and upgrade serializer APIs. Original registration IDs retained. |
 | Blocks, screen/client hooks, networking | Native signatures changed; full-file 1.21 overrides preserve the branch implementations instead of translating back into 1.20. |
 | Config | Same keys/defaults and validation; ForgeConfigSpec versus ModConfigSpec API/package. |
-| Loader registration and test bootstrap | Shared loader boundaries; native Forge/NeoForge lifecycle/capabilities differ. Fabric 1.21 retains its original platform adapter. Testiarium 0.1.1 fixture initializers are ordered after the consumer's one-shot registration. |
+| Loader registration and test bootstrap | Shared loader boundaries; native Forge/NeoForge lifecycle/capabilities differ. Fabric 1.21 retains its original platform adapter. Testiarium 0.1.1 fixture initializers are ordered after the consumer's one-shot registration. A test-only 1.20 scheduler barrier mirrors the reference 1.21 harness against pinned CC 1.113 internals, preventing virtual timers from outrunning asynchronous computer work. |
 | Resources/datagen | Unchanged textures/models shared. Version-only generated data keeps plural 1.20 / singular 1.21 directories and each original recipe/advancement format. Regenerate via the matching native data task, never edit processed output. |
 | Access files, metadata, pack format | Matching native version overrides; Forge `mods.toml` and mixin manifest are not shipped in NeoForge artifacts, or vice versa. |
 | TypeScript package and Lua fixtures | Two ordinary version-independent Gradle projects. Local npm dependency remains compiled before fixture installation. |
@@ -61,8 +61,9 @@ Individual tasks (replace `1.20.1` with `1.21.1` for the newer line):
 - `:fabric:1.20.1:runData`, `:forge:1.20.1:runData`
 - `:fabric:1.20.1:exportDocsModels` (opt-in native model rendering)
 
-`-PminimalTestEnvironment` omits only optional development recipe viewers and
-ModMenu, not tests or required mod integrations. Test runs delete their exact old
+`-PminimalTestEnvironment` omits direct optional development-viewer and ModMenu
+declarations, not tests or required mod integrations; transitive development mods
+from the existing library artifacts may remain. Test runs delete their exact old
 report first. XML/HTML is under
 `projects/<loader>/versions/<minecraft>/build/test-results/digitalitems-gametest.*`.
 The nine original Lua cases remain; the tenth case reloads a copied disposable

@@ -51,7 +51,9 @@ legacyForge {
             gameDirectory = file("run")
             programArguments.addAll(
                 "--mod", "digitalitems", "--all", "--output", file("src/generated/resources").absolutePath,
-                "--existing", commonProject.file("src/main/resources").absolutePath, "--existing", file("src/main/resources").absolutePath,
+                "--existing", rootProject.file("projects/core/src/main/resources").absolutePath,
+                "--existing", rootProject.file("projects/forge/src/main/resources").absolutePath,
+                "--existing", file("src/main/resources").absolutePath,
             )
         }
         create("gameTestServer") {
@@ -66,6 +68,7 @@ legacyForge {
             systemProperty("testiarium.gametest-report", layout.buildDirectory.file("test-results/digitalitems-gametest.xml").get().asFile.absolutePath)
             jvmArgument("-ea")
             programArgument("--nogui")
+            programArgument("--mixin.config=digitalitems-cct-gametest.mixins.json")
             loadedMods.add(mods.named("digitalitems"))
             loadedMods.add(mods.named("digitalitems_testmod"))
         }
@@ -115,23 +118,53 @@ tasks.processResources {
 tasks.jar { manifest.attributes["MixinConfigs"] = "digitalitems.mixins.json" }
 extra["releaseJar"] = "reobfJar"
 
-modPublishing {
-    output.set(tasks.jar)
-    requiredDependencies.set(listOf("cc-tweaked", "kotlin-for-forge"))
-    shake()
+// Buildenv 0.9.2 only accepts archive tasks, not MDG's separate reobfuscated output.
+val modVersion: String by project
+val unstable = modVersion.contains('-')
+changelog {
+    version.set(modVersion)
+    path.set(rootProject.file("CHANGELOG.md").absolutePath)
 }
-// Buildenv 0.9.2 accepts archive tasks; MDG reobfuscates into a separate output.
-tasks.withType<TaskPublishCurseForge>().configureEach {
-    dependsOn("reobfJar")
-    uploadArtifacts.forEach {
-        (it.artifact as ConfigurableFileCollection).setFrom(tasks.named("reobfJar"))
-        it.addModLoader("Forge")
+if (!unstable) {
+    tasks.register<TaskPublishCurseForge>("publishCurseForge") {
+        group = "publishing"
+        apiToken = project.extra["curseforgeKey"]
+        enabled = apiToken != ""
+        dependsOn("check", "reobfJar")
+        val main = upload(project.property("CURSEFORGE_ID"), tasks.named("reobfJar"))
+        main.releaseType = project.property("CURSEFORGE_RELEASE_TYPE")
+        main.addGameVersion("1.20.1")
+        main.addModLoader("Forge")
+        main.addEnvironment("Client", "Server")
+        main.addRequirement("cc-tweaked", "kotlin-for-forge")
+        main.changelogType = "markdown"
+        main.changelog = KotlinClosure0({ changelog.renderItem(changelog.get(modVersion).withHeader(false)) })
     }
 }
 modrinth {
+    token.set(project.extra["modrinthKey"].toString())
+    projectId.set(project.property("MODRINTH_ID").toString())
+    versionNumber.set("1.20.1-${project.version}")
+    versionName.set("1.20.1-${project.version}")
+    versionType.set(if (unstable) "alpha" else project.property("MODRINTH_RELEASE_TYPE").toString())
     uploadFile.set(tasks.named("reobfJar"))
+    gameVersions.set(listOf("1.20.1"))
     loaders.set(listOf("forge"))
+    changelog.set(
+        provider {
+            if (unstable) {
+                "Unstable version, please don't use it!"
+            } else {
+                project.changelog.renderItem(project.changelog.get(modVersion).withHeader(false))
+            }
+        },
+    )
+    dependencies {
+        required.project("cc-tweaked")
+        required.project("kotlin-for-forge")
+    }
 }
+tasks.named("modrinth") { dependsOn("check", "reobfJar") }
 configurations.named("reobfRuntimeElements") {
     extendsFrom(configurations.implementation.get(), modImplementation)
 }

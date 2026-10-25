@@ -38,6 +38,10 @@ dependencies {
     add(testMod.implementationConfigurationName, "site.siredvin:testiarium-core-$minecraftVersion:0.1.1:test-mod@jar")
     add(testMod.implementationConfigurationName, "site.siredvin:testiarium-core-$minecraftVersion:0.1.1:cct-test-mod@jar")
     add(testMod.compileOnlyConfigurationName, if (is121) libs121.bundles.cccommon else libs.bundles.cccommon)
+    if (!is121) {
+        add(testMod.compileOnlyConfigurationName, libs.mixin)
+        add(testMod.compileOnlyConfigurationName, "cc.tweaked:cc-tweaked-1.20.1-common:${libs.versions.cc.tweaked.get()}")
+    }
 }
 
 tasks.named<ProcessResources>(testMod.processResourcesTaskName) {

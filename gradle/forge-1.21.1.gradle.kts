@@ -77,6 +77,16 @@ dependencies {
 }
 
 neoForge {
+    runs.named("data") {
+        programArguments.set(
+            listOf(
+                "--mod", "digitalitems", "--all", "--output", file("src/generated/resources").absolutePath,
+                "--existing", rootProject.file("projects/core/src/main/resources").absolutePath,
+                "--existing", rootProject.file("projects/forge/src/main/resources").absolutePath,
+                "--existing", file("src/main/resources").absolutePath,
+            ),
+        )
+    }
     parchment {
         minecraftVersion = libs121.versions.parchmentMc.get()
         mappingsVersion = libs121.versions.parchment.get()
@@ -114,6 +124,8 @@ modPublishing {
     )
     shake()
 }
+
+modrinth { loaders.set(listOf("neoforge")) }
 
 publishingShaking {
     shake()

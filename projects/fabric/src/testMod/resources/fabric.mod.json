@@ -12,6 +12,7 @@
       }
     ]
   },
+  "mixins": ["digitalitems-cct-gametest.mixins.json"],
   "depends": {
     "fabricloader": "*",
     "digitalitems": "*",

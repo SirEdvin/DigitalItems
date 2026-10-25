@@ -199,6 +199,8 @@ modPublishing {
     shake()
 }
 
+modrinth { loaders.set(listOf("fabric")) }
+
 publishingShaking {
     shake()
     project.publishing {

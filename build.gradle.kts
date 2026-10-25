@@ -121,6 +121,8 @@ extensions.configure<com.github.breadmoirai.githubreleaseplugin.GithubReleaseExt
     val modVersion = providers.gradleProperty("modVersion")
     tagName.set(modVersion.map { "v$it" })
     releaseName.set(modVersion.map { "Digital Items $it (1.20.1 / 1.21.1)" })
+    overwrite.set(false)
+    allowUploadToExisting.set(false)
     gradle.projectsEvaluated {
         for (version in minecraftVersions) {
             releaseAssets.from(project(":fabric:$version").tasks.named("remapJar"))
