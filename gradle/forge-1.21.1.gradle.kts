@@ -108,6 +108,7 @@ neoForge {
             systemProperty("testiarium.gametest-report", layout.buildDirectory.file("test-results/digitalitems-gametest.xml").get().asFile.absolutePath)
             jvmArgument("-ea")
             programArgument("--nogui")
+            programArgument("--mixin.config=digitalitems-cct-gametest.mixins.json")
             loadedMods.add(digitalitems.get())
             loadedMods.add(digitalitemsTestMod.get())
         }
