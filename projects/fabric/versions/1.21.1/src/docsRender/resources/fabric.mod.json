@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "digitalitems_docs_render",
+  "version": "1.0.0",
+  "name": "Digital Items documentation renderer",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["site.siredvin.digitalitems.docs.DocsModelRenderer"]
+  },
+  "depends": {
+    "digitalitems": "*",
+    "fabric-api": "*",
+    "minecraft": "1.21.1"
+  }
+}

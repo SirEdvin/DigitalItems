@@ -1,0 +1,129 @@
+[versions]
+# Base libraries
+kotlin = "1.9.0"
+kotlin-coroutines = "1.9.0"
+kotlin-atomicfu = "0.20.2"
+
+# Gradle plugins
+sponge = "0.2.1-SNAPSHOT"
+loom = "1.2.+"
+forgegradle = "6.+"
+spotless = "6.19.0"
+
+# Core mod dependencies
+cc-tweaked = "1.113.0"
+broccolium = "1.4.6"
+tweakium = "1.4.6"
+broccolium-jjar = { require = "[1.4.6, 1.5.0)", prefer = "1.4.6" }
+tweakium-jjar = { require = "[1.4.6, 1.5.0)", prefer = "1.4.6" }
+mixin = "0.8.5"
+
+# Fabric dependencies
+fabric-api = "0.116.3+1.21.1"
+fabric-loader = "0.16.14"
+fabric-kotlin = "1.11.0+kotlin.2.0.0"
+forgeconfigapirt = "21.1.6"
+modmenu = "11.0.1"
+
+# Forge dependencies
+neoforge = "21.1.9"
+forge-kotlin = "5.7.0"
+parchment = "2024.11.17"
+parchmentMc = "1.21.1"
+# Extra mod dependencies
+
+# Dev mod dependenceis
+jei = "19.27.0.340"
+rei = "16.0.799"
+
+# Testing
+testiarium = "0.1.1"
+autoService = "1.0.1"
+byteBuddy = "1.14.2"
+hamcrest = "2.2"
+jqwik = "1.7.2"
+junit = "5.9.2"
+
+
+[libraries]
+# Base libraries
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlin-atomicfu = {module = "org.jetbrains.kotlinx:atomicfu-jvm", version.ref = "kotlin-atomicfu"}
+
+# Plugins
+kotlin-plugin = {module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+spotless-plugin = {module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref="spotless"}
+
+# Core mod dependencies
+cc-tweaked-common-api = {module = "cc.tweaked:cc-tweaked-1.21.1-common-api", version.ref = "cc-tweaked"}
+cc-tweaked-common = {module = "cc.tweaked:cc-tweaked-1.21.1-common", version.ref = "cc-tweaked"}
+cc-tweaked-core = {module = "cc.tweaked:cc-tweaked-1.21.1-core", version.ref = "cc-tweaked"}
+common-config = {module = "fuzs.forgeconfigapiport:forgeconfigapiport-common", version.ref = "forgeconfigapirt"}
+mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
+broccolium-core = {module = "site.siredvin:broccolium-common-1.21.1", version.ref = "broccolium"}
+tweakium-core = {module = "site.siredvin:tweakium-common-1.21.1", version.ref = "tweakium"}
+
+# Fabric mod dependencies
+fabric-loader = {module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader"}
+fabric-api = {module = "net.fabricmc.fabric-api:fabric-api", version.ref="fabric-api"}
+fabric-kotlin = {module = "net.fabricmc:fabric-language-kotlin", version.ref = "fabric-kotlin"}
+fabric-config = {module = "fuzs.forgeconfigapiport:forgeconfigapiport-fabric", version.ref = "forgeconfigapirt"}
+cc-tweaked-fabric-api = {module = "cc.tweaked:cc-tweaked-1.21.1-fabric-api", version.ref = "cc-tweaked"}
+cc-tweaked-fabric = {module = "cc.tweaked:cc-tweaked-1.21.1-fabric", version.ref = "cc-tweaked"}
+broccolium-fabric = {module = "site.siredvin:broccolium-fabric-1.21.1", version.ref = "broccolium"}
+tweakium-fabric = {module = "site.siredvin:tweakium-fabric-1.21.1", version.ref = "tweakium"}
+
+# Forge mod dependencies
+cc-tweaked-forge =  {module = "cc.tweaked:cc-tweaked-1.21.1-forge", version.ref="cc-tweaked"}
+forge-kotlin = {module = "thedarkcolour:kotlinforforge-neoforge", version.ref = "forge-kotlin"}
+broccolium-forge = {module = "site.siredvin:broccolium-forge-1.21.1", version.ref = "broccolium"}
+tweakium-forge = {module = "site.siredvin:tweakium-forge-1.21.1", version.ref = "tweakium"}
+broccolium-jjar-forge = {module = "site.siredvin:broccolium-forge-1.21.1", version.ref = "broccolium-jjar"}
+tweakium-jjar-forge = {module = "site.siredvin:tweakium-forge-1.21.1", version.ref = "tweakium-jjar"}
+
+# Dev mod dependencies
+jei-forge = { module = "mezz.jei:jei-1.21.1-neoforge", version.ref = "jei" }
+rei-fabric = {module = "me.shedaniel:RoughlyEnoughItems-fabric", version.ref = "rei"}
+# Testing
+testiarium-core = { module = "site.siredvin:testiarium-core-1.21.1", version.ref = "testiarium" }
+testiarium-forge = { module = "site.siredvin:testiarium-forge-1.21.1", version.ref = "testiarium" }
+testiarium-fabric = { module = "site.siredvin:testiarium-fabric-1.21.1", version.ref = "testiarium" }
+autoService = { module = "com.google.auto.service:auto-service", version.ref = "autoService" }
+byteBuddyAgent = { module = "net.bytebuddy:byte-buddy-agent", version.ref = "byteBuddy" }
+byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy" }
+hamcrest = { module = "org.hamcrest:hamcrest", version.ref = "hamcrest"}
+jqwik-api = { module = "net.jqwik:jqwik-api", version.ref = "jqwik" }
+jqwik-engine = { module = "net.jqwik:jqwik-engine", version.ref = "jqwik" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+vanillaGradle = { id = "org.spongepowered.gradle.vanilla", version.ref = "sponge"}
+loom = {id = "fabric-loom", version.ref = "loom"}
+spotless = {id = "com.diffplug.spotless", version.ref="spotless"}
+
+[bundles]
+kotlin = ["kotlin-stdlib", "kotlin-coroutines", "kotlin-atomicfu"]
+cccommon = ["cc-tweaked-common-api", "cc-tweaked-common", "cc-tweaked-core", "tweakium-core", "broccolium-core"]
+apicommon = ["common-config"]
+fabric-include = ["broccolium-fabric", "tweakium-fabric"]
+fabric-cc = ["cc-tweaked-fabric"]
+fabric-core = ["fabric-api", "fabric-kotlin", "fabric-config", "fabric-loader"]
+forge-raw = ["forge-kotlin"]
+forge-cc = ["cc-tweaked-forge"]
+forge-include = ["broccolium-forge", "tweakium-forge"]
+forge-jjar = ["broccolium-jjar-forge", "tweakium-jjar-forge"]
+
+# Testing
+test = ["junit-jupiter-api", "junit-jupiter-params", "hamcrest", "jqwik-api"]
+
+# Minecraft
+#externalMods-common = ["jei-api", "nightConfig-core", "nightConfig-toml"]
+#externalMods-forge-compile = ["oculus", "jei-api"]
+externalMods-forge-runtime = ["jei-forge"]
+#externalMods-fabric = ["nightConfig-core", "nightConfig-toml"]
+#externalMods-fabric-compile = ["iris", "jei-api", "rei-api", "rei-builtin"]
+externalMods-fabric-runtime = ["rei-fabric"]
+#

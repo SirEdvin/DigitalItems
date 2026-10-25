@@ -51,7 +51,7 @@ public final class DocsModelRenderer implements ClientModInitializer {
                 return;
             }
             String name = items.get(next++);
-            ResourceLocation id = ResourceLocation.fromNamespaceAndPath("digitalitems", name);
+            ResourceLocation id = new ResourceLocation("digitalitems", name);
             if (!BuiltInRegistries.ITEM.containsKey(id)) {
                 throw new IllegalStateException("Missing documentation item: " + id);
             }

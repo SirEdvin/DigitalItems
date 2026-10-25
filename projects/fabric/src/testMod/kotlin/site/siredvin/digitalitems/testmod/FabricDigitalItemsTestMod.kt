@@ -6,6 +6,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
 import site.siredvin.digitalitems.DigitalItemsCore
 import site.siredvin.digitalitems.fabric.FabricModPlatform
 import site.siredvin.digitalitems.fabric.FabricModRecipeIngredients
+import site.siredvin.testiarium.FabricTestiarium
+import site.siredvin.testiarium.Testiarium
 import site.siredvin.testiarium.cct.CctComputers
 import site.siredvin.testiarium.cct.CctFixtureCommands
 import site.siredvin.tweakium.modules.FabricTweakium
@@ -24,5 +26,7 @@ object FabricDigitalItemsTestMod : ModInitializer {
             CctComputers.reset()
             CctFixtureCommands.importFiles(it)
         }
+        Testiarium.register(DigitalItemsGameTests::class.java)
+        FabricTestiarium.registerTests()
     }
 }

@@ -5,9 +5,6 @@
   "name": "DigitalItems Testmod",
   "environment": "*",
   "entrypoints": {
-    "fabric-gametest": [
-      "site.siredvin.digitalitems.testmod.DigitalItemsGameTests"
-    ],
     "main": [
       {
         "adapter": "kotlin",
@@ -15,9 +12,6 @@
       }
     ]
   },
-  "mixins": [
-    "digitalitems-cct-gametest.mixins.json"
-  ],
   "depends": {
     "fabricloader": "*",
     "digitalitems": "*",

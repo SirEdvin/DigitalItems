@@ -2,6 +2,8 @@ name: GameTests
 
 on:
   pull_request:
+  push:
+    branches: [multiversion, "digital-items/**"]
 
 permissions:
   contents: read
@@ -11,35 +13,80 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build:
+    name: Four-node build
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            17
+            21
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Compile fixtures and build every node
+        run: |
+          mkdir -p build
+          timeout --foreground 300s ./gradlew :typescript-tests:compileTestLua --no-daemon >build/typescript-tests.log 2>&1
+          timeout --foreground 600s ./gradlew build testModClasses generatePomFileForMavenPublication generateMetadataFileForMavenPublication --no-daemon >build/gradle-build.log 2>&1
+          python3 .github/scripts/check-artifacts.py >build/artifact-manifest.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: four-node-build
+          path: |
+            build/*.log
+            build/artifact-manifest.json
+            projects/*/versions/*/build/libs/*.jar
+          if-no-files-found: error
+
   gametest:
-    name: NeoForge and Fabric GameTests
+    name: ${{ matrix.loader }} ${{ matrix.minecraft }} GameTests
+    strategy:
+      fail-fast: false
+      matrix:
+        loader: [fabric, forge]
+        minecraft: [1.20.1, 1.21.1]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Java 21
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "21"
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Run GameTests
-        run: timeout --foreground 1200s ./gradlew gameTest --no-daemon
-
-      - name: Upload JUnit reports
+          java-version: |
+            17
+            21
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Run native GameTests and verify exact inventory
+        env:
+          LOADER: ${{ matrix.loader }}
+          MINECRAFT: ${{ matrix.minecraft }}
+        run: |
+          set -euo pipefail
+          mkdir -p build
+          REPORT="projects/$LOADER/versions/$MINECRAFT/build/test-results/digitalitems-gametest.xml"
+          rm -f "$REPORT"
+          TASK=runGameTestServer
+          if [[ "$LOADER" == fabric ]]; then TASK=runDigitalItemsGameTest; fi
+          timeout --foreground 1200s xvfb-run -a ./gradlew ":$LOADER:$MINECRAFT:$TASK" --no-daemon -PminimalTestEnvironment >build/gametest.log 2>&1
+          python3 .github/scripts/check-gametest-reports.py "$REPORT" >build/gametest-summary.json
+      - name: Upload logs and fresh reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: gametest-junit-reports
+          name: gametest-${{ matrix.loader }}-${{ matrix.minecraft }}
           path: |
-            projects/forge/build/test-results/digitalitems-gametest.xml
-            projects/forge/build/test-results/digitalitems-gametest.html
-            projects/fabric/build/test-results/digitalitems-gametest.xml
-            projects/fabric/build/test-results/digitalitems-gametest.html
-          if-no-files-found: warn
+            build/gametest*
+            projects/${{ matrix.loader }}/versions/${{ matrix.minecraft }}/build/test-results/digitalitems-gametest.*
+            projects/${{ matrix.loader }}/versions/${{ matrix.minecraft }}/run/digitalitems-gametest/logs/*
+          if-no-files-found: error
           retention-days: 14

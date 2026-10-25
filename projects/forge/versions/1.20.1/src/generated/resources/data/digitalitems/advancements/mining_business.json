@@ -1,0 +1,33 @@
+{
+  "parent": "digitalitems:mining_startup",
+  "criteria": {
+    "digitilize_something": {
+      "conditions": {
+        "count": 256
+      },
+      "trigger": "digitalitems:digitilized_ores"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.mining_business_description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:gold_ore"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advencement.digitalitems.mining_business"
+    }
+  },
+  "requirements": [
+    [
+      "digitilize_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -3,8 +3,7 @@ name: Documentation Pages
 on:
   push:
     branches:
-      - "1.20"
-      - "1.21"
+      - "multiversion"
     tags:
       - "v*"
     paths:
@@ -58,11 +57,11 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Set up Java ${{ matrix.javaVersion }}
+      - name: Set up build JVM
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: ${{ matrix.javaVersion }}
+          java-version: "21"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4

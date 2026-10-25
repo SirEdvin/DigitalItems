@@ -1,0 +1,33 @@
+{
+  "parent": "digitalitems:root",
+  "criteria": {
+    "digitalize_something": {
+      "conditions": {
+        "count": 1
+      },
+      "trigger": "digitalitems:digitilized_stars"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "description": {
+      "translate": "advencement.digitalitems.digitilize_the_stars_description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:nether_star"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advencement.digitalitems.digitilize_the_stars"
+    }
+  },
+  "requirements": [
+    [
+      "digitalize_something"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

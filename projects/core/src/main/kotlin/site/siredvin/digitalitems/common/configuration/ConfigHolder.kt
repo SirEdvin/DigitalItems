@@ -1,14 +1,14 @@
 package site.siredvin.digitalitems.common.configuration
 
-import net.neoforged.neoforge.common.ModConfigSpec
+import net.minecraftforge.common.ForgeConfigSpec
 
 object ConfigHolder {
-    var commonSpec: ModConfigSpec
+    var commonSpec: ForgeConfigSpec
     var commonConfig: ModConfig.CommonConfig
 
     init {
-        val (key, value) = ModConfigSpec.Builder()
-            .configure { builder: ModConfigSpec.Builder -> ModConfig.CommonConfig(builder) }
+        val (key, value) = ForgeConfigSpec.Builder()
+            .configure { builder: ForgeConfigSpec.Builder -> ModConfig.CommonConfig(builder) }
         commonConfig = key
         commonSpec = value
     }

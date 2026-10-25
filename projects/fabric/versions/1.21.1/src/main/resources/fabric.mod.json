@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "id": "digitalitems",
+  "version": "${version}",
+  "name": "Digital Items",
+  "description": "Digitize items, fluids, and energy with ComputerCraft.",
+  "authors": [
+    "SirEdvin"
+  ],
+  "accessWidener": "digitalitems.accesswidener",
+  "contact": {
+    "homepage": "https://github.com/SirEdvin/DigitalItems",
+    "issues": "https://github.com/SirEdvin/DigitalItems/issues",
+    "sources": "https://github.com/SirEdvin/DigitalItems"
+  },
+  "license": "MIT",
+  "icon": "pack.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "site.siredvin.digitalitems.FabricDigitalItems"
+      }
+    ],
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "site.siredvin.digitalitems.FabricDigitalItemsClient"
+      }
+    ],
+    "fabric-datagen": [
+      {
+        "adapter": "kotlin",
+        "value": "site.siredvin.digitalitems.data.FabricDataGenerators"
+      }
+    ]
+  },
+  "mixins": [
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.14",
+    "fabric": "*",
+    "minecraft": ">=1.21.1 <1.21.2",
+    "java": ">=21",
+    "computercraft": ">=${computercraftVersion}",
+    "tweakium": ">=${tweakiumVersion}",
+    "broccolium": ">=${broccoliumVersion}"
+  }
+}
