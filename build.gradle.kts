@@ -25,6 +25,20 @@ tasks.register("gameTest") {
         }.result.get().assertNormalExitValue()
     }
 }
+tasks.named("check") {
+    doLast {
+        for (version in minecraftVersions) {
+            val native = project(":forge:$version").extensions.getByType<net.neoforged.moddevgradle.dsl.ModDevExtension>()
+            for (run in native.runs) {
+                val fixture = if (version == "1.20.1") "digitalitems_testmod" else "digitalitemsTestMod"
+                val expected = if (run.name == "gameTestServer") setOf("digitalitems", fixture) else setOf("digitalitems")
+                check(run.loadedMods.get().map { it.name }.toSet() == expected) { "Unexpected mods in $version ${run.name}" }
+                check(run.sourceSet.get().name == if (run.name == "gameTestServer") "testMod" else "main")
+            }
+        }
+    }
+}
+
 tasks.named("build") {
     dependsOn(minecraftVersions.flatMap { v -> listOf("core", "fabric", "forge").map { ":$it:$v:build" } })
 }
@@ -94,6 +108,12 @@ subprojects {
                 tasks.named<Jar>("sourcesJar") {
                     from(project(":core:$minecraftVersion").extensions.getByType<SourceSetContainer>().named("main").map { it.allSource })
                     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+                }
+                if (path.startsWith(":forge:")) {
+                    val native = extensions.getByType<net.neoforged.moddevgradle.dsl.ModDevExtension>()
+                    native.runs.configureEach {
+                        if (name != "gameTestServer") loadedMods.set(setOf(native.mods.named("digitalitems").get()))
+                    }
                 }
                 val report = layout.buildDirectory.file("test-results/digitalitems-gametest.xml")
                 tasks.named(if (path.startsWith(":fabric:")) "runDigitalItemsGameTest" else "runGameTestServer") {
