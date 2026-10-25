@@ -1,0 +1,5 @@
+{
+  "type": "computercraft:sided",
+  "left": "digitalitems:turtle/advanced_digitizer_left",
+  "right": "digitalitems:turtle/advanced_digitizer_right"
+}

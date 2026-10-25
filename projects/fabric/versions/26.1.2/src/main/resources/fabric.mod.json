@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "digitalitems",
+  "version": "${version}",
+  "name": "Digital Items",
+  "description": "Digitize items, fluids, and energy with ComputerCraft. Minecraft 26.1.2: new worlds only.",
+  "authors": ["SirEdvin"],
+  "license": "MIT",
+  "icon": "pack.png",
+  "environment": "*",
+  "accessWidener": "digitalitems-common.accesswidener",
+  "contact": {"homepage": "https://github.com/SirEdvin/DigitalItems", "issues": "https://github.com/SirEdvin/DigitalItems/issues", "sources": "https://github.com/SirEdvin/DigitalItems"},
+  "entrypoints": {
+    "main": [{"adapter": "kotlin", "value": "site.siredvin.digitalitems.FabricDigitalItems"}],
+    "client": [{"adapter": "kotlin", "value": "site.siredvin.digitalitems.FabricDigitalItemsClient"}],
+    "fabric-datagen": [{"adapter": "kotlin", "value": "site.siredvin.digitalitems.data.FabricDataGenerators"}]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "fabric-api": ">=0.155.3",
+    "fabric-language-kotlin": ">=1.13.12+kotlin.2.4.0",
+    "forgeconfigapiport": ">=26.1.5",
+    "minecraft": "26.1.2",
+    "java": ">=25",
+    "computercraft": ">=1.120.0",
+    "tweakium": ">=2.0.0-rc.1",
+    "broccolium": ">=2.0.0-rc.1"
+  }
+}

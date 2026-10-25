@@ -8,6 +8,22 @@ MODULE = runpy.run_path(str(Path(__file__).with_name("check-gametest-reports.py"
 
 
 class ReportTests(unittest.TestCase):
+    def test_target_native_inventory(self):
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "26.1.2" / "report.xml"
+            path.parent.mkdir()
+            expected = MODULE["TARGET_EXPECTED"]
+            root = ET.Element("testsuite", tests=str(len(expected)))
+            for name in sorted(expected):
+                ET.SubElement(root, "testcase", name=name)
+            ET.ElementTree(root).write(path)
+            self.assertEqual(MODULE["check_report"](path)["tests"], len(expected))
+            root.remove(root[0])
+            root.set("tests", str(len(root)))
+            ET.ElementTree(root).write(path)
+            with self.assertRaises(AssertionError):
+                MODULE["check_report"](path)
+
     def test_inventory_and_failure_guards(self):
         with TemporaryDirectory() as directory:
             path = Path(directory) / "report.xml"

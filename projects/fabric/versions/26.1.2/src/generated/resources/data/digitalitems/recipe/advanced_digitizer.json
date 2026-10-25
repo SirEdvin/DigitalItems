@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "digitalitems:digitizer",
+    "E": "minecraft:ender_pearl",
+    "W": "#computercraft:wired_modem"
+  },
+  "pattern": [
+    " E ",
+    "WDW",
+    " E "
+  ],
+  "result": {
+    "id": "digitalitems:advanced_digitizer"
+  },
+  "show_notification": false
+}

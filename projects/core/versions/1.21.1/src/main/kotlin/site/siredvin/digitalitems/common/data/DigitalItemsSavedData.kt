@@ -5,7 +5,6 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.ListTag
 import net.minecraft.nbt.Tag
 import net.minecraft.server.level.ServerLevel
-import net.minecraft.util.datafix.DataFixTypes
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.saveddata.SavedData
 import site.siredvin.digitalitems.DigitalItemsCore
@@ -109,8 +108,7 @@ class DigitalItemsSavedData : SavedData() {
     companion object {
         private var instance: DigitalItemsSavedData? = null
 
-        @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-        private val factory = Factory(::create, ::load, null as DataFixTypes?)
+        private val factory = DigitalItemsSavedDataType.createFactory()
 
         fun getFrom(l: Level): DigitalItemsSavedData {
             if (l !is ServerLevel) {

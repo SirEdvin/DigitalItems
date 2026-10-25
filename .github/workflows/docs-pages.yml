@@ -57,11 +57,15 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - name: Set up build JVM
+      - name: Set up build JVM and maintained toolchains
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "21"
+          # The last JVM runs Gradle; historical documentation refs still need Java 21.
+          java-version: |
+            17
+            25
+            21
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4

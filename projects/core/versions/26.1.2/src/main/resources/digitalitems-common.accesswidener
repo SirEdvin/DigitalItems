@@ -1,0 +1,12 @@
+accessWidener v2 official
+
+transitive-accessible class net/minecraft/world/item/CreativeModeTab$Output
+transitive-accessible class net/minecraft/world/item/CreativeModeTab$TabVisibility
+transitive-accessible class net/minecraft/data/recipes/RecipeProvider$Runner
+transitive-accessible field net/minecraft/client/data/models/BlockModelGenerators blockStateOutput Ljava/util/function/Consumer;
+transitive-accessible field net/minecraft/client/data/models/BlockModelGenerators modelOutput Ljava/util/function/BiConsumer;
+transitive-accessible field net/minecraft/client/data/models/BlockModelGenerators itemModelOutput Lnet/minecraft/client/data/models/ItemModelOutput;
+transitive-accessible field net/minecraft/client/data/models/ItemModelGenerators modelOutput Ljava/util/function/BiConsumer;
+transitive-accessible field net/minecraft/client/data/models/ItemModelGenerators itemModelOutput Lnet/minecraft/client/data/models/ItemModelOutput;
+accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
+accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V

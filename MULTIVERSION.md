@@ -1,15 +1,17 @@
 # Multiversion build
 
-`multiversion` maintains Minecraft **1.20.1 Fabric/Forge** (Java 17) and
-**1.21.1 Fabric/NeoForge** (Java 21) in one history. Run Gradle with Java 21;
-install both JDKs. `gradle.properties:maintainedMinecraftVersions` is the build
-and documentation discovery inventory. There is no 26.x node in this migration.
+`multiversion` maintains Minecraft **1.20.1 Fabric/Forge** (Java 17),
+**1.21.1 Fabric/NeoForge** (Java 21), and **26.1.2 Fabric/NeoForge** (Java 25) in
+one history. Install JDKs 17, 21 and 25; Gradle may run with Java 21 or 25.
+`gradle.properties:maintainedMinecraftVersions` is the build and documentation
+discovery inventory. **26.1.2 supports new worlds only: no cross-version world
+upgrade or downgrade is supported or tested.** See [MIGRATION-26.1.2.md](MIGRATION-26.1.2.md).
 
 ## Source ownership
 
 Stonecutter 0.9.8 uses one controller for each existing `core`, `fabric`, and
 `forge` module. The canonical/VCS state is **1.20.1**. Edit shared `src/` files
-for common behavior; edit `versions/1.21.1/src/` only when its native API differs.
+for common behavior; edit `versions/<minecraft>/src/` only when its native API differs.
 Version-only metadata/data lives under the matching `versions/<minecraft>/src/`.
 Do not edit `build/generated/stonecutter/` or copy it into source control.
 
@@ -59,8 +61,8 @@ stack-identity predicate instead of the now-private 1.21 server-computer lookup.
 ## Commands
 
 Always use `--no-daemon`, a deadline, and complete redirected logs. Root `build`
-builds all six common/loader leaves (four playable loader nodes); root `gameTest`
-runs the four nodes and validates fresh XML with the complete case inventory.
+builds all nine common/loader leaves (six playable loader nodes); root `gameTest`
+runs all six nodes and validates fresh XML with the complete case inventory.
 
 ```sh
 mkdir -p build
@@ -69,12 +71,33 @@ timeout --foreground 10m ./gradlew build --no-daemon >build/gradle-build.log 2>&
 timeout --foreground 20m xvfb-run -a ./gradlew gameTest --no-daemon -PminimalTestEnvironment >build/gametest.log 2>&1
 ```
 
-Individual tasks (replace `1.20.1` with `1.21.1` for the newer line):
+Individual tasks (replace `1.20.1` with `1.21.1` or `26.1.2` for newer lines):
 
 - `:fabric:1.20.1:build`, `:forge:1.20.1:build`
 - `:fabric:1.20.1:runDigitalItemsGameTest`, `:forge:1.20.1:runGameTestServer`
 - `:fabric:1.20.1:runData`, `:forge:1.20.1:runData`
 - `:fabric:1.20.1:exportDocsModels` (opt-in native model rendering)
+
+The target Forge-family datagen aggregate `:forge:26.1.2:runData` runs native
+`runClientData` and `runServerData`; Fabric uses `:fabric:26.1.2:runData`.
+26.1.2 uses Java 25/Kotlin 2.4.0, non-remapping Loom 1.17.11, ordinary `jar`,
+official access wideners, NeoForge 26.1.2.122, Fabric Loader 0.19.5/API
+0.155.3+26.1.2, CC:Tweaked 1.120.0 and public libraries 2.0.0-rc.1. The legacy
+nodes keep remapping and JVM 17/21/Kotlin 2.0 metadata. A native Java SavedData
+factory bridge retains the supported null vanilla-fixer contract under the new compiler.
+
+Target SavedData is server-global (`MinecraftServer.dataStorage`) under
+`data/digitalitems/digitalitems.dat`; no process-global cache survives world changes.
+The registry-aware item codec preserves components and stores digital counts
+separately from one native stack. Block inventories use native ValueInput/Output
+and update-tag registry context, including empty/sparse inventories on a detached
+physical-client entity. Native removal drops Container contents exactly once.
+CC turtle upgrade model definitions are data-driven on 26.1.2.
+
+Each target report includes the original 13 cases, native `minecraft:alwayspass`,
+and three target boundary cases: detached inventory callbacks, inbound native
+menu packet validation (foreign container, invalid slots, distance, then positive
+bidirectional transfer), and native removal conservation. No fixture is skipped.
 
 `-PminimalTestEnvironment` omits direct optional development-viewer and ModMenu
 declarations, not tests or required mod integrations; transitive development mods
@@ -118,14 +141,14 @@ uses `v<modVersion>`, and selects the four playable binaries, not controller JAR
 No release or npm publication is part of this migration.
 
 CI checks the literal feature head on PR and feature-branch push: full build,
-four native GameTest jobs, and documentation tooling/build checks. Branch rules
+six native GameTest jobs, and documentation tooling/build checks. Branch rules
 remain unchanged. Review/merge and post-merge verification belong to the stage gate.
 
-Documentation discovery reads both maintained versions from one multiversion
-commit, preserving `branch/1.20/`, `branch/1.21/`, historical `tag/<tag>/` URLs,
+Documentation discovery reads all three maintained versions from one multiversion
+commit, preserving `branch/1.20/`, `branch/1.21/`, historical `tag/<tag>/` URLs and adding `branch/26.1/`,
 the 1.20.1 default and selector behavior. Source links use the exact commit SHA.
 The typed API/generator stays version-independent. To preview, discover with
-`--source-ref HEAD`, build the two branch fragments with the existing
+`--source-ref HEAD`, build the three branch fragments with the existing
 `:typed-peripheral-digitalitems:generateDocs` task and its `docsOutput`,
 `docsGitRevision`, `docsHostedBaseUrl` properties, then `docs-site.mjs assemble`
 and `validate`. Pages deployment is a separate workflow; a local preview or PR
