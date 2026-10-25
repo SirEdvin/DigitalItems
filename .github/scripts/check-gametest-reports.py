@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 
 EXPECTED = {
     "basedigitize", "remotedigitize", "basemoredigitize", "remotemoredigitize",
+    "pocketrematerializeconservation", "turtlerematerializeconservation", "blockrematerializeconservation",
     "baselimitdigitize", "remotelimitdigitize", "fluiddigitize", "energydigitize", "olddigitize", "sameversionpersistence",
 }
 

@@ -36,5 +36,14 @@ class DigitalItemsGameTests {
     fun oldDigitize(helper: GameTestHelper) = helper.thenLua().thenSucceed()
 
     @GameTest(template = "digitalitemsgametests.persistence")
+    fun pocketRematerializeConservation(helper: GameTestHelper) = helper.immediate { RematerializeFixture.pocket(helper) }
+
+    @GameTest(template = "digitalitemsgametests.persistence")
+    fun turtleRematerializeConservation(helper: GameTestHelper) = helper.immediate { RematerializeFixture.turtle(helper) }
+
+    @GameTest(template = "digitalitemsgametests.persistence")
+    fun blockRematerializeConservation(helper: GameTestHelper) = helper.immediate { RematerializeFixture.block(helper) }
+
+    @GameTest(template = "digitalitemsgametests.persistence")
     fun sameVersionPersistence(helper: GameTestHelper) = helper.immediate { PersistenceFixture.check(helper) }
 }
