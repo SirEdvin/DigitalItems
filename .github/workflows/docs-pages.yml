@@ -61,7 +61,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          # The last JVM runs Gradle; historical documentation refs still need Java 21.
+          # Historical documentation refs run Gradle on Java 21; multiversion refs (javaVersion 25) need Java 25.
           java-version: |
             17
             25
@@ -85,6 +85,7 @@ jobs:
         env:
           DOCS_PATH: ${{ matrix.path }}
           DOCS_SHA: ${{ matrix.sha }}
+          JAVA_HOME: ${{ matrix.javaVersion == '25' && env.JAVA_HOME_25_X64 || env.JAVA_HOME_21_X64 }}
         run: >-
           timeout --foreground 600s ./gradlew :typed-peripheral-digitalitems:generateDocs
           -PdocsOutput="$PWD/build/docs-fragments/$DOCS_PATH"

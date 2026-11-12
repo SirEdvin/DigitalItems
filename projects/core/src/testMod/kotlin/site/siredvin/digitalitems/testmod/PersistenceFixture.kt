@@ -21,6 +21,10 @@ import java.util.UUID
 object PersistenceFixture {
     private val ids = (1..3).map { ByteArrayWrapper("digitalitems-persistence-$it".toByteArray()) }
 
+    // NeoForge writes SavedData on an IO worker; its test mod installs the native barrier.
+    @JvmField
+    var awaitSavedData: Runnable = Runnable {}
+
     fun check(helper: GameTestHelper) {
         System.getProperty("digitalitems.persistenceInput")?.let { verifySnapshot(Path.of(it), helper) }
         val level = helper.level.server.overworld()
@@ -39,6 +43,7 @@ object PersistenceFixture {
             data.add(fluid)
             data.add(energy)
             level.dataStorage.save()
+            awaitSavedData.run()
             // Reload only a copy of this disposable test world's native save.
             Files.copy(level.server.getWorldPath(LevelResource.ROOT).resolve("data/digitalitems.dat"), copyDirectory.resolve("digitalitems.dat"))
             val restored = PersistenceVersionFixture.reload(copyDirectory.toFile(), helper)

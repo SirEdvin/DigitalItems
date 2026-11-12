@@ -9,7 +9,7 @@ import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 
-@EventBusSubscriber(modid = DigitalItemsCore.MOD_ID, value = [Dist.CLIENT], bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = DigitalItemsCore.MOD_ID, value = [Dist.CLIENT])
 object ForgeDigitalItemsClient {
 
     @SubscribeEvent
