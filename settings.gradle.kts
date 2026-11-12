@@ -3,23 +3,14 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven("https://maven.fabricmc.net/")
-        maven("https://mvn.siredvin.site/minecraft") {
-            name = "SirEdvin's Minecraft repository"
-            content {
-                includeGroup("net.minecraftforge")
-                includeGroup("net.minecraftforge.gradle")
-                includeGroup("net.neoforged")
-                includeGroup("net.neoforged.moddev")
-                includeGroup("org.parchmentmc")
-                includeGroup("org.parchmentmc.feather")
-                includeGroup("org.parchmentmc.data")
-                includeGroup("org.spongepowered")
-                includeGroup("org.spongepowered.gradle.vanilla")
-                includeGroup("net.fabricmc")
-                includeGroup("fabric-loom")
-                includeGroupByRegex("site.siredvin.*")
-            }
+        maven("https://repo.repsy.io/siredvin/default") {
+            name = "Repsy"
+            content { includeGroupByRegex("site.siredvin.*") }
         }
+        maven("https://maven.minecraftforge.net/")
+        maven("https://maven.neoforged.net/releases/")
+        maven("https://maven.parchmentmc.org/")
+        maven("https://repo.spongepowered.org/repository/maven-public/")
     }
 
     resolutionStrategy {
@@ -66,8 +57,4 @@ stonecutter {
 for (version in listOf("1.20.1", "1.21.1")) {
     val node = project(":forge:$version")
     node.buildFileName = rootDir.resolve("gradle/forge-$version.gradle.kts").relativeTo(node.projectDir).path
-}
-for (part in listOf("core", "fabric", "forge")) {
-    val node = project(":$part:26.1.2")
-    node.buildFileName = rootDir.resolve("gradle/minecraft-26-1.gradle.kts").relativeTo(node.projectDir).path
 }

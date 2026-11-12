@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-12
+
+### Changed
+
+- One `multiversion` source tree builds Minecraft 1.20.1 (Fabric/Forge) and 1.21.1 (Fabric/NeoForge); it is now the default branch
+- CC:Tweaked 1.121.0 is the minimum on both Minecraft versions (rewritten turtle/pocket upgrade API)
+- Broccolium and Tweakium 2.1.0 are bundled
+- 1.21.1: NeoForge 21.1.265 and Kotlin for Forge 5.9.0 are the minimums
+
+### Removed
+
+- Unreleased Minecraft 26.1.2 development support (CC:Tweaked 1.121.0 and the 2.1.0 libraries do not target it)
+
 ## [0.5.8] - 2025-11-19
 
 ### Changed

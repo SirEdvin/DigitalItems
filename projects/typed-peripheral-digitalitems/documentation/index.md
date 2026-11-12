@@ -6,14 +6,13 @@ TypeScript with TypeScriptToLua.
 
 ## Minecraft compatibility
 
-Development supports **1.20.1 Fabric/Forge**, **1.21.1 Fabric/NeoForge**, and
-**26.1.2 Fabric/NeoForge**. The peripheral names and Lua/TypeScript APIs are the
-same on all three lines. Select the matching Minecraft version in the header.
+Development supports **1.20.1 Fabric/Forge** and **1.21.1 Fabric/NeoForge**.
+The peripheral names and Lua/TypeScript APIs are the same on both lines. Select
+the matching Minecraft version in the header.
 
-**Minecraft 26.1.2 requires Java 25 and a new world.** Do not open a 1.20.1 or
-1.21.1 world with this version: cross-version world upgrades and downgrades are
-not supported. Saving and restarting worlds on the same Minecraft version is
-supported. Keep backups and use the JAR for your exact Minecraft version and loader.
+Cross-version world upgrades and downgrades are not supported. Saving and
+restarting worlds on the same Minecraft version is supported. Keep backups and
+use the JAR for your exact Minecraft version and loader.
 
 ## Choose your digitizer
 

@@ -1,6 +1,7 @@
 package site.siredvin.digitalitems.testmod;
 
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.IOUtilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import site.siredvin.digitalitems.DigitalItemsCore;
@@ -23,5 +24,6 @@ public final class ForgeDigitalItemsTestMod {
             CctFixtureCommands.INSTANCE.importFiles(event.getServer());
         });
         Testiarium.register(DigitalItemsGameTests.class);
+        PersistenceFixture.awaitSavedData = IOUtilities::waitUntilIOWorkerComplete;
     }
 }

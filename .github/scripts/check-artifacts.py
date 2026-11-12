@@ -21,7 +21,7 @@ def audit():
                   if "=" in line and not line.startswith("#") for key, _, value in [line.partition("=")]}
     version = properties["modVersion"]
     result = []
-    for minecraft, library, major in [("1.20.1", "2.0.0-rc.1", 61), ("1.21.1", "2.0.0-rc.1", 65), ("26.1.2", "2.0.0-rc.1", 69)]:
+    for minecraft, library, major in [("1.20.1", "2.1.0", 61), ("1.21.1", "2.1.0", 65)]:
         common = Path("projects/core/versions") / minecraft / "build"
         for loader in ("fabric", "forge"):
             build = Path("projects") / loader / "versions" / minecraft / "build"
@@ -37,10 +37,9 @@ def audit():
                 assert not actual.intersection(fixtures), f"{binary}: test/docs classes leaked"
                 assert not any("testiarium" in name.lower() or "/.cache/" in name for name in entries), f"{binary}: test dependency/cache leaked"
                 assert all(struct.unpack(">H", archive.read(name)[6:8])[0] <= major for name in actual), f"{binary}: wrong JVM target"
-                if minecraft != "26.1.2":
-                    assert all(b"net/minecraft/resources/Identifier" not in archive.read(name) and
-                               b"net/minecraft/world/level/saveddata/SavedDataType" not in archive.read(name)
-                               for name in actual), f"{binary}: target API leaked into a legacy node"
+                assert all(b"net/minecraft/resources/Identifier" not in archive.read(name) and
+                           b"net/minecraft/world/level/saveddata/SavedDataType" not in archive.read(name)
+                           for name in actual), f"{binary}: newer Minecraft API leaked into a maintained node"
                 for old, new, count in [("advancements", "advancement", 14), ("recipes", "recipe", 2), ("loot_tables", "loot_table", 2),
                                          ("computercraft/turtle_upgrades", "computercraft/turtle_upgrade", 2), ("computercraft/pocket_upgrades", "computercraft/pocket_upgrade", 2)]:
                     right, wrong = (old, new) if minecraft == "1.20.1" else (new, old)
@@ -51,9 +50,6 @@ def audit():
                     metadata = json.loads(archive.read("fabric.mod.json"))
                     assert metadata["id"] == "digitalitems" and metadata["version"] == version
                     assert metadata["depends"]["java"] == f">={major - 44}"
-                    if minecraft == "26.1.2":
-                        assert metadata["depends"]["minecraft"] == minecraft
-                        assert archive.read(metadata["accessWidener"]).startswith(b"accessWidener v2 official")
                     nested = [entry["file"] for entry in metadata["jars"]]
                     assert sorted(nested) == [f"META-INF/jars/{name}-fabric-{minecraft}-{library}.jar" for name in ("broccolium", "tweakium")]
                     assert not any(name.endswith("mods.toml") for name in entries)
@@ -63,21 +59,12 @@ def audit():
                     assert "${" not in metadata and f'version="{version}"' in metadata
                     nested_metadata = json.loads(archive.read("META-INF/jarjar/metadata.json"))["jars"]
                     assert len(nested_metadata) == 2 and all(entry["version"]["artifactVersion"] == library for entry in nested_metadata)
-                    assert all(entry["version"]["range"] == f"[{library}]" for entry in nested_metadata), f"{binary}: jar-in-jar must require the qualified RC"
+                    assert all(entry["version"]["range"] == f"[{library}]" for entry in nested_metadata), f"{binary}: jar-in-jar must require the exact library version"
                     nested = [entry["path"] for entry in nested_metadata]
                     assert "fabric.mod.json" not in entries
                     assert ("digitalitems.mixins.json" in entries) == (minecraft == "1.20.1")
                 assert all(name in entries for name in nested), f"{binary}: missing nested dependencies"
                 nested_hashes = {name: hashlib.sha256(archive.read(name)).hexdigest() for name in nested}
-                if minecraft == "26.1.2":
-                    pack = json.loads(archive.read("pack.mcmeta"))["pack"]
-                    assert pack["min_format"] == [84, 0] and pack["max_format"] == [101, 1], f"{binary}: client/data pack formats"
-                    for upgrade in ("digitizer", "advanced_digitizer"):
-                        model = json.loads(archive.read(f"assets/digitalitems/computercraft/turtle_upgrade/{upgrade}.json"))
-                        assert model["type"] == "computercraft:sided"
-                        for side in ("left", "right"):
-                            assert model[side] == f"digitalitems:turtle/{upgrade}_{side}"
-                            assert f"assets/digitalitems/models/turtle/{upgrade}_{side}.json" in entries
             with zipfile.ZipFile(binary.with_name(binary.stem + "-sources.jar")) as source_archive:
                 assert any(name.endswith("DigitalItemsSavedData.kt") for name in source_archive.namelist()), f"{binary}: common sources missing"
             for name in ("pom-default.xml", "module.json"):

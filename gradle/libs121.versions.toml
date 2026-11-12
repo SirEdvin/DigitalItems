@@ -11,11 +11,11 @@ forgegradle = "6.+"
 spotless = "6.19.0"
 
 # Core mod dependencies
-cc-tweaked = "1.120.0"
-broccolium = "2.0.0-rc.1"
-tweakium = "2.0.0-rc.1"
-broccolium-jjar = { require = "[2.0.0-rc.1]", prefer = "2.0.0-rc.1" }
-tweakium-jjar = { require = "[2.0.0-rc.1]", prefer = "2.0.0-rc.1" }
+cc-tweaked = "1.121.0"
+broccolium = "2.1.0"
+tweakium = "2.1.0"
+broccolium-jjar = { require = "[2.1.0]", prefer = "2.1.0" }
+tweakium-jjar = { require = "[2.1.0]", prefer = "2.1.0" }
 mixin = "0.8.5"
 
 # Fabric dependencies
@@ -26,8 +26,8 @@ forgeconfigapirt = "21.1.6"
 modmenu = "11.0.1"
 
 # Forge dependencies
-neoforge = "21.1.9"
-forge-kotlin = "5.7.0"
+neoforge = "21.1.265"
+forge-kotlin = "5.9.0"
 parchment = "2024.11.17"
 parchmentMc = "1.21.1"
 # Extra mod dependencies
@@ -37,7 +37,7 @@ jei = "19.27.0.340"
 rei = "16.0.799"
 
 # Testing
-testiarium = "2.0.0-rc.1"
+testiarium = "2.1.0"
 autoService = "1.0.1"
 byteBuddy = "1.14.2"
 hamcrest = "2.2"
