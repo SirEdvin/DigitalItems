@@ -1,6 +1,10 @@
 package site.siredvin.digitalitems.xplat
 
+import dan200.computercraft.api.pocket.IPocketUpgrade
+import dan200.computercraft.api.turtle.ITurtleUpgrade
 import dan200.computercraft.api.upgrades.UpgradeData
+import net.minecraft.core.HolderLookup
+import net.minecraft.resources.ResourceKey
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.item.CreativeModeTab
 import site.siredvin.broccolium.modules.platform.PlatformToolkit
@@ -25,14 +29,17 @@ object ModCommonHooks {
         )
     }
 
-    fun registerUpgradesInCreativeTab(output: CreativeModeTab.Output) {
+    // Resolve through the display parameters: on a remote client the server registries do not exist.
+    fun registerUpgradesInCreativeTab(holders: HolderLookup.Provider, output: CreativeModeTab.Output) {
+        val turtleUpgrades = holders.lookupOrThrow(ITurtleUpgrade.REGISTRY)
+        val pocketUpgrades = holders.lookupOrThrow(IPocketUpgrade.REGISTRY)
         ModPlatform.holder.turtleUpgrades.forEach {
-            ComputerPlatformToolkit.get().getTurtleUpgrade(it.id.toString()).ifPresent { upgrade ->
+            turtleUpgrades.get(ResourceKey.create(ITurtleUpgrade.REGISTRY, it.id)).ifPresent { upgrade ->
                 ComputerPlatformToolkit.get().createTurtlesWithUpgrade(UpgradeData.ofDefault(upgrade)).forEach(output::accept)
             }
         }
         ModPlatform.holder.pocketUpgrades.forEach {
-            ComputerPlatformToolkit.get().getPocketUpgrade(it.id.toString()).ifPresent { upgrade ->
+            pocketUpgrades.get(ResourceKey.create(IPocketUpgrade.REGISTRY, it.id)).ifPresent { upgrade ->
                 ComputerPlatformToolkit.get().createPocketsWithUpgrade(UpgradeData.ofDefault(upgrade)).forEach(output::accept)
             }
         }
