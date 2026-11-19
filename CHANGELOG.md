@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-11-19
+
+### Fixed
+
+- 1.21.1: creative tab no longer reads server registries, so it builds on a client connected to a dedicated server (it used to break the REI/EMI index and other creative tabs)
+
 ## [0.6.0] - 2026-11-12
 
 ### Changed
